@@ -6,5 +6,5 @@
 # Database
 ![](Database.png)
 
-#Modello Logico Relazionale
+# Modello Logico Relazionale
 ![](ModelloLogicoRelazionale.png)
