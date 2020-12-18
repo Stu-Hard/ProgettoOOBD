@@ -5,7 +5,24 @@ CREATE TYPE EnumClassi AS ENUM('famiglie',
     'economy'
 );
 
-
+CREATE TYPE EnumCitta AS ENUM(
+    'Napoli',
+    'Milano',
+    'Londra',
+    'Barcellona',
+    'Dubai',
+    'Cagliari',
+    'Catania',
+    'Firenze',
+    'Amsterdam',
+    'Mosca',
+    'Madrid',
+    'Zurigo',
+    'Tenerife',
+    'Berlino',
+    'Edimburgo',
+    'Nizza'
+);
 
 CREATE TYPE EnumImpiegati AS ENUM(
     'Amministratore',
