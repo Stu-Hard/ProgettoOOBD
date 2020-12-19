@@ -4,7 +4,7 @@
 - ### Per il gruppo da 3: Tenere traccia anche di un certo pool di clienti business, associati ad una determinata compagnia aerea. Ogni cliente business è identificato da un codice CentoKilometri unico per la compagnia. Il sistema deve permetter di verificare quante volte il volo di un cliente business è stato soggetto a ritardo, per offrire un bonus in punti.
 
 # Database
-![](Database.png)
+![](progettazione/img/Database.png)
 
 # Modello Logico Relazionale
-![](ModelloLogicoRelazionale.png)
+![](progettazione/img/ModelloLogicoRelazionale.png)
