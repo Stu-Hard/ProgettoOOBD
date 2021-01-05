@@ -1,3 +1,5 @@
+package controllers;
+
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,7 +12,7 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ControllerTabellone implements Initializable {
+public class ControllerTabellone {
 
     @FXML
     private VBox voloBox;
@@ -21,7 +23,7 @@ public class ControllerTabellone implements Initializable {
     @FXML
     private VBox statoBox;
 
-    @Override
+   /* @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("ok");
         for (int i = 0; i < 5; i++) {
@@ -52,5 +54,6 @@ public class ControllerTabellone implements Initializable {
         }
 
 
-    }
+    }*/
+
 }

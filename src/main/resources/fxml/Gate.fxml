@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="870.0" style="-fx-background-radius: 0 25 25 0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerTratte">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratte">
     <children>
         <BorderPane prefHeight="700.0" prefWidth="870.0">
             <top>
-                <Pane prefHeight="100.0" prefWidth="870.0" style="-fx-background-color: f0f0f0; -fx-background-radius: 0 25 0 0;" BorderPane.alignment="CENTER">
+                <Pane prefHeight="100.0" prefWidth="870.0" style="-fx-background-color: f0f0f0;" BorderPane.alignment="CENTER">
                     <children>
                         <TextField layoutX="88.0" layoutY="30.0" prefHeight="40.0" prefWidth="426.0" promptText="🔍Search..." style="-fx-background-radius: 25px; -fx-background-color: #dcdcdc; -fx-accent: c0c0c0;">
                             <font>

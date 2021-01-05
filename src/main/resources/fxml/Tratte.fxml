@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="700.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField layoutX="87.0" layoutY="54.0" prefHeight="41.0" prefWidth="282.0" promptText="🔍Search..." style="-fx-background-color: #dcdcdc; -fx-background-radius: 25px;">
          <font>
@@ -55,11 +51,6 @@
       <JFXButton contentDisplay="CENTER" layoutX="32.0" layoutY="55.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20px; -fx-background-color: #dcdcdc;">
          <graphic>
             <FontAwesomeIcon iconName="ARROW_LEFT" size="20px" />
-         </graphic>
-      </JFXButton>
-      <JFXButton contentDisplay="CENTER" layoutX="821.0" layoutY="-2.0" prefHeight="17.0" prefWidth="50.0" ripplerFill="RED">
-         <graphic>
-            <FontAwesomeIcon iconName="REMOVE" size="2em" />
          </graphic>
       </JFXButton>
       <JFXComboBox layoutX="392.0" layoutY="63.0" prefHeight="28.0" prefWidth="85.0" />

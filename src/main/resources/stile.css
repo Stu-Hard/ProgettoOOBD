@@ -1,24 +1,5 @@
-.cambioColore:hover{
-    -fx-cursor: hand;
-    -fx-text-fill: black;
-}
-
-.bottoneChiusura:hover{
-    -fx-background-color: #1746d4;
-}
-
-.sLabels{
-    -fx-background-color: #1746d4;
-}
 .sLabels:hover{
-}
-
-@font-face {
-    font-family: 'Croogla4F';
-    src: url('font/Croogla4F.ttf');
-}
-.testo {
-    -fx-font-family: "Croogla4F";
+    -fx-background-color: #18283f;
 }
 
 .scroll-bar:vertical > .track-background, .scroll-bar:horizontal > .track-background {
