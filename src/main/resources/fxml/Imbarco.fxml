@@ -1,13 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="612.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <JFXTextField layoutX="31.0" layoutY="96.0" prefHeight="25.0" prefWidth="191.0" promptText="Codice Biglietto Confermato" />
+        <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="661.0" layoutY="533.0" prefHeight="48.0" prefWidth="90.0" ripplerFill="#000000f0" style="-fx-background-color: rgb(0,120,0);" textFill="WHITE">
+            <graphic>
+                <FontAwesomeIcon fill="#f0f1f5" iconName="CHECK" size="20" text="" />
+            </graphic>
+            <font>
+                <Font size="19.0" />
+            </font>
+        </JFXButton>
+        <Label layoutX="428.0" layoutY="84.0" prefHeight="48.0" prefWidth="203.0" text="Errore --&gt; exception" textFill="#e41f1f">
+            <font>
+                <Font size="21.0" />
+            </font>
+        </Label>
+        <JFXButton layoutX="273.0" layoutY="91.0" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: blue;" text="Verifica" textFill="WHITE">
+            <graphic>
+                <FontAwesomeIcon fill="WHITE" iconName="SEARCH" />
+            </graphic>
+        </JFXButton>
+        <Spinner layoutX="596.0" layoutY="208.0" />
+        <Label layoutX="459.0" layoutY="212.0" text="Bagagli da Imbarcare:" />
+        <Label layoutX="20.0" layoutY="14.0" text="Imbarco">
+            <font>
+                <Font size="31.0" />
+            </font>
+        </Label>
+        <HBox layoutX="31.0" layoutY="191.0" prefHeight="330.0" prefWidth="376.0">
+            <children>
+                <VBox prefHeight="330.0" prefWidth="240.0" spacing="12.0">
+                    <children>
+                        <Label prefHeight="26.0" prefWidth="131.0" text="Codice biglietto: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Tratta: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label prefHeight="31.0" prefWidth="72.0" text="Classe: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Posto: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Gate: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Nome: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Cognome: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Codice Fiscale: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Numero documento: ">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox prefHeight="330.0" prefWidth="169.0" spacing="12.0">
+                    <children>
+                        <Label text="AB35678">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Barcellona-Napoli">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Business">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="A12">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="12">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Adriano">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="Celentano">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="BCPL23P4512P890I">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                        <Label text="c61717b">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+        <HBox layoutX="466.0" layoutY="269.0" prefHeight="141.0" prefWidth="229.0">
+            <children>
+                <VBox prefHeight="141.0" prefWidth="147.0" spacing="8.0">
+                    <children>
+                        <Label prefHeight="48.0" prefWidth="187.0" text="Codice Bagagli:">
+                            <padding>
+                                <Insets bottom="17.0" />
+                            </padding>
+                            <font>
+                                <Font size="21.0" />
+                            </font>
+                        </Label>
+                        <Label text="CTH45483" />
+                        <Label lineSpacing="5.0" text="CPH20923" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
 </AnchorPane>
