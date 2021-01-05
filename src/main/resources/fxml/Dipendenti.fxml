@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="870.0" style="-fx-background-radius: 0 25 25 0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerTratte">
+   <children>
+      <BorderPane prefHeight="700.0" prefWidth="870.0">
+         <top>
+            <Pane prefHeight="100.0" prefWidth="870.0" style="-fx-background-color: f0f0f0; -fx-background-radius: 0 25 0 0;" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField layoutX="88.0" layoutY="30.0" prefHeight="40.0" prefWidth="426.0" promptText="🔍Search..." style="-fx-background-radius: 25px; -fx-background-color: #dcdcdc; -fx-accent: c0c0c0;">
+                     <font>
+                        <Font name="Calibri" size="18.0" />
+                     </font>
+                  </TextField>
+                  <JFXButton contentDisplay="CENTER" layoutX="33.0" layoutY="30.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20px; -fx-background-color: #dcdcdc;" textFill="#ffffff00">
+                     <graphic>
+                        <FontAwesomeIcon iconName="REMOVE" size="20px" />
+                     </graphic>
+                  </JFXButton>
+                  <Pane layoutX="795.0" layoutY="15.0" prefHeight="30.0" prefWidth="61.0" style="-fx-background-color: transparent;">
+                     <children>
+                        <JFXRippler layoutX="45.0" layoutY="11.0" onMouseClicked="#close" prefHeight="10.0" prefWidth="10.0" ripplerFill="BLACK" style="-fx-background-radius: 15; -fx-background-color: red;">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect></JFXRippler>
+                        <JFXRippler layoutX="29.0" layoutY="11.0" prefHeight="10.0" prefWidth="10.0" style="-fx-background-radius: 15; -fx-background-color: orange;">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect></JFXRippler>
+                        <JFXRippler layoutX="13.0" layoutY="11.0" prefHeight="10.0" prefWidth="10.0" style="-fx-background-radius: 15; -fx-background-color: green;">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect></JFXRippler>
+                     </children>
+                  </Pane>
+                  <JFXComboBox fx:id="searchMode" layoutX="544.0" layoutY="36.0" prefHeight="28.0" prefWidth="88.0" promptText="Città" />
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <ScrollPane fx:id="scroll" centerShape="false" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" pannable="true" prefHeight="600.0" prefViewportHeight="600.0" prefViewportWidth="870.0" prefWidth="870.0" scaleShape="false" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent;" styleClass="scroll-bar" stylesheets="@../stile.css" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="20.0" right="10.0" top="5.0" />
+               </padding>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

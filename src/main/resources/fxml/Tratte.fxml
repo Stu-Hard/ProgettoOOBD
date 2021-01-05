@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="87.0" layoutY="54.0" prefHeight="41.0" prefWidth="282.0" promptText="🔍Search..." style="-fx-background-color: #dcdcdc; -fx-background-radius: 25px;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <JFXDatePicker defaultColor="#0028ff" layoutX="498.0" layoutY="62.0" />
+      <JFXDatePicker defaultColor="BLUE" layoutX="686.0" layoutY="62.0" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="34.0" layoutY="172.0" prefHeight="471.0" prefWidth="780.0" stylesheets="@../stile.css" vbarPolicy="ALWAYS">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="462.0" prefWidth="779.0" />
+        </content>
+      </ScrollPane>
+      <JFXButton buttonType="RAISED" layoutX="689.0" layoutY="580.0" prefHeight="30.0" prefWidth="78.0" style="-fx-background-color: blue;" text="Statistiche" textFill="WHITE" />
+      <Label layoutX="52.0" layoutY="141.0" prefHeight="30.0" prefWidth="69.0" text="Tratta">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="266.0" layoutY="141.0" prefHeight="30.0" prefWidth="78.0" text="Ora Prog">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="370.0" layoutY="141.0" prefHeight="30.0" prefWidth="104.0" text="Ora Effettiva">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="508.0" layoutY="141.0" prefHeight="30.0" prefWidth="104.0" text="Compagnia">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="172.0" layoutY="141.0" prefHeight="30.0" prefWidth="69.0" text="N° volo">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="681.0" layoutY="54.0" text="Al" />
+      <Label layoutX="491.0" layoutY="54.0" text="Da" />
+      <JFXButton contentDisplay="CENTER" layoutX="32.0" layoutY="55.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20px; -fx-background-color: #dcdcdc;">
+         <graphic>
+            <FontAwesomeIcon iconName="ARROW_LEFT" size="20px" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="CENTER" layoutX="821.0" layoutY="-2.0" prefHeight="17.0" prefWidth="50.0" ripplerFill="RED">
+         <graphic>
+            <FontAwesomeIcon iconName="REMOVE" size="2em" />
+         </graphic>
+      </JFXButton>
+      <JFXComboBox layoutX="392.0" layoutY="63.0" prefHeight="28.0" prefWidth="85.0" />
+   </children>
+</AnchorPane>

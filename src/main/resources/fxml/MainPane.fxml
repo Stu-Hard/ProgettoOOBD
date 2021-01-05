@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pannello" onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <Pane fx:id="contentPane2" layoutX="230.0" prefHeight="700.0" prefWidth="870.0" />
+      <Pane prefHeight="700.0" prefWidth="230.0" style="-fx-background-color: #1746d4;">
+         <children>
+            <Hyperlink layoutX="14.0" layoutY="663.0" onAction="#closeButton" text="LogOut" textFill="RED" />
+            <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="11.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/nome+logo_W.png" />
+               </image>
+            </ImageView>
+            <VBox fx:id="lpBox" layoutY="94.0" prefHeight="517.0" prefWidth="230.0">
+               <children>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Tratte" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="RANDOM" onMouseClicked="#setFrame">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Gate" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="TICKET" onMouseClicked="#setFrame">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="CheckIn" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="QRCODE" onMouseClicked="#setFrame">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Imbarco" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="BARCODE">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Clienti" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="MALE">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Bagagli" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="ARCHIVE" onMouseClicked="#setFrame">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Compagnie" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="BANK">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Aerei" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="PLANE">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Impiegati" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="USERS" onMouseClicked="#setFrame">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Aereoporti" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="GLOBE" onMouseClicked="#setFrame" />
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Statistiche" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="BAR_CHART" selectionEnd="0">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+                  <Label onMouseClicked="#setFrame" onMouseEntered="#enterTransition" onMouseExited="#exitTransition" prefHeight="50.0" prefWidth="230.0" style="-fx-background-color: #1746d4;" stylesheets="@../stile.css" text="Tabellone" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="21.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="TH" onMouseClicked="#setFrame">
+                           <font>
+                              <Font name="Calibri" size="21.0" />
+                           </font>
+                        </FontAwesomeIcon>
+                     </graphic>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

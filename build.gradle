@@ -1,17 +1,24 @@
 plugins {
     id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
-group 'org.example'
+group 'org.stuhard'
 version '1.0-SNAPSHOT'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    compile 'com.jfoenix:jfoenix:9.0.10'
+    compile 'de.jensd:fontawesomefx:8.1'
+}
+
+
+javafx {
+    version = '15'
+    modules = [ 'javafx.controls', 'javafx.fxml']
 }
 
 test {
