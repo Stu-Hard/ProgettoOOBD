@@ -8,37 +8,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
+import utility.WindowDragger;
 
-import java.awt.*;
 import java.io.IOException;
 
-public class ControllerLogin {
+
+public class ControllerLogin extends WindowDragger { // per dubbi su windowDragger vai a utility.windowDragger
     @FXML
     private Pane pannello;
 
-    private double xOffset = 0.0;
-    private double yOffset = 0.0;
-
-    public void setOffset(MouseEvent e){
-        pannello.requestFocus();
-        xOffset = pannello.getScene().getWindow().getX() - e.getScreenX();
-        yOffset = pannello.getScene().getWindow().getY() - e.getScreenY();
-    }
-    public void moveWindow(MouseEvent e) {
-        Window w = pannello.getScene().getWindow();
-        w.setX(e.getScreenX() + xOffset);
-        w.setY(e.getScreenY() + yOffset);
-    }
-
-    public void close(MouseEvent e){
+    public void close(MouseEvent e) {
         Platform.exit();
     }
 
-    public void login(ActionEvent e){
+    public void login(ActionEvent e) {
         try {
             Stage mainStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPane.fxml"));
@@ -51,4 +35,14 @@ public class ControllerLogin {
         }
 
     }
+
+    @Override
+    public void setOffset(MouseEvent e) {
+        super.setOffset(e);
+    } // override dei metodi di windowDragger
+
+    @Override
+    public void moveWindow(MouseEvent e) {
+        super.moveWindow(e);
+    } // override dei metodi di windowDragger
 }

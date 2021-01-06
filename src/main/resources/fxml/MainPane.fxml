@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="pannello" onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Controller">
+<AnchorPane fx:id="pannello" onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerMainPane">
    <children>
       <Pane prefHeight="700.0" prefWidth="230.0" style="-fx-background-color: linear-gradient(#162643,#2d5a89);" stylesheets="@../stile.css">
          <children>
@@ -113,7 +109,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="impiegatiBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Impiegati" textFill="WHITE">
+                  <Label fx:id="dipendentiBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Dipendenti" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -170,7 +166,7 @@
             <Pane fx:id="imbarcoPane" prefHeight="700.0" prefWidth="870.0" />
             <Pane fx:id="compagniePane" prefHeight="700.0" prefWidth="870.0" />
             <Pane fx:id="aereiPane" prefHeight="700.0" prefWidth="870.0" />
-            <Pane fx:id="impiegatiPane" prefHeight="700.0" prefWidth="870.0" />
+            <Pane fx:id="dipendentiPane" prefHeight="700.0" prefWidth="870.0" />
             <Pane fx:id="statistichePane" prefHeight="700.0" prefWidth="870.0" />
             <Pane fx:id="tabellonePane" prefHeight="700.0" prefWidth="870.0" />
          </children>

@@ -10,7 +10,7 @@
    <children>
       <Pane prefHeight="100.0" prefWidth="870.0" style="-fx-background-color: f0f0f0;">
          <children>
-            <JFXButton contentDisplay="RIGHT" prefHeight="100.0" prefWidth="435.0" style="-fx-background-color: black; -fx-background-radius: 0;" text="Partenze" textFill="WHITE">
+            <JFXButton fx:id="partenzeBtn" contentDisplay="RIGHT" prefHeight="100.0" prefWidth="435.0" style="-fx-background-color: black; -fx-background-radius: 0; -fx-text-fill: white;" text="Partenze" textFill="WHITE">
                <font>
                   <Font size="33.0" />
                </font>
@@ -18,7 +18,7 @@
                   <FontAwesomeIcon fill="WHITE" iconName="PLANE" />
                </graphic>
             </JFXButton>
-            <JFXButton contentDisplay="RIGHT" layoutX="435.0" prefHeight="100.0" prefWidth="435.0" style="-fx-background-radius: 0;" text="Arrivi">
+            <JFXButton fx:id="arriviBtn" contentDisplay="RIGHT" layoutX="435.0" prefHeight="100.0" prefWidth="435.0" style="-fx-background-radius: 0; -fx-background-color: f0f0f0; -fx-text-fill: black;" text="Arrivi">
                <font>
                   <Font size="33.0" />
                </font>
@@ -60,10 +60,10 @@
                   <Font size="21.0" />
                </font>
             </Label>
-            <VBox fx:id="voloBox" prefHeight="560.0" prefWidth="210.0" GridPane.rowIndex="1" />
-            <VBox fx:id="destinazioneBox" prefHeight="200.0" prefWidth="217.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <VBox fx:id="partenzaBox" prefHeight="200.0" prefWidth="217.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <VBox fx:id="statoBox" prefHeight="560.0" prefWidth="217.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <VBox fx:id="voloBox" prefWidth="217.0" GridPane.rowIndex="1" />
+            <VBox fx:id="destinazioneBox" prefWidth="217.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <VBox fx:id="partenzaBox" prefWidth="217.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <VBox fx:id="statoBox" prefWidth="217.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

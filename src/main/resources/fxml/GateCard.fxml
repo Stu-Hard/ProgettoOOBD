@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<AnchorPane prefHeight="224.0" prefWidth="244.0" style="-fx-background-radius: 25px; -fx-background-color: yellow;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="225.0" prefWidth="260.0" style="-fx-background-radius: 25px;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="14.0" layoutY="14.0" prefHeight="43.0" prefWidth="56.0" text="A3">
+      <Label fx:id="gateCode" layoutX="14.0" layoutY="13.0" text="A3">
          <font>
-            <Font name="System Bold" size="26.0" />
+            <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="71.0" layoutY="14.0" prefHeight="43.0" prefWidth="161.0" text="Napoli-&gt;Barcellona">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label contentDisplay="RIGHT" layoutX="138.0" layoutY="183.0" text="Occupato">
+      <AnchorPane fx:id="trattaPane" layoutX="74.0" layoutY="24.0">
+         <children>
+            <HBox>
+               <children>
+                  <Label fx:id="partenza" alignment="CENTER_RIGHT" text="Napoli">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIcon iconName="LONG_ARROW_RIGHT" size="1.5em">
+                     <HBox.margin>
+                        <Insets left="1.0" right="1.0" top="5.0" />
+                     </HBox.margin>
+                  </FontAwesomeIcon>
+                  <Label fx:id="arrivo" alignment="CENTER_RIGHT" text="Barcellona">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Label fx:id="tempo" layoutX="24.0" layoutY="24.0" text="Tempo stimato: --" />
+         </children>
+      </AnchorPane>
+      <Label fx:id="stato" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="130.0" layoutY="183.0" prefHeight="27.0" prefWidth="113.0" text="Occupato">
          <font>
             <Font size="18.0" />
          </font>
@@ -27,40 +45,49 @@
             <FontAwesomeIcon iconName="CLOCK_ALT" />
          </graphic>
       </Label>
-      <Label layoutX="14.0" layoutY="63.0" prefHeight="17.0" prefWidth="38.0" text="Code:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <VBox layoutX="33.0" layoutY="83.0" prefHeight="100.0" prefWidth="119.0">
+      <VBox fx:id="code" layoutX="20.0" layoutY="83.0" prefHeight="100.0" prefWidth="138.0">
          <children>
-            <Label prefHeight="20.0" prefWidth="84.0" text="Famiglie: 10">
+            <Label fx:id="DIVERSAMENTE_ABILI" prefHeight="20.0" prefWidth="143.0" text="Diversamente Abili">
                <font>
                   <Font size="14.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIcon iconName="WHEELCHAIR" />
+               </graphic>
             </Label>
-            <Label prefHeight="20.0" prefWidth="118.0" text="Diversamente Abili">
+            <Label fx:id="FAMIGLIE" prefHeight="20.0" prefWidth="95.0" text="Famiglie">
                <font>
                   <Font size="14.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIcon iconName="CHILD" />
+               </graphic>
             </Label>
-            <Label prefHeight="20.0" prefWidth="56.0" text="Busines">
+            <Label fx:id="BUSINESS" prefHeight="20.0" prefWidth="78.0" text="Business">
                <font>
                   <Font size="14.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIcon iconName="BRIEFCASE" />
+               </graphic>
             </Label>
-            <Label prefHeight="20.0" prefWidth="56.0" text="Priority">
+            <Label fx:id="PRIORITY" prefHeight="20.0" prefWidth="73.0" text="Priority">
                <font>
                   <Font size="14.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIcon iconName="MONEY" />
+               </graphic>
             </Label>
-            <Label prefHeight="20.0" prefWidth="73.0" text="Economy">
+            <Label fx:id="ECONOMY" prefHeight="20.0" prefWidth="87.0" text="Economy">
                <font>
                   <Font size="14.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIcon iconName="DOLLAR" />
+               </graphic>
             </Label>
          </children>
       </VBox>
-      <Label layoutX="92.0" layoutY="48.0" text="Tempo stimato: ?" />
    </children>
 </AnchorPane>
