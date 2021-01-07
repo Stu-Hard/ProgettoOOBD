@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -19,7 +20,7 @@
             </ImageView>
             <VBox fx:id="lpBox" layoutY="109.0" prefHeight="483.0" prefWidth="230.0">
                <children>
-                  <Label fx:id="tratteBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Tratte" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="tratteBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Tratte" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -33,8 +34,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="gateBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Gate" textAlignment="CENTER" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="gateBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Gate" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -48,8 +49,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="checkInBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="CheckIn" textAlignment="CENTER" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="checkInBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="CheckIn" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -63,8 +64,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="imbarcoBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Imbarco" textAlignment="CENTER" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="imbarcoBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Imbarco" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -78,8 +79,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="compagnieBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Compagnie" textAlignment="CENTER" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="compagnieBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Compagnie" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -93,8 +94,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="aereiBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Aerei" textAlignment="CENTER" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="aereiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Aerei" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -108,8 +109,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="dipendentiBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Dipendenti" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="dipendentiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Dipendenti" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -123,8 +124,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="statisticheBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Statistiche" textAlignment="CENTER" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="statisticheBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Statistiche" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -138,8 +139,8 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
-                  <Label fx:id="tabelloneBtn" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" styleClass="sLabels" stylesheets="@../stile.css" text="Tabellone" textAlignment="CENTER" textFill="WHITE">
+                  </JFXButton>
+                  <JFXButton fx:id="tabelloneBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../stile.css" text="Tabellone" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -153,7 +154,7 @@
                      <padding>
                         <Insets left="5.0" />
                      </padding>
-                  </Label>
+                  </JFXButton>
                </children>
             </VBox>
          </children>

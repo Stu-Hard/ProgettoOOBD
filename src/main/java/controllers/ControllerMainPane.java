@@ -1,12 +1,12 @@
 package controllers;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -15,7 +15,6 @@ import utility.WindowDragger;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-// per dubbi su windowDragger vai a utility.WindowDragger
 public class ControllerMainPane extends WindowDragger implements Initializable {
     @FXML
     private VBox lpBox;
@@ -23,7 +22,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     private Pane contentPane;
 
     @FXML
-    private Label tratteBtn, gateBtn, checkInBtn,
+    private JFXButton tratteBtn, gateBtn, checkInBtn,
             imbarcoBtn, compagnieBtn, aereiBtn,
             dipendentiBtn, statisticheBtn, tabelloneBtn;
     @FXML
@@ -43,7 +42,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
                     ""));
         }
 
-        Label b = (Label) e.getSource();
+        JFXButton b = (JFXButton) e.getSource();
         b.setStyle(b.getStyle() + "-fx-background-color: #18283f;");
 
         if (tratteBtn.equals(b)) {
@@ -90,7 +89,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
                     FXMLLoader.load(getClass().getResource("/fxml/Dipendenti.fxml"))
             );
             //aereiPane = FXMLLoader.load(getClass().getResource("fxml/Aerei.fxml"));
-            //statistichePane = FXMLLoader.load(getClass().getResource("fxml/Tratte.fxml"));
+            //statistichePane = FXMLLoader.load(getClass().getResource("fxml/Tratta.fxml"));
             tabellonePane.getChildren().add(
                     FXMLLoader.load(getClass().getResource("/fxml/Tabellone.fxml"))
             );

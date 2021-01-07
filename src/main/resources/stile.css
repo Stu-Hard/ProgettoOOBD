@@ -1,4 +1,4 @@
-.sLabels:hover{
+.sLabels:hover{ /* effetto per i pulsanti laterali*/
     -fx-background-color: #18283f;
 }
 
@@ -24,5 +24,11 @@
 
 .scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
     -fx-background-color: rgb(150.0, 150.0, 150.0);
+}
+
+/* look per scroll bar*/
+.noFocus{
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 

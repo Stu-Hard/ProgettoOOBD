@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
+// Non definitivo, bisognerebbe mettere un costruttore tramite la classe Gate. Per esperimenti va più che bene.
 public class GateCard extends Pane{
     private Label gateCode, partenza, arrivo, stato, tempo; // le label principali
     private Pane trattaPane; // pannello con partenza arrivo e tempo
