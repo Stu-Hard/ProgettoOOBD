@@ -21,7 +21,7 @@
       </TextField>
       <JFXDatePicker fx:id="dpk1" defaultColor="#0028ff" layoutX="498.0" layoutY="62.0" />
       <JFXDatePicker fx:id="dpk2" defaultColor="BLUE" layoutX="686.0" layoutY="62.0" />
-      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="34.0" layoutY="172.0" pannable="true" prefHeight="470.0" prefWidth="780.0" styleClass="noFocus" stylesheets="@../stile.css" />
+      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="34.0" layoutY="172.0" pannable="true" prefHeight="470.0" prefWidth="780.0" styleClass="noFocus" stylesheets="@../css/stile.css" />
       <JFXButton buttonType="RAISED" layoutX="689.0" layoutY="580.0" prefHeight="30.0" prefWidth="78.0" style="-fx-background-color: blue;" text="Statistiche" textFill="WHITE" />
       <HBox layoutX="32.0" layoutY="141.0">
          <children>
