@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -18,11 +20,11 @@ public class ControllerLogin extends WindowDragger { // per dubbi su windowDragg
     @FXML
     private Pane pannello;
 
-    public void close(MouseEvent e) {
+    public void Exit(MouseEvent e) {
         Platform.exit();
     }
 
-    public void login(ActionEvent e) {
+    public void LoginAction(ActionEvent e) {
         try {
             Stage mainStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPane.fxml"));
@@ -36,6 +38,12 @@ public class ControllerLogin extends WindowDragger { // per dubbi su windowDragg
 
     }
 
+    public void EnterPressed(KeyEvent keyEvent) throws Exception{
+
+        if(keyEvent.getCode() == KeyCode.ENTER){
+            LoginAction(null);
+        }
+    }
     @Override
     public void setOffset(MouseEvent e) {
         super.setOffset(e);

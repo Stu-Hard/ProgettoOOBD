@@ -38,6 +38,8 @@ public class ControllerGate implements Initializable {
     private List<GateCard> gateCardList; // lista che contiene tutti i gate.
                                         // N.B. gateCardList è diverso da flowPane.getChildren(). Indovinello: Perch'è sono diversi?
                                         // (Suggerimento) per diversi non si intende il tipo.
+    @FXML
+    private Label nessunGate;
 
     // Filtri sullo stato: occupato ecc...
     public void statusFilter(ActionEvent e){
@@ -76,6 +78,12 @@ public class ControllerGate implements Initializable {
                 // TODO
             }
         }
+
+        if(flowPane.getChildren().isEmpty()) {
+            nessunGate.setVisible(true);
+        }else{
+            nessunGate.setVisible(false);
+        }
     }
 
     @Override
@@ -95,7 +103,7 @@ public class ControllerGate implements Initializable {
         flowPane = new FlowPane();
         flowPane.setHgap(20);
         flowPane.setVgap(15);
-        flowPane.setPadding(new Insets(5, 10, 0, 20));
+        flowPane.setPadding(new Insets(5, 10, 5, 20));
         flowPane.setStyle("-fx-background-color: transparent");
 
         gateCardList = new ArrayList<>();
@@ -131,7 +139,7 @@ public class ControllerGate implements Initializable {
         GateCard card = new GateCard("B20",  "Londra","Napoli", 10, GateStatus.OCCUPATO);
         // prova dei metodi disable e enable coda. vedi l'ultima card.
         card.disableCode(CodeEnum.DIVERSAMENTE_ABILI, CodeEnum.ECONOMY, CodeEnum.BUSINESS, CodeEnum.PRIORITY, CodeEnum.FAMIGLIE);
-        card.enableCode(CodeEnum.DIVERSAMENTE_ABILI);
+        card.enableCode(CodeEnum.DIVERSAMENTE_ABILI, CodeEnum.BUSINESS);
         gateCardList.add(card);
         flowPane.getChildren().add(card);
         ////////// fine della simulazione
