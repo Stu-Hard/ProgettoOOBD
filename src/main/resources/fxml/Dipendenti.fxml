@@ -13,7 +13,7 @@
          <top>
             <Pane prefHeight="100.0" prefWidth="870.0" style="-fx-background-color: f0f0f0;" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="searchBar" layoutX="88.0" layoutY="30.0" prefHeight="40.0" prefWidth="426.0" promptText="🔍Search..." style="-fx-background-radius: 25px; -fx-background-color: #dcdcdc; -fx-accent: c0c0c0;">
+                  <TextField fx:id="searchBar" layoutX="88.0" layoutY="30.0" onKeyTyped="#search" prefHeight="40.0" prefWidth="426.0" promptText="🔍Search..." style="-fx-background-radius: 25px; -fx-background-color: #dcdcdc; -fx-accent: c0c0c0;">
                      <font>
                         <Font name="Calibri" size="18.0" />
                      </font>
@@ -23,7 +23,7 @@
                         <FontAwesomeIcon iconName="REMOVE" size="20px" />
                      </graphic>
                   </JFXButton>
-                  <JFXComboBox fx:id="searchMode" layoutX="544.0" layoutY="36.0" prefHeight="28.0" prefWidth="176.0" unFocusColor="BLACK" />
+                  <JFXComboBox fx:id="dipendentiType" layoutX="544.0" layoutY="36.0" onAction="#sceltaDipendenti" prefHeight="28.0" prefWidth="176.0" unFocusColor="BLACK" />
                </children>
             </Pane>
          </top>
