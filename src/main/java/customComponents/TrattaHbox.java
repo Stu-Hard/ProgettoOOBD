@@ -1,6 +1,8 @@
 package customComponents;
 
 import com.jfoenix.controls.JFXButton;
+import controllers.ControllerTratte;
+import controllers.ControllerTratteInfo;
 import data.Tratta;
 
 import javafx.fxml.FXMLLoader;
@@ -26,8 +28,6 @@ public class TrattaHbox extends HBox {
     private Label ritardo;
     private Label gate;
     private Label compagnia;
-    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-    private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
     public Tratta getTratta() {
         return tratta;
@@ -50,8 +50,8 @@ public class TrattaHbox extends HBox {
             partenza.setText(tratta.getAereoportoPartenza());
             arrivo.setText(tratta.getAereoportoArrivo());
             numeroVolo.setText(tratta.getNumeroVolo());
-            dataPartenza.setText(dateFormat.format(tratta.getDataPartenza()));
-            oraPartenza.setText(timeFormat.format(tratta.getOraPartenza()));
+            dataPartenza.setText(tratta.getDataPartenzaFormatted());
+            oraPartenza.setText(tratta.getOraPartenzaFormatted());
             ritardo.setText(tratta.getRitardo() + "''");
             gate.setText(tratta.getGate());
             compagnia.setText(tratta.getCompagnia());
@@ -62,24 +62,10 @@ public class TrattaHbox extends HBox {
         setOnMouseClicked(event -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TratteInfo.fxml"));
-                fxmlLoader.setController(new WindowDragger());
                 Parent parent = fxmlLoader.load();
 
-                ((Label) parent.lookup("#partenza")).setText(tratta.getAereoportoPartenza());
-                ((Label) parent.lookup("#arrivo")).setText(tratta.getAereoportoArrivo());
-                ((Label) parent.lookup("#compagnia")).setText(tratta.getCompagnia());
-                ((Label) parent.lookup("#dataPartenza")).setText(dataPartenza.getText() + " " +  oraPartenza.getText());
-                if(tratta.getDataArrivo() != null && tratta.getOraArrivo() != null)
-                    ((Label) parent.lookup("#dataArrivo")).setText(dateFormat.format(tratta.getDataArrivo()) + " " + timeFormat.format(tratta.getOraArrivo()));
-                ((Label) parent.lookup("#ritardo")).setText(tratta.getRitardo() + "''");
-                if (tratta.getGate() != null)
-                    ((Label) parent.lookup("#gate")).setText(tratta.getGate());
-                if (tratta.getAereo() != null)
-                    ((Label) parent.lookup("#aereo")).setText(tratta.getAereo());
-                ((Label) parent.lookup("#passeggeri")).setText(String.valueOf(tratta.getPasseggeri()));
-
-                JFXButton closeBtn = (JFXButton) parent.lookup("#closeBtn");
-                closeBtn.setOnAction(e -> closeBtn.getScene().getWindow().hide());
+                ControllerTratteInfo controller = fxmlLoader.getController();
+                controller.setTratta(tratta);
 
                 Scene scene = new Scene(parent);
                 Stage stage = new Stage();

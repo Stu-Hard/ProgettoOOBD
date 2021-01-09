@@ -33,5 +33,10 @@
                 <ScrollPane fx:id="scroll" centerShape="false" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" pannable="true" prefHeight="600.0" prefViewportHeight="600.0" prefViewportWidth="870.0" prefWidth="870.0" scaleShape="false" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" BorderPane.alignment="CENTER" />
             </center>
         </BorderPane>
+      <Label fx:id="nessunGate" disable="true" layoutX="214.0" layoutY="292.0" prefHeight="85.0" prefWidth="446.0" text="Nessun Gate corrispondente con i parametri di ricerca" textAlignment="CENTER" visible="false" wrapText="true">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

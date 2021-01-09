@@ -3,6 +3,7 @@ package data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Tratta {
     private String numeroVolo;
@@ -18,6 +19,8 @@ public class Tratta {
     private String aereoportoArrivo;
     private String aereo = null;
     private int passeggeri = 0;
+    public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+    public DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
 
     // quando una tratta viene creata non si sa a prescindere il ritardo, il gate ecc...
@@ -30,6 +33,19 @@ public class Tratta {
         this.gate = gate;
         this.aereoportoPartenza = aereoportoPartenza;
         this.aereoportoArrivo = getAereoportoArrivo;
+    }
+
+    public String getDataPartenzaFormatted(){
+        return dateFormat.format(dataPartenza);
+    }
+    public String getDataArrivoFormatted(){
+        return dateFormat.format(dataArrivo);
+    }
+    public String getOraPartenzaFormatted(){
+        return timeFormat.format(oraPartenza);
+    }
+    public String getOraArrivoFormatted(){
+        return timeFormat.format(oraArrivo);
     }
 
     public String getAereo() {
