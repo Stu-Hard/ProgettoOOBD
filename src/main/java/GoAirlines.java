@@ -12,13 +12,13 @@ public class GoAirlines extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/MainPane.fxml"));
         Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.initStyle(StageStyle.TRANSPARENT);
-        scene.setFill(Color.TRANSPARENT);
+        //primaryStage.initStyle(StageStyle.TRANSPARENT);
+        //scene.setFill(Color.TRANSPARENT);
 
         primaryStage.show();
     }

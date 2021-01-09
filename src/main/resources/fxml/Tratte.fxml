@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratte">
    <children>
@@ -14,9 +19,9 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <JFXDatePicker fx:id="dpk1" defaultColor="#0028ff" layoutX="498.0" layoutY="62.0" />
-      <JFXDatePicker fx:id="dpk2" defaultColor="BLUE" layoutX="686.0" layoutY="62.0" />
-      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="34.0" layoutY="172.0" prefHeight="470.0" prefWidth="780.0" styleClass="noFocus" stylesheets="@../css/stile.css" />
+      <JFXDatePicker fx:id="dpk1" defaultColor="#0028ff" layoutX="498.0" layoutY="62.0" onAction="#datePick" />
+      <JFXDatePicker fx:id="dpk2" defaultColor="BLUE" layoutX="686.0" layoutY="62.0" onAction="#datePick" />
+      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="34.0" layoutY="172.0" pannable="true" prefHeight="470.0" prefWidth="800.0" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" />
       <JFXButton buttonType="RAISED" layoutX="689.0" layoutY="580.0" prefHeight="30.0" prefWidth="78.0" style="-fx-background-color: blue;" text="Statistiche" textFill="WHITE" />
       <HBox layoutX="32.0" layoutY="141.0">
          <children>
@@ -40,7 +45,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="27.0" prefWidth="115.0" text="Ora Effettiva">
+            <Label alignment="CENTER" prefHeight="27.0" prefWidth="115.0" text="Ritardo">
                <font>
                   <Font size="18.0" />
                </font>
@@ -62,7 +67,7 @@
       </HBox>
       <Label layoutX="681.0" layoutY="54.0" text="Al" />
       <Label layoutX="491.0" layoutY="54.0" text="Da" />
-      <JFXButton fx:id="cancelBtn" contentDisplay="GRAPHIC_ONLY" layoutX="32.0" layoutY="55.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20px; -fx-background-color: #dcdcdc;">
+      <JFXButton fx:id="cancelBtn" contentDisplay="GRAPHIC_ONLY" layoutX="32.0" layoutY="55.0" onAction="#canc" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20px; -fx-background-color: #dcdcdc;">
          <graphic>
             <FontAwesomeIcon iconName="ARROW_LEFT" size="20px" />
          </graphic>

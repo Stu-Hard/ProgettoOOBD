@@ -1,39 +1,27 @@
 package data;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Tratta {
     private String numeroVolo;
-    private Date dataPartenza;
-    private Date dataArrivo = null;
-    private Date oraPartenza;
-    private Date oraArrivo = null;
-    private Date partenzaEffettiva = null;
-    private Date arrivoEffettivo = null;
+    private LocalDate dataPartenza;
+    private LocalDate dataArrivo = null;
+    private LocalTime oraPartenza;
+    private LocalTime oraArrivo = null;
+    private int ritardo = 0;
     private String compagnia; // qui dovrebbe essere Compagnie compagnia;
-    private String gate; // come sopra da cambiare con Gate gate;
+    private String gate = null; // come sopra da cambiare con Gate gate;
     // private AereoportoPartenza aereoporto...
     private String aereoportoPartenza;
     private String aereoportoArrivo;
+    private String aereo = null;
+    private int passeggeri = 0;
 
-    public Tratta(String numeroVolo, Date dataPartenza, Date dataArrivo,
-                  Date oraPartenza, Date oraArrivo, Date partenzaEffettiva,
-                  Date arrivoEffettivo, String compagnia, String gate,
-                  String aereoportoPartenza, String getAereoportoArrivo) {
-        this.numeroVolo = numeroVolo;
-        this.dataPartenza = dataPartenza;
-        this.dataArrivo = dataArrivo;
-        this.oraPartenza = oraPartenza;
-        this.oraArrivo = oraArrivo;
-        this.partenzaEffettiva = partenzaEffettiva;
-        this.arrivoEffettivo = arrivoEffettivo;
-        this.compagnia = compagnia;
-        this.gate = gate;
-        this.aereoportoPartenza = aereoportoPartenza;
-        this.aereoportoArrivo = getAereoportoArrivo;
-    }
 
-    public Tratta(String numeroVolo, Date dataPartenza, Date oraPartenza,
+    // quando una tratta viene creata non si sa a prescindere il ritardo, il gate ecc...
+    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza,
                   String compagnia, String gate, String aereoportoPartenza, String getAereoportoArrivo) {
         this.numeroVolo = numeroVolo;
         this.dataPartenza = dataPartenza;
@@ -44,32 +32,40 @@ public class Tratta {
         this.aereoportoArrivo = getAereoportoArrivo;
     }
 
+    public String getAereo() {
+        return aereo;
+    }
+
+    public void setAereo(String aereo) {
+        this.aereo = aereo;
+    }
+
+    public int getRitardo() {
+        return ritardo;
+    }
+
+    public void setRitardo(int ritardo) {
+        this.ritardo = ritardo;
+    }
+
     public void setNumeroVolo(String numeroVolo) {
         this.numeroVolo = numeroVolo;
     }
 
-    public void setDataPartenza(Date dataPartenza) {
+    public void setDataPartenza(LocalDate dataPartenza) {
         this.dataPartenza = dataPartenza;
     }
 
-    public void setDataArrivo(Date dataArrivo) {
+    public void setDataArrivo(LocalDate dataArrivo) {
         this.dataArrivo = dataArrivo;
     }
 
-    public void setOraPartenza(Date oraPartenza) {
+    public void setOraPartenza(LocalTime oraPartenza) {
         this.oraPartenza = oraPartenza;
     }
 
-    public void setOraArrivo(Date oraArrivo) {
+    public void setOraArrivo(LocalTime oraArrivo) {
         this.oraArrivo = oraArrivo;
-    }
-
-    public void setPartenzaEffettiva(Date partenzaEffettiva) {
-        this.partenzaEffettiva = partenzaEffettiva;
-    }
-
-    public void setArrivoEffettivo(Date arrivoEffettivo) {
-        this.arrivoEffettivo = arrivoEffettivo;
     }
 
     public void setCompagnia(String compagnia) {
@@ -92,28 +88,20 @@ public class Tratta {
         return numeroVolo;
     }
 
-    public Date getDataPartenza() {
+    public LocalDate getDataPartenza() {
         return dataPartenza;
     }
 
-    public Date getDataArrivo() {
+    public LocalDate getDataArrivo() {
         return dataArrivo;
     }
 
-    public Date getOraPartenza() {
+    public LocalTime getOraPartenza() {
         return oraPartenza;
     }
 
-    public Date getOraArrivo() {
+    public LocalTime getOraArrivo() {
         return oraArrivo;
-    }
-
-    public Date getPartenzaEffettiva() {
-        return partenzaEffettiva;
-    }
-
-    public Date getArrivoEffettivo() {
-        return arrivoEffettivo;
     }
 
     public String getCompagnia() {
@@ -130,5 +118,9 @@ public class Tratta {
 
     public String getAereoportoArrivo() {
         return aereoportoArrivo;
+    }
+
+    public int getPasseggeri() {
+        return passeggeri;
     }
 }

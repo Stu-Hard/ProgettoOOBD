@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import customComponents.TrattaHbox;
 import data.Tratta;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -15,9 +16,11 @@ import javafx.scene.layout.VBox;
 
 
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
-// TODO la ricerca tramite la data e volendo anche in base al gate...
 public class ControllerTratte implements Initializable {
 
     @FXML
@@ -68,6 +71,20 @@ public class ControllerTratte implements Initializable {
         }
     }
 
+    public void datePick(ActionEvent e){ // è una prova solo per il dpk a sinistra
+        box.getChildren().removeIf(node ->
+                ((TrattaHbox) node)
+                .getTratta()
+                .getDataPartenza()
+                .isBefore(((JFXDatePicker) e.getSource()).getValue())
+        );
+    }
+
+    public void canc(ActionEvent e){
+        searchBar.setText("");
+        search(null);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         searchMode.getItems().addAll("Partenza", "Arrivo", "Compagnia", "NumeroVolo");
@@ -81,8 +98,8 @@ public class ControllerTratte implements Initializable {
 
         for (int i = 0; i < 15; i++) {
             Tratta tratta = new Tratta("C23FAS2G",
-                    new Date(r.nextLong()),
-                    new Date(r.nextLong()),
+                    LocalDate.of(r.nextInt(151)+ 1900, r.nextInt(12)+1, r.nextInt(28)+1),
+                    LocalTime.of(r.nextInt(24), r.nextInt(59)),
                     "Vueling",
                     "A"+r.nextInt(31),
                     "Napoli",
@@ -91,34 +108,6 @@ public class ControllerTratte implements Initializable {
             tratteHboxList.add(t);
             box.getChildren().add(t);
         }
-        Tratta t1 = new Tratta("C23FAS2G",
-                new Date(r.nextLong()),
-                new Date(r.nextLong()),
-                "Alitalia",
-                "A"+r.nextInt(31),
-                "Napoli",
-                "Milano");
-        Tratta t2 = new Tratta("AS21R542",
-                new Date(r.nextLong()),
-                new Date(r.nextLong()),
-                "Ryanair",
-                "C"+r.nextInt(31),
-                "Londra",
-                "Napoli");
-        Tratta t3 = new Tratta("33AS7DY3",
-                new Date(r.nextLong()),
-                new Date(r.nextLong()),
-                "Easyget",
-                "B"+r.nextInt(31),
-                "Napoli",
-                "Dublino");
-        TrattaHbox tt1 = new TrattaHbox(t1);
-        TrattaHbox tt2 = new TrattaHbox(t2);
-        TrattaHbox tt3 = new TrattaHbox(t3);
-        tratteHboxList.add(tt1);
-        tratteHboxList.add(tt2);
-        tratteHboxList.add(tt3);
-        box.getChildren().addAll(tt1,tt2,tt3);
         scroll.setContent(box);
     }
 }

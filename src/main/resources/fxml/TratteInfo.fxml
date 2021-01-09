@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="550.0" prefWidth="900.0" styleClass="background" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutX="287.0" layoutY="14.0">
+         <children>
+            <Label fx:id="partenza" text="Partenza" textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <FontAwesomeIcon fill="WHITE" iconName="LONG_ARROW_RIGHT" size="3em">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="15.0" />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <Label fx:id="arrivo" text="Arrivo" textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox layoutX="14.0" layoutY="99.0" spacing="25.0">
+         <children>
+            <VBox spacing="15.0">
+               <children>
+                  <Label text="Compagnia" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="BUILDING" />
+                     </graphic>
+                  </Label>
+                  <Label text="Partenza" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="LONG_ARROW_UP" />
+                     </graphic>
+                  </Label>
+                  <Label text="Arrivo" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="LONG_ARROW_DOWN" />
+                     </graphic>
+                  </Label>
+                  <Label text="Ritardo" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="CLOCK_ALT" />
+                     </graphic>
+                  </Label>
+                  <Label text="Gate" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="TICKET" />
+                     </graphic>
+                  </Label>
+                  <Label text="Aereo" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="PLANE" />
+                     </graphic>
+                  </Label>
+                  <Label text="Passeggeri" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="STREET_VIEW" />
+                     </graphic>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox spacing="15.0">
+               <children>
+                  <Label fx:id="compagnia" text="----------" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dataPartenza" prefHeight="35.0" text="--/--/---- --:--" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dataArrivo" prefHeight="35.0" text="--/--/---- --:--" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ritardo" text="0''" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="gate" text="A0" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="codiceAereo" text="--------" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="passeggeri" text="0" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <LineChart layoutX="332.0" layoutY="71.0" prefHeight="394.0" prefWidth="550.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <JFXButton fx:id="closeBtn" layoutX="783.0" layoutY="490.0" prefHeight="45.0" prefWidth="99.0" style="-fx-background-color: red;" text="Chiudi" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIcon iconName="TIMES_CIRCLE" />
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>

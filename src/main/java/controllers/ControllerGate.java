@@ -38,7 +38,7 @@ public class ControllerGate implements Initializable {
                                         // N.B. gateCardList è diverso da flowPane.getChildren(). Indovinello: Perch'è sono diversi?
                                         // (Suggerimento) per diversi non si intende il tipo.
     @FXML
-    private Label nessunGate; // devi condividere esclusivamente la roba dentro src.e build.gradle e basta, ok <3
+    private Label nessunGate;
 
     // Filtri sullo stato: occupato ecc...
     public void statusFilter(ActionEvent e){

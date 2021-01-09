@@ -1,8 +1,3 @@
-
-.sLabels:hover{ /* effetto per i pulsanti laterali*/
-    -fx-background-color: #18283f;
-}
-
 .scroll-bar:vertical > .track-background, .scroll-bar:horizontal > .track-background {
     -fx-background-color: #F1F1F1;
     -fx-background-insets: 0.0;
