@@ -13,11 +13,11 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerImbarco">
     <children>
-        <JFXTextField layoutX="31.0" layoutY="88.0" prefHeight="42.0" prefWidth="249.0" promptText="Codice Biglietto Confermato">
+        <JFXTextField fx:id="codiceTextField" layoutX="31.0" layoutY="88.0" prefHeight="42.0" prefWidth="249.0" promptText="Codice Biglietto Confermato">
          <font>
             <Font size="19.0" />
          </font></JFXTextField>
-        <JFXButton fx:id="inviaButton" contentDisplay="GRAPHIC_ONLY" layoutX="724.0" layoutY="609.0" prefHeight="48.0" prefWidth="90.0" ripplerFill="#000000f0" style="-fx-background-color: rgb(0,120,0);" textFill="WHITE">
+        <JFXButton fx:id="inviaButton" contentDisplay="GRAPHIC_ONLY" layoutX="724.0" layoutY="609.0" onAction="#inviaCodes" onMouseEntered="#changeColor" onMouseExited="#backingColor" prefHeight="48.0" prefWidth="90.0" ripplerFill="#000000f0" style="-fx-background-color: rgb(0,120,0);" textFill="WHITE">
             <graphic>
                 <FontAwesomeIcon fill="#f0f1f5" iconName="CHECK" size="20" text="" />
             </graphic>
@@ -30,12 +30,12 @@
                 <Font size="21.0" />
             </font>
         </Label>
-        <JFXButton fx:id="verificaButton" layoutX="317.0" layoutY="92.0" onAction="#verificaBagagli" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #1d487c;" text="Verifica" textFill="WHITE">
+        <JFXButton fx:id="verificaButton" layoutX="317.0" layoutY="92.0" onAction="#verificaBagagli" onMouseEntered="#changeColor" onMouseExited="#backingColor" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #1d487c;" text="Verifica" textFill="WHITE">
             <graphic>
                 <FontAwesomeIcon fill="WHITE" iconName="SEARCH" />
             </graphic>
         </JFXButton>
-        <Spinner fx:id="spinnerBagagli" layoutX="671.0" layoutY="202.0" />
+        <Spinner fx:id="spinnerBagagli" layoutX="675.0" layoutY="202.0" prefHeight="25.0" prefWidth="100.0" />
         <Label fx:id="labelBagagli" layoutX="471.0" layoutY="199.0" text="Bagagli da Imbarcare:">
          <font>
             <Font size="20.0" />
@@ -129,12 +129,12 @@
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="Adriano" textFill="#fff200">
+                        <Label fx:id="nome" text="Adriano" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="Celentano" textFill="#fff200">
+                        <Label fx:id="cognome" text="Celentano" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
@@ -156,7 +156,7 @@
                 </VBox>
             </children>
         </HBox>
-        <HBox fx:id="hboxCodiciBagagli" layoutX="516.0" layoutY="363.0" prefHeight="141.0" prefWidth="229.0">
+        <HBox fx:id="hboxCodiciBagagli" layoutX="516.0" layoutY="363.0" prefHeight="141.0" prefWidth="144.0">
             <children>
                 <VBox prefHeight="141.0" prefWidth="147.0" spacing="8.0">
                     <children>
@@ -173,7 +173,7 @@
                 </VBox>
             </children>
         </HBox>
-      <JFXButton fx:id="bagagliButton" layoutX="543.0" layoutY="256.0" onAction="#createBagaglioCode" style="-fx-background-color: #c93c3c;" text="Conferma Bagagli" textFill="WHITE">
+      <JFXButton fx:id="bagagliButton" layoutX="543.0" layoutY="256.0" onAction="#createBagaglioCode" onMouseEntered="#changeColor" onMouseExited="#backingColor" style="-fx-background-color: #c93c3c;" text="Conferma Bagagli" textFill="WHITE">
          <font>
             <Font size="21.0" />
          </font>
