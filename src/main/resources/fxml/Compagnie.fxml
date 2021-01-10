@@ -2,12 +2,11 @@
 
 <?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratte">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerCompagnie">
     <children>
         <BorderPane prefHeight="700.0" prefWidth="870.0">
             <top>
@@ -24,7 +23,7 @@
                             </graphic>
                         </JFXButton>
                         <JFXComboBox fx:id="searchMode" layoutX="545.0" layoutY="76.0" prefHeight="28.0" prefWidth="88.0" />
-                  <Label layoutX="34.0" layoutY="14.0" prefHeight="39.0" prefWidth="173.0" text="Aereoporto di">
+                  <Label layoutX="34.0" layoutY="14.0" prefHeight="39.0" prefWidth="173.0" text="Aeroporto di">
                      <font>
                         <Font size="27.0" />
                      </font>
@@ -38,11 +37,7 @@
                 </Pane>
             </top>
             <center>
-                <ScrollPane fx:id="scroll" centerShape="false" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" pannable="true" prefHeight="600.0" prefViewportHeight="600.0" prefViewportWidth="870.0" prefWidth="870.0" scaleShape="false" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent;" styleClass="scroll-bar" stylesheets="@../css/stile.css" BorderPane.alignment="CENTER">
-                    <padding>
-                        <Insets left="20.0" right="10.0" top="5.0" />
-                    </padding>
-                </ScrollPane>
+                <ScrollPane fx:id="scroll" centerShape="false" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" pannable="true" prefHeight="600.0" prefViewportHeight="600.0" prefViewportWidth="870.0" prefWidth="870.0" scaleShape="false" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" BorderPane.alignment="CENTER" />
             </center>
         </BorderPane>
     </children>

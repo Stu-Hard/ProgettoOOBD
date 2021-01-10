@@ -3,6 +3,7 @@ package controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXListView;
 import customComponents.TrattaHbox;
 import data.Tratta;
 import javafx.event.ActionEvent;
@@ -35,6 +36,7 @@ public class ControllerTratte implements Initializable {
     private TextField searchBar;
 
     private VBox box;
+    private JFXListView<TrattaHbox> box1;
     private List<TrattaHbox> tratteHboxList;
 
     public void search(KeyEvent k){
@@ -91,6 +93,7 @@ public class ControllerTratte implements Initializable {
         searchMode.getSelectionModel().selectFirst();
 
         Random r = new Random();
+        box1 = new JFXListView();
         box = new VBox(5);
         box.setPadding(new Insets(5, 0, 5, 0));
 
@@ -106,8 +109,9 @@ public class ControllerTratte implements Initializable {
                     "Barcellona");
             TrattaHbox t = new TrattaHbox(tratta);
             tratteHboxList.add(t);
+            //box1.getItems().add(t);
             box.getChildren().add(t);
         }
-        scroll.setContent(box);
+        scroll.setContent(box1);
     }
 }
