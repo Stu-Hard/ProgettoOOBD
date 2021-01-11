@@ -1,24 +1,20 @@
 package controllers;
 
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXRippler;
 import customComponents.CompagniaCard;
 import data.Compagnia;
+import database.dao.CompagniaDao;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import utility.CardRippler;
 
 
 import java.net.URL;
-import java.util.Random;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerCompagnie implements Initializable {
@@ -41,21 +37,15 @@ public class ControllerCompagnie implements Initializable {
         flowPane.setPadding(new Insets(5, 10, 5, 20));
         flowPane.setStyle("-fx-background-color: transparent");
 
-        Random r = new Random();
-        for (int i = 0; i < 20; i++) {
-            Compagnia c;
-            if (i%4 == 0)
-                c = new Compagnia("Ryanair", "RYR", "Irlanda", r.nextFloat()*10, r.nextFloat()*20);
-            else if (i%4 == 1)
-                c = new Compagnia("Vueling", "VLG", "Spagna", r.nextFloat()*10, r.nextFloat()*20);
-            else if (i%4 == 2)
-                c = new Compagnia("Alitalia", "AZA", "Italia", r.nextFloat()*10, r.nextFloat()*20);
-            else
-                c = new Compagnia("Easyjet", "EZS", "Svizzera", r.nextFloat()*10, r.nextFloat()*20);
-
-            CompagniaCard card = new CompagniaCard(c);
-            JFXRippler cardRippler = new CardRippler(card, 25);
-            flowPane.getChildren().add(cardRippler);
+        CompagniaDao compagniaDao = new CompagniaDao();
+        try {
+            List<Compagnia> l = compagniaDao.getCompagnie();
+            l.forEach(compagnia -> {
+                CompagniaCard card = new CompagniaCard(compagnia);
+                flowPane.getChildren().add( new CardRippler(card, 25));
+            });
+        } catch (NullPointerException | SQLException throwables) {
+            throwables.printStackTrace();
         }
         scroll.setContent(flowPane);
     }

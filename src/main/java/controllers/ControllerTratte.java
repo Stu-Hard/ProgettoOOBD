@@ -1,21 +1,28 @@
 package controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.*;
 import customComponents.TrattaHbox;
 import data.Tratta;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -36,7 +43,8 @@ public class ControllerTratte implements Initializable {
     private TextField searchBar;
 
     private VBox box;
-    private JFXListView<TrattaHbox> box1;
+    @FXML
+    private JFXListView<TrattaHbox> listView;
     private List<TrattaHbox> tratteHboxList;
 
     public void search(KeyEvent k){
@@ -87,15 +95,45 @@ public class ControllerTratte implements Initializable {
         search(null);
     }
 
+    @FXML
+    public void mouseClick(MouseEvent e){
+        Tratta tratta = listView.getSelectionModel().getSelectedItem().getTratta();
+        if (e.getButton() == MouseButton.PRIMARY) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TratteInfo.fxml"));
+                Parent parent = fxmlLoader.load();
+                ControllerTratteInfo controller = fxmlLoader.getController();
+                controller.setTratta(tratta);
+
+                Scene scene = new Scene(parent);
+                Stage stage = new Stage();
+                stage.initStyle(StageStyle.TRANSPARENT);
+                scene.setFill(Color.TRANSPARENT);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        } else if(e.getButton() == MouseButton.SECONDARY){
+            Label elimina = new Label("Elimina");
+            JFXListView<Label> l = new JFXListView();
+            l.getItems().add(elimina);
+            JFXPopup popup = new JFXPopup(l);
+            popup.show(listView.getSelectionModel().getSelectedItem());
+        }
+    }
+
+    @FXML
+    private void add(ActionEvent e){
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         searchMode.getItems().addAll("Partenza", "Arrivo", "Compagnia", "NumeroVolo");
         searchMode.getSelectionModel().selectFirst();
 
         Random r = new Random();
-        box1 = new JFXListView();
-        box = new VBox(5);
-        box.setPadding(new Insets(5, 0, 5, 0));
 
         tratteHboxList = new ArrayList();
 
@@ -109,9 +147,9 @@ public class ControllerTratte implements Initializable {
                     "Barcellona");
             TrattaHbox t = new TrattaHbox(tratta);
             tratteHboxList.add(t);
-            //box1.getItems().add(t);
-            box.getChildren().add(t);
+            listView.getItems().add(t);
+            //box.getChildren().add(t);
         }
-        scroll.setContent(box1);
+        //scroll.setContent(listView);
     }
 }

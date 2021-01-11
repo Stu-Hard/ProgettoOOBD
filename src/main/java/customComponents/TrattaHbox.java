@@ -58,24 +58,5 @@ public class TrattaHbox extends HBox {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        setOnMouseClicked(event -> {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TratteInfo.fxml"));
-                Parent parent = fxmlLoader.load();
-
-                ControllerTratteInfo controller = fxmlLoader.getController();
-                controller.setTratta(tratta);
-
-                Scene scene = new Scene(parent);
-                Stage stage = new Stage();
-                stage.initStyle(StageStyle.TRANSPARENT);
-                scene.setFill(Color.TRANSPARENT);
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
     }
 }

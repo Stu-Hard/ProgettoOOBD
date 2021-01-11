@@ -13,6 +13,7 @@ repositories {
 dependencies {
     compile 'com.jfoenix:jfoenix:9.0.10'
     compile 'de.jensd:fontawesomefx:8.1'
+    compile 'org.postgresql:postgresql:42.2.18'
 }
 
 

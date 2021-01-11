@@ -27,3 +27,12 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+/*look per le listview*/
+
+.list-view .list-cell:hover {
+    -fx-background-color: #2d5a89;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #2d5a89;
+}
