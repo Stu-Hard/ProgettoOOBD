@@ -47,14 +47,14 @@ public class TrattaHbox extends HBox {
             gate = (Label) lookup("#gate");
             compagnia = (Label) lookup("#compagnia");
 
-            partenza.setText(tratta.getAereoportoPartenza());
-            arrivo.setText(tratta.getAereoportoArrivo());
+            partenza.setText(tratta.getAereoportoPartenza().getCitta());
+            arrivo.setText(tratta.getAereoportoArrivo().getCitta());
             numeroVolo.setText(tratta.getNumeroVolo());
             dataPartenza.setText(tratta.getDataPartenzaFormatted());
             oraPartenza.setText(tratta.getOraPartenzaFormatted());
             ritardo.setText(tratta.getRitardo() + "''");
             gate.setText(tratta.getGate());
-            compagnia.setText(tratta.getCompagnia());
+            compagnia.setText(tratta.getCompagnia().getNome());
         } catch (IOException e) {
             e.printStackTrace();
         }

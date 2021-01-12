@@ -60,18 +60,18 @@ public class ControllerTratteInfo extends WindowDragger {
     }
 
     private void setLabels(){
-        partenza.setText(tratta.getAereoportoPartenza());
-        arrivo.setText(tratta.getAereoportoArrivo());
-        compagnia.setText(tratta.getCompagnia());
+        partenza.setText(tratta.getAereoportoPartenza().getCitta());
+        arrivo.setText(tratta.getAereoportoArrivo().getCitta());
+        compagnia.setText(tratta.getCompagnia().getNome());
         dataPartenza.setText(tratta.getDataPartenzaFormatted() + " " +  tratta.getOraPartenzaFormatted());
-        if(tratta.getDataArrivo() != null && tratta.getOraArrivo() != null)
-            dataArrivo.setText(tratta.getDataArrivoFormatted() + " " + tratta.getOraArrivoFormatted());
+        //if(tratta.getDataArrivo() != null && tratta.getOraArrivo() != null)
+        //    dataArrivo.setText(tratta.getDataArrivoFormatted() + " " + tratta.getOraArrivoFormatted());
         ritardo.setText(tratta.getRitardo() + "''");
         if (tratta.getGate() != null)
             gate.setText(tratta.getGate());
         if (tratta.getAereo() != null)
             aereo.setText(tratta.getAereo());
-        passeggeri.setText(String.valueOf(tratta.getPasseggeri()));
+        //passeggeri.setText(String.valueOf(tratta.getPasseggeri()));
     }
 
     @Override

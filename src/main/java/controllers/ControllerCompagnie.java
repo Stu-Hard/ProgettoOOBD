@@ -38,15 +38,19 @@ public class ControllerCompagnie implements Initializable {
         flowPane.setStyle("-fx-background-color: transparent");
 
         CompagniaDao compagniaDao = new CompagniaDao();
+
+        List<Compagnia> l = null;
         try {
-            List<Compagnia> l = compagniaDao.getCompagnie();
+            l = compagniaDao.getCompagnie();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        if (l != null)
             l.forEach(compagnia -> {
                 CompagniaCard card = new CompagniaCard(compagnia);
                 flowPane.getChildren().add( new CardRippler(card, 25));
             });
-        } catch (NullPointerException | SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
         scroll.setContent(flowPane);
     }
 }

@@ -4,6 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import customComponents.GateCard;
+import data.Gate;
+import data.Tratta;
+import database.dao.GateDao;
 import enumeration.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +19,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,7 +40,7 @@ public class ControllerGate implements Initializable {
     @FXML
     private JFXButton cancelBtn;
 
-    private List<GateCard> gateCardList; // lista che contiene tutti i gate.
+    private List<GateCard> gateCardList = null; // lista che contiene tutti i gate.
                                         // N.B. gateCardList è diverso da flowPane.getChildren(). Indovinello: Perch'è sono diversi?
                                         // (Suggerimento) per diversi non si intende il tipo.
     @FXML
@@ -42,25 +48,25 @@ public class ControllerGate implements Initializable {
 
     // Filtri sullo stato: occupato ecc...
     public void statusFilter(ActionEvent e){
-        GateStatus status;
-        JFXCheckBox source = (JFXCheckBox) e.getSource();
-
-        if (occupatiCheck.equals(source)) status = GateStatus.OCCUPATO;  //
-        else if (liberiCheck.equals(source)) status = GateStatus.LIBERO; // Decide qual'è lo stato da filtrare
-        else status = GateStatus.CHIUSO;                                 //
-
-        if (!(source).isSelected())
-            flowPane.getChildren().removeIf(n -> ((GateCard) n).getStato() == status); // cancella se lo stato viene deselezionato
-        else
-            gateCardList.forEach(n ->{
-                if(n.getStato() == status)
-                    flowPane.getChildren().add(0, n); // aggiungi in cima se lo stato viene selezionato
-            });
-        search(null); // "integra" il filtro con il testo sulla barra di ricerca
+        //GateStatus status;
+        //JFXCheckBox source = (JFXCheckBox) e.getSource();
+//
+        //if (occupatiCheck.equals(source)) status = GateStatus.OCCUPATO;  //
+        //else if (liberiCheck.equals(source)) status = GateStatus.LIBERO; // Decide qual'è lo stato da filtrare
+        //else status = GateStatus.CHIUSO;                                 //
+//
+        //if (!(source).isSelected())
+        //    flowPane.getChildren().removeIf(n -> ((GateCard) n).getStato() == status); // cancella se lo stato viene deselezionato
+        //else
+        //    gateCardList.forEach(n ->{
+        //        if(n.getStato() == status)
+        //            flowPane.getChildren().add(0, n); // aggiungi in cima se lo stato viene selezionato
+        //    });
+        //search(null); // "integra" il filtro con il testo sulla barra di ricerca
     }
 
     public void search(KeyEvent k){
-        String searchMode = this.searchMode.getValue();
+        /*String searchMode = this.searchMode.getValue();
         String text = searchBar.getText();
         switch (searchMode){
             case "Codice" -> { // non molto elegante, ma funziona...
@@ -82,7 +88,7 @@ public class ControllerGate implements Initializable {
             nessunGate.setVisible(true);
         }else{
             nessunGate.setVisible(false);
-        }
+        }*/
     }
 
     @Override
@@ -105,44 +111,23 @@ public class ControllerGate implements Initializable {
         flowPane.setPadding(new Insets(5, 10, 5, 20));
         flowPane.setStyle("-fx-background-color: transparent");
 
-        gateCardList = new ArrayList<>();
-        ///////// solo per prova!! è una specie di simulazione. da cancellare
-        for (int i = 0; i < 10; i++) {
-            GateCard gc;
-            int r = (int) (Math.random()*4);
-            int tempo = (int) (Math.random()*50);
-            switch (r){
-                case 0 -> gc = new GateCard("A"+i, "Napoli", "Londra", tempo, GateStatus.OCCUPATO);
-                case 1 -> gc = new GateCard("A"+i, "Napoli", "Londra", tempo, GateStatus.LIBERO);
-                case 2 -> gc = new GateCard("A"+i, "Napoli", "Londra", tempo, GateStatus.CHIUSO);
-                case 3 -> gc = new GateCard("A"+i, "Napoli", "Londra", tempo, GateStatus.OCCUPATO);
-                default -> throw new IllegalStateException("Unexpected value: " + r);
-            }
-            gateCardList.add(gc);
-            flowPane.getChildren().add(gc);
+        GateDao gateDao = new GateDao();
+        List<Gate> gateList = null;
+        try {
+            gateList = gateDao.getGateCodes();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
-        for (int i = 0; i < 10; i++) {
-            GateCard gc;
-            int r = (int) (Math.random()*3);
-            int tempo = (int) (Math.random()*50);
-            switch (r){
-                case 0 -> gc = new GateCard("B"+i,  "Londra","Napoli", tempo, GateStatus.OCCUPATO);
-                case 1 -> gc = new GateCard("B"+i,  "Londra","Napoli", tempo, GateStatus.LIBERO);
-                case 2 -> gc = new GateCard("B"+i,  "Londra","Napoli", tempo, GateStatus.CHIUSO);
-                case 3 -> gc = new GateCard("B"+i,  "Londra","Napoli", tempo, GateStatus.CHIUSO);
-                default -> throw new IllegalStateException("Unexpected value: " + r);
-            }
-            gateCardList.add(gc);
-            flowPane.getChildren().add(gc);
+
+        if (gateList != null){
+            gateList.forEach(g ->{
+                flowPane.getChildren().add(new GateCard(g));
+            });
         }
-        GateCard card = new GateCard("B20",  "Londra","Napoli", 10, GateStatus.OCCUPATO);
-        // prova dei metodi disable e enable coda. vedi l'ultima card.
-        card.disableCode(CodeEnum.DIVERSAMENTE_ABILI, CodeEnum.ECONOMY, CodeEnum.BUSINESS, CodeEnum.PRIORITY, CodeEnum.FAMIGLIE);
-        card.enableCode(CodeEnum.DIVERSAMENTE_ABILI, CodeEnum.BUSINESS);
-        gateCardList.add(card);
-        flowPane.getChildren().add(card);
-        ////////// fine della simulazione
 
         scroll.setContent(flowPane);
+
+        if(flowPane.getChildren().isEmpty()) nessunGate.setVisible(true);
+        else nessunGate.setVisible(false);
     }
 }

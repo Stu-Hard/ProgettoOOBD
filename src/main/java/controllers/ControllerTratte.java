@@ -48,37 +48,37 @@ public class ControllerTratte implements Initializable {
     private List<TrattaHbox> tratteHboxList;
 
     public void search(KeyEvent k){
-        String searchMode = this.searchMode.getValue();
-        String text = searchBar.getText();
-        switch (searchMode){
-            case "Partenza" -> { // non molto elegante, ma funziona...
-                box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getAereoportoPartenza().contains(text)); // rimuovi se la card non contine il testo in searchBar
-                tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
-                    if(node.getTratta().getAereoportoPartenza().contains(text) && !box.getChildren().contains(node))
-                        box.getChildren().add(0, node);
-                });
-            }
-            case "Arrivo" -> {
-                box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getAereoportoArrivo().contains(text)); // rimuovi se la card non contine il testo in searchBar
-                tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
-                    if(node.getTratta().getAereoportoArrivo().contains(text) && !box.getChildren().contains(node))
-                        box.getChildren().add(0, node);
-                }); }
-            case "Compagnia" -> {
-                box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getCompagnia().contains(text)); // rimuovi se la card non contine il testo in searchBar
-                tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
-                    if(node.getTratta().getCompagnia().contains(text) && !box.getChildren().contains(node))
-                        box.getChildren().add(0, node);
-                });
-            }
-            case "NumeroVolo" -> {
-                box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getNumeroVolo().contains(text)); // rimuovi se la card non contine il testo in searchBar
-                tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
-                    if(node.getTratta().getNumeroVolo().contains(text) && !box.getChildren().contains(node))
-                        box.getChildren().add(0, node);
-                });
-            }
-        }
+        //String searchMode = this.searchMode.getValue();
+        //String text = searchBar.getText();
+        //switch (searchMode){
+        //    case "Partenza" -> { // non molto elegante, ma funziona...
+        //        box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getAereoportoPartenza().contains(text)); // rimuovi se la card non contine il testo in searchBar
+        //        tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
+        //            if(node.getTratta().getAereoportoPartenza().contains(text) && !box.getChildren().contains(node))
+        //                box.getChildren().add(0, node);
+        //        });
+        //    }
+        //    case "Arrivo" -> {
+        //        box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getAereoportoArrivo().contains(text)); // rimuovi se la card non contine il testo in searchBar
+        //        tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
+        //            if(node.getTratta().getAereoportoArrivo().contains(text) && !box.getChildren().contains(node))
+        //                box.getChildren().add(0, node);
+        //        }); }
+        //    case "Compagnia" -> {
+        //        box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getCompagnia().contains(text)); // rimuovi se la card non contine il testo in searchBar
+        //        tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
+        //            if(node.getTratta().getCompagnia().contains(text) && !box.getChildren().contains(node))
+        //                box.getChildren().add(0, node);
+        //        });
+        //    }
+        //    case "NumeroVolo" -> {
+        //        box.getChildren().removeIf(node -> !((TrattaHbox) node).getTratta().getNumeroVolo().contains(text)); // rimuovi se la card non contine il testo in searchBar
+        //        tratteHboxList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
+        //            if(node.getTratta().getNumeroVolo().contains(text) && !box.getChildren().contains(node))
+        //                box.getChildren().add(0, node);
+        //        });
+        //    }
+        //}
     }
 
     public void datePick(ActionEvent e){ // è una prova solo per il dpk a sinistra
@@ -137,19 +137,19 @@ public class ControllerTratte implements Initializable {
 
         tratteHboxList = new ArrayList();
 
-        for (int i = 0; i < 15; i++) {
-            Tratta tratta = new Tratta("C23FAS2G",
-                    LocalDate.of(r.nextInt(151)+ 1900, r.nextInt(12)+1, r.nextInt(28)+1),
-                    LocalTime.of(r.nextInt(24), r.nextInt(59)),
-                    "Vueling",
-                    "A"+r.nextInt(31),
-                    "Napoli",
-                    "Barcellona");
-            TrattaHbox t = new TrattaHbox(tratta);
-            tratteHboxList.add(t);
-            listView.getItems().add(t);
-            //box.getChildren().add(t);
-        }
+        //for (int i = 0; i < 15; i++) {
+        //    Tratta tratta = new Tratta("C23FAS2G",
+        //            LocalDate.of(r.nextInt(151)+ 1900, r.nextInt(12)+1, r.nextInt(28)+1),
+        //            LocalTime.of(r.nextInt(24), r.nextInt(59)),
+        //            30,
+        //            "Vueling",
+        //            "Napoli",
+        //            "Barcellona");
+        //    TrattaHbox t = new TrattaHbox(tratta);
+        //    tratteHboxList.add(t);
+        //    listView.getItems().add(t);
+        //    //box.getChildren().add(t);
+        //}
         //scroll.setContent(listView);
     }
 }

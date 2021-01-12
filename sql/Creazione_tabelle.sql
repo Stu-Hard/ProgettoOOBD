@@ -1,3 +1,6 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
 CREATE TYPE EnumCoda AS ENUM(
     'famiglie', 
     'diversamenteAbili' , 
@@ -69,7 +72,7 @@ insert into Compagnia values
                              ('Ryanair', 'RYR', 'Irlanda', 32.0, 12.0);
 
 
-CREATE TABLE Risiede(
+CREATE TABLE Risiede( /* si potrebbe anche eliminare...*/
     Compagnia VARCHAR(30) NOT NULL, 
     CodiceAeroporto VARCHAR(4) NOT NULL,
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
@@ -83,10 +86,10 @@ CREATE TABLE Aereo(
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
 );
 insert into Aereo values
-                         ('VLG87937', 'Vueling'),
-                         ('AZA24281', 'Alitalia'),
-                         ('EZS82469', 'Easyjet'),
-                         ('RYR61530', 'Ryanair');
+                         ('RUXZWJB9', 'Vueling'),
+                         ('7YSNJ6XD', 'Alitalia'),
+                         ('YT72ZY6U', 'Easyjet'),
+                         ('LY5NNHJ7', 'Ryanair');
 
 CREATE TABLE Tratta(
     NumeroVolo VARCHAR(8) PRIMARY KEY, 
@@ -103,6 +106,10 @@ CREATE TABLE Tratta(
     CONSTRAINT fk_AeroportoA FOREIGN KEY(AeroportoArrivo) REFERENCES Aeroporto(Codice),
     CONSTRAINT fk_AeroportoB FOREIGN KEY(AeroportoPartenza) REFERENCES Aeroporto(Codice)
 );
+
+insert into Tratta values
+                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL'),
+                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, 'LY5NNHJ7', 'Ryanair', 'EGLC', 'LIRN');
 
 CREATE TABLE CodaImbarco(
     CodiceCoda VARCHAR(8) PRIMARY KEY,
