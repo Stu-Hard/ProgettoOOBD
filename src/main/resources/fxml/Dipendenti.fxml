@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="870.0" style="-fx-background-radius: 0 25 25 0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerDipendenti">
+   <children>
+      <BorderPane prefHeight="700.0" prefWidth="870.0">
+         <top>
+            <Pane prefHeight="100.0" prefWidth="870.0" style="-fx-background-color: f0f0f0;" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="searchBar" layoutX="88.0" layoutY="30.0" onKeyTyped="#search" prefHeight="40.0" prefWidth="426.0" promptText="🔍Search..." style="-fx-background-radius: 25px; -fx-background-color: #dcdcdc; -fx-accent: c0c0c0;">
+                     <font>
+                        <Font name="Calibri" size="18.0" />
+                     </font>
+                  </TextField>
+                  <JFXButton fx:id="cancelBtn" contentDisplay="CENTER" layoutX="33.0" layoutY="30.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20px; -fx-background-color: #dcdcdc;" textFill="#ffffff00">
+                     <graphic>
+                        <FontAwesomeIcon iconName="REMOVE" size="20px" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXComboBox fx:id="dipendentiType" layoutX="544.0" layoutY="36.0" onAction="#sceltaDipendenti" prefHeight="28.0" prefWidth="176.0" unFocusColor="BLACK" />
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <ScrollPane fx:id="scrollPane" centerShape="false" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" pannable="true" prefHeight="600.0" prefViewportHeight="600.0" prefViewportWidth="870.0" prefWidth="870.0" scaleShape="false" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent;" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="20.0" right="10.0" top="5.0" />
+               </padding>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

@@ -1,4 +1,5 @@
-CREATE TYPE EnumClassi AS ENUM('famiglie', 
+CREATE TYPE EnumCoda AS ENUM(
+    'famiglie', 
     'diversamenteAbili' , 
     'priority', 
     'business', 
@@ -27,77 +28,94 @@ CREATE TYPE EnumCitta AS ENUM(
 CREATE TYPE EnumImpiegati AS ENUM(
     'Amministratore',
     'TicketAgent',
-    'AddettoCheck-In',
+    'AddettoCheckIn',
     'AddettoImbarco',
     'ResponsabileVoli'
 );
 
-CREATE TYPE EnumCompagnia AS ENUM(
-    'statale',
-    'privata',
-    'lowcost',
-    'charter',
-    'cargo'
+
+CREATE TABLE Aeroporto(
+    Codice VARCHAR(4) PRIMARY KEY CHECK (UPPER(Codice) = Codice), /*Codice aeroportuale ICAO*/
+    Nome VARCHAR(30) NOT NULL,
+    Citta EnumCitta NOT NULL
 );
+insert into Aeroporto values
+                             ('LIRN', 'Capodichino', 'Napoli'),
+                             ('LEBL', 'El Prat', 'Barcellona'),
+                             ('EGLC', 'City', 'Londra'),
+                             ('LIML', 'Linate', 'Milano'),
+                             ('UUDD', 'Domodedovo', 'Mosca');
+
+CREATE TABLE Gate(
+    CodiceGate VARCHAR(4) PRIMARY KEY CHECK (UPPER(CodiceGate) = CodiceGate) /*tra lettere e numeri sono 36^4 gate possibili... Pattern standard: A1, B3, C20...*/
+);
+insert into Gate values
+                        ('A0'), ('A1'), ('A2'), ('A3'), ('A4'), ('A5'),
+                        ('B0'), ('B1'), ('B2'), ('B3'), ('B4'), ('B5'),
+                        ('C0'), ('C1'), ('C2'), ('C3'), ('C4'), ('C5');
+
+
+CREATE TABLE Compagnia(
+    Nome VARCHAR(30) PRIMARY KEY, 
+    Sigla VARCHAR(3) NOT NULL UNIQUE CHECK (UPPER(Sigla) = Sigla), /*Codice ICAO univoco per ogni compagnia. 26^3 = 17.576 (Per legge è possibile utilizzare anche numeri quindi non c'è bisogno di un vincolo) sicuramente superiore alle (circa) 500 compagnie esistenti nel 2021*/
+    Nazione VARCHAR(30) NOT NULL, 
+    PesoMassimo REAL NOT NULL CHECK (PesoMassimo > 0),
+    PrezzoBagagli REAL NOT NULL CHECK (PrezzoBagagli > 0)
+);
+insert into Compagnia values
+                             ('Vueling', 'VLG', 'Spagna', 32.0, 12.0),
+                             ('Alitalia', 'AZA', 'Italia', 32.0, 12.0),
+                             ('Easyjet', 'EZS', 'Svizzera', 32.0, 12.0),
+                             ('Ryanair', 'RYR', 'Irlanda', 32.0, 12.0);
+
+
+CREATE TABLE Risiede(
+    Compagnia VARCHAR(30) NOT NULL, 
+    CodiceAeroporto VARCHAR(4) NOT NULL,
+    CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
+    CONSTRAINT fk_Aeroporto FOREIGN KEY(CodiceAeroporto) REFERENCES Aeroporto(Codice)
+);
+
+
+CREATE TABLE Aereo(
+    CodiceAereo VARCHAR(8) PRIMARY KEY CHECK (UPPER(CodiceAereo) = CodiceAereo),
+    Compagnia VARCHAR(30) NOT NULL,
+    CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
+);
+insert into Aereo values
+                         ('VLG87937', 'Vueling'),
+                         ('AZA24281', 'Alitalia'),
+                         ('EZS82469', 'Easyjet'),
+                         ('RYR61530', 'Ryanair');
 
 CREATE TABLE Tratta(
     NumeroVolo VARCHAR(8) PRIMARY KEY, 
     DataPartenza DATE NOT NULL, 
-    DataArrivo DATE NOT NULL, 
     OraPartenza TIME NOT NULL, 
-    OraArrivo TIME NOT NULL, 
-    PartenzaEffettiva VARCHAR(16),  /*17:30-17-12-2077*/
-    ArrivoEffettivo VARCHAR(16), 
-    CodiceAereo VARCHAR(8)  NOT NULL, 
+    DurataVolo INT NOT NULL CHECK(DurataVolo > 0),
+    Ritardo INT DEFAULT 0 CHECK(DurataVolo + Ritardo > 0), /*è possibile che l'aereo ci metta meno tempo del previsto e quindi il ritardo sia negativo*/
+    CodiceAereo VARCHAR(8) NOT NULL, 
     Compagnia VARCHAR(30) NOT NULL, 
-    AereoportoPartenza VARCHAR(30) NOT NULL, 
-    AereoportoArrivo VARCHAR(30) NOT NULL,
+    AeroportoPartenza VARCHAR(4) NOT NULL, 
+    AeroportoArrivo VARCHAR(4) NOT NULL,
     CONSTRAINT fk_Aereo FOREIGN KEY(CodiceAereo) REFERENCES Aereo(CodiceAereo),
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
-    CONSTRAINT fk_AereoportoA FOREIGN KEY(AereoportoArrivo) REFERENCES Aereoporto(Codice),
-    CONSTRAINT fk_AereoportoB FOREIGN KEY(AereoportoPartenza) REFERENCES Aereoporto(Codice)
-);
-
-CREATE TABLE Gate(
-    CodiceGate VARCHAR(4) PRIMARY KEY /*tra lettere e numeri sono 35^4 gate possibili...*/
+    CONSTRAINT fk_AeroportoA FOREIGN KEY(AeroportoArrivo) REFERENCES Aeroporto(Codice),
+    CONSTRAINT fk_AeroportoB FOREIGN KEY(AeroportoPartenza) REFERENCES Aeroporto(Codice)
 );
 
 CREATE TABLE CodaImbarco(
-    TempoStimato INT, 
+    CodiceCoda VARCHAR(8) PRIMARY KEY,
+    TempoStimato INT NOT NULL, 
     TempoEffettivo INT, 
-    Classe EnumClassi  NOT NULL, 
+    Classe EnumCoda  NOT NULL, 
     CodiceGate VARCHAR(4)  NOT NULL,
     NumeroVolo VARCHAR(8) NOT NULL,
     CONSTRAINT fk_CodiceGate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
 
-CREATE TABLE Aereoporto(
-    Codice VARCHAR(8) PRIMARY KEY,
-    Nome VARCHAR(30) NOT NULL, 
-    Citta EnumCitta NOT NULL, 
-    Via VARCHAR(30) NOT NULL, 
-    Piste INT NOT NULL
-);
-
-CREATE TABLE CompagniaAerea(
-    Nome VARCHAR(30) PRIMARY KEY, 
-    Sigla VARCHAR(3) NOT NULL, /*17000 combinazioni bastano considerando che al mondo ci sono sulle 500 compagnie*/
-    Nazione VARCHAR(30) NOT NULL, 
-    Tipo EnumCompagnia NOT NULL, 
-    PesoMassimo REAL NOT NULL,
-    MaxLarghezza INT NOT NULL, 
-    MaxAltezza INT NOT NULL,
-    MaxProfondità INT NOT NULL
-);
-
-CREATE TABLE Risiede(
-    Compagnia VARCHAR(30) NOT NULL, 
-    CodiceAereoporto VARCHAR(8) NOT NULL,
-    CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
-    CONSTRAINT fk_Aereoporto FOREIGN KEY(CodiceAereoporto) REFERENCES Aereoporto(Codice)
-);
-
+/*
 CREATE TABLE Cliente(
     CF VARCHAR(16) PRIMARY KEY, 
     Nome VARCHAR(30) NOT NULL, 
@@ -113,7 +131,7 @@ CREATE TABLE Biglietto(
     Prezzo REAL NOT NULL, 
     Fila CHAR NOT NULL, 
     Posto INT NOT NULL, 
-    Classe EnumClassi NOT NULL, 
+    Classe EnumCoda NOT NULL, // foreign key su code
     CheckIn BOOLEAN, 
     Imbarcato BOOLEAN,
     Numerovolo VARCHAR(8) NOT NULL,
@@ -133,17 +151,11 @@ CREATE TABLE Bagaglio(
     CONSTRAINT fk_Biglietto FOREIGN KEY(CodiceBiglietto) REFERENCES Biglietto(CodiceBiglietto),
 );
 
-CREATE TABLE Aereo(
-    CodiceAereo VARCHAR(8) PRIMARY KEY, 
-    Compagnia VARCHAR(30) NOT NULL
-    CONSTRAINT fk_Compagnia FOREIGN KEY(CodiceAereo) REFERENCES Aereo(CodiceAereo),
-);
-
 CREATE TABLE Sezione(
     CodiceSezione VARCHAR(10) PRIMARY KEY, 
     RangeFile VARCHAR(2) NOT NULL, 
     RangeColonne VARCHAR(2) NOT NULL, 
-    Classe EnumClassi NOT NULL, 
+    Classe EnumCoda NOT NULL, 
     CodiceAereo VARCHAR(8) NOT NULL,
     CONSTRAINT fk_Aereo FOREIGN KEY(CodiceAereo) REFERENCES Aereo(CodiceAereo)
 );
@@ -163,4 +175,4 @@ CREATE TABLE Dipendente(
     Ruolo EnumImpiegati NOT NULL, 
     Compagnia VARCHAR(30) NOT NULL
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
-); 
+); */
