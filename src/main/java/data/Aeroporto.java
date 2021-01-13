@@ -11,6 +11,11 @@ public class Aeroporto {
         this.citta = citta;
     }
 
+    @Override
+    public String toString() {
+        return citta + "-" + nome;
+    }
+
     public String getCodiceICAO() {
         return codiceICAO;
     }

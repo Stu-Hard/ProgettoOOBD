@@ -14,3 +14,16 @@
 .botton{
         -fx-text-fill: #425c2c;
 }
+
+.jfx-date-picker .text-field{
+        -fx-prompt-text-fill: White;
+        -fx-text-fill: white;
+        -fx-text-inner-color: white;
+}
+.combo-box .cell {
+        -fx-background-color: #162643;
+        -fx-text-fill: white;
+}
+.combo-box .cell:hover {
+        -fx-background-color: #2d5a89;
+}

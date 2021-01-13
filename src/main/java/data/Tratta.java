@@ -1,5 +1,7 @@
 package data;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,14 +13,17 @@ public class Tratta {
     private LocalTime oraPartenza;
     private int durataVolo;
     private int ritardo = 0;
+    private boolean conclusa = false; // todo
     private Compagnia compagnia; // qui dovrebbe essere Compagnie compagnia;
     private String gate = null; // come sopra da cambiare con Gate gate;
     private Aeroporto aereoportoPartenza;
     private Aeroporto aereoportoArrivo;
-    private String aereo = null;
+    private Aereo aereo = null;
 
     public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
     public DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+    public DateTimeFormatter dateDbFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+    public DateTimeFormatter timeDbFormat= DateTimeFormatter.ofPattern("HH:mm");
 
 
     // quando una tratta viene creata non si sa a prescindere il ritardo, il gate ecc...
@@ -28,8 +33,38 @@ public class Tratta {
         this.dataPartenza = dataPartenza;
         this.oraPartenza = oraPartenza;
         this.compagnia = compagnia;
+        this.durataVolo = durataVolo;
         this.aereoportoPartenza = aereoportoPartenza;
         this.aereoportoArrivo = getAereoportoArrivo;
+    }
+
+    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo, Aereo aereo) {
+        this.numeroVolo = numeroVolo;
+        this.dataPartenza = dataPartenza;
+        this.oraPartenza = oraPartenza;
+        this.durataVolo = durataVolo;
+        this.ritardo = ritardo;
+        this.conclusa = conclusa;
+        this.compagnia = compagnia;
+        this.aereoportoPartenza = aereoportoPartenza;
+        this.aereoportoArrivo = aereoportoArrivo;
+        this.aereo = aereo;
+    }
+
+    @Override
+    public String toString() {
+        return "(" +
+                "'" + numeroVolo + '\'' +
+                ", '" + Date.valueOf(dataPartenza) + '\'' +
+                ", '" + Time.valueOf(oraPartenza) + '\'' +
+                ", " + durataVolo +
+                ", " + ritardo +
+                ", " + conclusa +
+                ", '" + aereo.getCodice() + '\'' +
+                ", '" + compagnia.getNome() + '\'' +
+                ", '" + aereoportoPartenza.getCodiceICAO() + '\'' +
+                ", '" + aereoportoArrivo.getCodiceICAO() + '\'' +
+                ')';
     }
 
     public String getDataPartenzaFormatted(){
@@ -39,11 +74,11 @@ public class Tratta {
         return timeFormat.format(oraPartenza);
     }
 
-    public String getAereo() {
+    public Aereo getAereo() {
         return aereo;
     }
 
-    public void setAereo(String aereo) {
+    public void setAereo(Aereo aereo) {
         this.aereo = aereo;
     }
 

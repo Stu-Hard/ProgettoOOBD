@@ -1,7 +1,6 @@
 package database.dao;
 
 import data.Aeroporto;
-import data.Gate;
 import database.PGConnection;
 
 import java.sql.PreparedStatement;
@@ -34,7 +33,25 @@ public class AeroportoDao {
             if (statement != null) statement.close();
             if (resultSet != null) resultSet.close();
         }
-
         return list;
+    }
+
+    public Aeroporto getByCodice(String icao) throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Aeroporto aeroporto = null;
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aeroporto WHERE codice = '" + icao + "'");
+            resultSet = statement.executeQuery();
+            if (resultSet.next())
+                aeroporto = new Aeroporto(resultSet.getString("codice"), resultSet.getString("nome"), resultSet.getString("citta"));
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return aeroporto;
     }
 }

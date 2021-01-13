@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utility.WindowDragger;
@@ -70,7 +71,7 @@ public class ControllerTratteInfo extends WindowDragger {
         if (tratta.getGate() != null)
             gate.setText(tratta.getGate());
         if (tratta.getAereo() != null)
-            aereo.setText(tratta.getAereo());
+            aereo.setText(tratta.getAereo().getCodice());
         //passeggeri.setText(String.valueOf(tratta.getPasseggeri()));
     }
 

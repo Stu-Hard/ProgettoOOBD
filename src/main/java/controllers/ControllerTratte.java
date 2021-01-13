@@ -1,8 +1,10 @@
 package controllers;
 
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import customComponents.TrattaHbox;
 import data.Tratta;
+import database.dao.TrattaDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,14 +18,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -31,8 +36,6 @@ import java.util.*;
 
 public class ControllerTratte implements Initializable {
 
-    @FXML
-    private ScrollPane scroll;
     @FXML
     private JFXComboBox<String> searchMode;
     @FXML
@@ -42,7 +45,6 @@ public class ControllerTratte implements Initializable {
     @FXML
     private TextField searchBar;
 
-    private VBox box;
     @FXML
     private JFXListView<TrattaHbox> listView;
     private List<TrattaHbox> tratteHboxList;
@@ -82,12 +84,12 @@ public class ControllerTratte implements Initializable {
     }
 
     public void datePick(ActionEvent e){ // è una prova solo per il dpk a sinistra
-        box.getChildren().removeIf(node ->
-                ((TrattaHbox) node)
-                .getTratta()
-                .getDataPartenza()
-                .isBefore(((JFXDatePicker) e.getSource()).getValue())
-        );
+        //box.getChildren().removeIf(node ->
+        //        ((TrattaHbox) node)
+        //        .getTratta()
+        //        .getDataPartenza()
+        //        .isBefore(((JFXDatePicker) e.getSource()).getValue())
+        //);
     }
 
     public void canc(ActionEvent e){
@@ -97,6 +99,7 @@ public class ControllerTratte implements Initializable {
 
     @FXML
     public void mouseClick(MouseEvent e){
+        if (listView.getSelectionModel().getSelectedItem() == null) return;
         Tratta tratta = listView.getSelectionModel().getSelectedItem().getTratta();
         if (e.getButton() == MouseButton.PRIMARY) {
             try {
@@ -125,7 +128,20 @@ public class ControllerTratte implements Initializable {
 
     @FXML
     private void add(ActionEvent e){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TratteAdd.fxml"));
+            Parent parent = fxmlLoader.load();
+            //ControllerTratteInfo controller = fxmlLoader.getController();
 
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.TRANSPARENT);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -133,23 +149,14 @@ public class ControllerTratte implements Initializable {
         searchMode.getItems().addAll("Partenza", "Arrivo", "Compagnia", "NumeroVolo");
         searchMode.getSelectionModel().selectFirst();
 
-        Random r = new Random();
-
         tratteHboxList = new ArrayList();
 
-        //for (int i = 0; i < 15; i++) {
-        //    Tratta tratta = new Tratta("C23FAS2G",
-        //            LocalDate.of(r.nextInt(151)+ 1900, r.nextInt(12)+1, r.nextInt(28)+1),
-        //            LocalTime.of(r.nextInt(24), r.nextInt(59)),
-        //            30,
-        //            "Vueling",
-        //            "Napoli",
-        //            "Barcellona");
-        //    TrattaHbox t = new TrattaHbox(tratta);
-        //    tratteHboxList.add(t);
-        //    listView.getItems().add(t);
-        //    //box.getChildren().add(t);
-        //}
-        //scroll.setContent(listView);
+        try {
+            new TrattaDao().getAllTratte().forEach(tratta -> {
+                listView.getItems().add(new TrattaHbox(tratta));
+            });
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

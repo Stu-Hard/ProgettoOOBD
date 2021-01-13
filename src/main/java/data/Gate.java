@@ -45,13 +45,13 @@ public class Gate {
         if (status != GateStatus.OCCUPATO) status = GateStatus.CHIUSO;
     }
     public void open(){
-        if (status != GateStatus.OCCUPATO) status = GateStatus.CHIUSO;
+        if (status != GateStatus.OCCUPATO) status = GateStatus.LIBERO;
     }
     public void end(){ // conclude l'imbarco
         if (status == GateStatus.OCCUPATO) {
             status = GateStatus.LIBERO;
             tratta = null;
-            codeImbarco.forEach(c -> c.setTempoEffettivo(c.getTempoStimato() + (new Random().nextInt(10))));
+            //codeImbarco.forEach(c -> c.setTempoEffettivo(c.getTempoStimato() + (new Random().nextInt(10))));
             // todo aggiorna nel db le code
         }
     }

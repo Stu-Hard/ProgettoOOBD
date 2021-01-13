@@ -34,27 +34,25 @@ public class GateCard extends Pane{
         switch (stato){
             case CHIUSO -> { // se chiuso allora sfondo grigio e disabilita
                 this.stato.setText("Chiuso");
-                setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 25px;");
-                setDisable(true);
+                setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 25px; -fx-opacity: 0.4");
                 ((FontAwesomeIcon) this.stato.getGraphic()).setIcon(FontAwesomeIconName.MINUS_CIRCLE);
+                trattaPane.setVisible(false);
+                code.setVisible(false);
             }
             case LIBERO -> { // se libero sfondo grigio e abilita
                 this.stato.setText("Libero");
-                setDisable(false);
-                setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 25px;");
+                setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 25px; -fx-opacity: 1");
                 ((FontAwesomeIcon) this.stato.getGraphic()).setIcon(FontAwesomeIconName.CHECK);
+                trattaPane.setVisible(false);
+                code.setVisible(false);
             }
             case OCCUPATO -> { // se occupato sfondo giallo (si può cambiare volendo magari anche mettendo un gradient...) e visualizza le label
                 this.stato.setText("Occupato");
-                setDisable(false);
-                setStyle("-fx-background-color: yellow; -fx-background-radius: 25px;");
+                setStyle("-fx-background-color: yellow; -fx-background-radius: 25px; -fx-opacity: 1");
                 ((FontAwesomeIcon) this.stato.getGraphic()).setIcon(FontAwesomeIconName.CLOCK_ALT);
+                trattaPane.setVisible(true);
+                code.setVisible(true);
             }
-        }
-
-        if (stato == GateStatus.CHIUSO || stato == GateStatus.LIBERO){
-            trattaPane.setVisible(false);
-            code.setVisible(false);
         }
     }
 
@@ -80,7 +78,7 @@ public class GateCard extends Pane{
         }
     }
 
-    private void updateLabels(){
+    public void updateLabels(){
         gateCode.setText(gate.getGateCode());
         if (gate.getStatus() == GateStatus.OCCUPATO) {
             partenza.setText(gate.getTratta().getAereoportoPartenza().getCitta());
@@ -100,5 +98,9 @@ public class GateCard extends Pane{
         this.stato = (Label) lookup("#stato");
         this.trattaPane = (Pane) lookup("#trattaPane");
         this.code = (VBox) lookup("#code");
+    }
+
+    public Gate getGate() {
+        return gate;
     }
 }

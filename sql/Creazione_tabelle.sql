@@ -1,3 +1,4 @@
+
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 
@@ -72,7 +73,7 @@ insert into Compagnia values
                              ('Ryanair', 'RYR', 'Irlanda', 32.0, 12.0);
 
 
-CREATE TABLE Risiede( /* si potrebbe anche eliminare...*/
+CREATE TABLE Risiede( /* si potrebbe anche eliminare e dare per scontato che tutte le compagnie possano organizzare tratte per tutti gli aeroporti...*/
     Compagnia VARCHAR(30) NOT NULL, 
     CodiceAeroporto VARCHAR(4) NOT NULL,
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
@@ -83,13 +84,15 @@ CREATE TABLE Risiede( /* si potrebbe anche eliminare...*/
 CREATE TABLE Aereo(
     CodiceAereo VARCHAR(8) PRIMARY KEY CHECK (UPPER(CodiceAereo) = CodiceAereo),
     Compagnia VARCHAR(30) NOT NULL,
+    File INT NOT NULL,
+    Colonne INT NOT NULL,
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
 );
 insert into Aereo values
-                         ('RUXZWJB9', 'Vueling'),
-                         ('7YSNJ6XD', 'Alitalia'),
-                         ('YT72ZY6U', 'Easyjet'),
-                         ('LY5NNHJ7', 'Ryanair');
+                         ('RUXZWJB9', 'Vueling', 26, 6),
+                         ('7YSNJ6XD', 'Alitalia', 25, 6),
+                         ('YT72ZY6U', 'Easyjet', 26, 6),
+                         ('LY5NNHJ7', 'Ryanair', 33, 6);
 
 CREATE TABLE Tratta(
     NumeroVolo VARCHAR(8) PRIMARY KEY, 
@@ -97,7 +100,8 @@ CREATE TABLE Tratta(
     OraPartenza TIME NOT NULL, 
     DurataVolo INT NOT NULL CHECK(DurataVolo > 0),
     Ritardo INT DEFAULT 0 CHECK(DurataVolo + Ritardo > 0), /*è possibile che l'aereo ci metta meno tempo del previsto e quindi il ritardo sia negativo*/
-    CodiceAereo VARCHAR(8) NOT NULL, 
+    Conclusa BOOLEAN DEFAULT FALSE NOT NULL,
+    CodiceAereo VARCHAR(8) NOT NULL,
     Compagnia VARCHAR(30) NOT NULL, 
     AeroportoPartenza VARCHAR(4) NOT NULL, 
     AeroportoArrivo VARCHAR(4) NOT NULL,
@@ -108,8 +112,10 @@ CREATE TABLE Tratta(
 );
 
 insert into Tratta values
-                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL'),
-                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, 'LY5NNHJ7', 'Ryanair', 'EGLC', 'LIRN');
+                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL' ),
+                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, TRUE, 'LY5NNHJ7', 'Ryanair', 'EGLC', 'LIRN'),
+                          ('VLGuAZ8', '2021-01-05', '21:18:00', 111, 0, false, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL')
+;
 
 CREATE TABLE CodaImbarco(
     CodiceCoda VARCHAR(8) PRIMARY KEY,

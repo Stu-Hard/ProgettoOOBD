@@ -1,5 +1,6 @@
 package database.dao;
 
+import data.Aereo;
 import data.Compagnia;
 import database.PGConnection;
 
@@ -9,22 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompagniaDao {
-    public List<Compagnia> getCompagnie() throws SQLException {
-        List<Compagnia> list = new ArrayList();
+public class AereoDao {
+    public List<Aereo> getAerei() throws SQLException {
+        List<Aereo> list = new ArrayList();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM compagnia");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aereo");
             resultSet = statement.executeQuery();
+            CompagniaDao cDao = new CompagniaDao();
             while (resultSet.next()) {
-                list.add(new Compagnia(
-                        resultSet.getString("nome"),
-                        resultSet.getString("sigla"),
-                        resultSet.getString("nazione"),
-                        resultSet.getFloat("pesomassimo"),
-                        resultSet.getFloat("prezzobagagli")
+                Compagnia compagnia = cDao.getByNome(resultSet.getString("compagnia"));
+                list.add(new Aereo(
+                        resultSet.getString("CodiceAereo"),
+                        compagnia,
+                        resultSet.getInt("file"),
+                        resultSet.getInt("colonne")
                 ));
             }
         } catch (SQLException e){
@@ -38,21 +40,22 @@ public class CompagniaDao {
         return list;
     }
 
-    public Compagnia getByNome(String nome) throws SQLException {
+    public List<Aereo> getAereiByCompagnia(Compagnia compagnia) throws SQLException {
+        List<Aereo> list = new ArrayList();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        Compagnia comp = null;
+
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM compagnia WHERE nome = '" + nome + "'");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aereo WHERE compagnia = '" + compagnia.getNome() + "'");
             resultSet = statement.executeQuery();
-            if (resultSet.next())
-                comp = new Compagnia(
-                        resultSet.getString("nome"),
-                        resultSet.getString("sigla"),
-                        resultSet.getString("nazione"),
-                        resultSet.getFloat("pesomassimo"),
-                        resultSet.getFloat("prezzobagagli")
-                );
+            while (resultSet.next()) {
+                list.add(new Aereo(
+                        resultSet.getString("CodiceAereo"),
+                        compagnia,
+                        resultSet.getInt("file"),
+                        resultSet.getInt("colonne")
+                ));
+            }
         } catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -60,6 +63,8 @@ public class CompagniaDao {
             if (statement != null) statement.close();
             if (resultSet != null) resultSet.close();
         }
-        return comp;
+
+        return list;
     }
+
 }

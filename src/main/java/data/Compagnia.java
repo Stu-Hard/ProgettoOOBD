@@ -16,6 +16,11 @@ public class Compagnia {
         this.pesoMassimo = pesoMassimo;
     }
 
+    @Override
+    public String toString() {
+        return nome + "(" + sigla + ")";
+    }
+
     public String getNome() {
         return nome;
     }
