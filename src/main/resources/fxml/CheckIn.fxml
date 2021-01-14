@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="870.0" style=" -fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerCheckIn">
    <children>
-      <JFXTextField fx:id="bigliettoTextField" focusColor="#169429" layoutX="31.0" layoutY="86.0" prefHeight="17.0" prefWidth="191.0" promptText="Codice Biglietto" unFocusColor="#252323">
+      <JFXTextField fx:id="bigliettoTextField" focusColor="#169429" layoutX="66.0" layoutY="86.0" prefHeight="44.0" prefWidth="178.0" promptText="Codice Biglietto" unFocusColor="#252323">
          <font>
             <Font size="20.0" />
          </font></JFXTextField>
@@ -49,51 +49,51 @@
             <FontAwesomeIcon fill="#146b25" iconName="BUG" />
          </graphic>
       </Label>
-      <HBox fx:id="cartaImbarcoHbox" layoutX="31.0" layoutY="193.0" prefHeight="333.0" prefWidth="367.0" style="-fx-background-color: e0e0e0; -fx-background-radius: 25px;">
+      <HBox fx:id="cartaImbarcoHbox" layoutX="31.0" layoutY="193.0" prefHeight="333.0" prefWidth="367.0" style="-fx-background-color: #275228; -fx-background-radius: 25px;">
          <children>
             <VBox prefHeight="333.0" prefWidth="253.0" spacing="12.0" style="-fx-background-color: transparent;">
                <children>
-                  <Label prefHeight="26.0" prefWidth="131.0" text="Codice biglietto: ">
+                  <Label prefHeight="26.0" prefWidth="131.0" text="Codice biglietto: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Tratta: ">
+                  <Label text="Tratta: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="31.0" prefWidth="72.0" text="Classe: ">
+                  <Label prefHeight="31.0" prefWidth="72.0" text="Classe: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Posto: ">
+                  <Label text="Posto: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Gate: ">
+                  <Label text="Gate: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Nome: ">
+                  <Label text="Nome: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Cognome: ">
+                  <Label text="Cognome: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Codice Fiscale: ">
+                  <Label text="Codice Fiscale: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Numero documento: ">
+                  <Label text="Numero documento: " textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -105,47 +105,47 @@
             </VBox>
             <VBox prefHeight="333.0" prefWidth="225.0" spacing="12.0" style="-fx-background-color: transparent;">
                <children>
-                  <Label text="AB35678">
+                  <Label text="AB35678" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Barcellona-Napoli">
+                  <Label text="Barcellona-Napoli" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="Business">
+                  <Label text="Business" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="A12">
+                  <Label text="A12" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="12">
+                  <Label text="12" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="nome" text="Adriano">
+                  <Label fx:id="nome" text="Adriano" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="cognome" text="Celentano">
+                  <Label fx:id="cognome" text="Celentano" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="BCPL23P4512P890I">
+                  <Label text="BCPL23P4512P890I" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label text="c61717b">
+                  <Label text="c61717b" textFill="#e6ff2d">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -207,6 +207,11 @@
          </font>
          <graphic>
             <FontAwesomeIcon iconName="ANGLE_RIGHT" selectionFill="BLACK" size="25" strokeLineJoin="BEVEL" strokeType="INSIDE" wrappingWidth="8.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="cancelBtn" contentDisplay="CENTER" layoutX="11.0" layoutY="91.0" onAction="#restart" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20px; -fx-background-color: #dcdcdc;" textFill="#ffffff00">
+         <graphic>
+            <FontAwesomeIcon iconName="REMOVE" size="20px" />
          </graphic>
       </JFXButton>
    </children>

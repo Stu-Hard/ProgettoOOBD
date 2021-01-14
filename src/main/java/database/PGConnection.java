@@ -12,9 +12,9 @@ public class PGConnection {
     public static Connection getConnection(){
         try {
             if (connection == null || connection.isClosed()){
-                String url = "jdbc:postgresql://localhost:5432/GoAirlines";
-                String user = "postgres";
-                String pass = "pgPassword";
+                String url = "jdbc:postgresql://localhost:5432/" + System.getenv("DB");
+                String user = System.getenv("user");
+                String pass = System.getenv("pw");
                 try {
                     Class.forName("org.postgresql.Driver");
                     connection = DriverManager.getConnection(url, user, pass);

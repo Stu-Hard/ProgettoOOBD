@@ -1,7 +1,10 @@
 package controllers;
 
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +29,7 @@ public class ControllerCheckIn implements Initializable{
     @FXML
     Spinner<Integer> spinnerBagagli;
     @FXML
-    JFXButton verificaButton, inviaButton, numeroBagagliButton;
+    JFXButton verificaButton, inviaButton, numeroBagagliButton, cancelBtn;
     @FXML
     HBox bagagliHbox, cartaImbarcoHbox;
     @FXML
@@ -74,22 +77,57 @@ public class ControllerCheckIn implements Initializable{
         bagagliLabel.setVisible(false);
         numeroBagagliButton.setVisible(false);
 
+
+
+        inviaButton.disableProperty().bind(new BooleanBinding() {
+            {
+                super.bind(
+                        //todo abilita solo se ha inserito tutti i textField dei kg dei bagagli
+                );
+            }
+
+            @Override
+            protected boolean computeValue() {
+                return false;
+            }
+        });
+        verificaButton.disableProperty().bind(new BooleanBinding() {
+            {
+                super.bind(
+                        bigliettoTextField.textProperty()
+                );
+            }
+
+            @Override
+            protected boolean computeValue() {
+                return bigliettoTextField.getText().isEmpty();
+            }
+        });
+
     }
+
+
 
     public void invia(ActionEvent event) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CheckIn_ImbarcoConfirm.fxml"));
         Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.show();
         String bagagli = spinnerBagagli.getValue().toString();
+
+
         ControllerConfirmCheckImbarco controller = fxmlLoader.getController();
+        controller.setImbarcoCheckLabel("CheckIn");
+        controller.setIconCheckImbarco("BUG");
         controller.setBagagli(bagagli);
         controller.setPasseggero(nome.getText() +" "+ cognome.getText());
+
+
+        JFXAlert<Void> alert = new JFXAlert(nome.getScene().getWindow());
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(root);
+        alert.initModality(Modality.NONE);
+        alert.showAndWait();
 
         erroreLabel.setVisible(false);
         inviaButton.setVisible(false);
@@ -101,7 +139,22 @@ public class ControllerCheckIn implements Initializable{
     }
 
     public void imbarcaBagagli(ActionEvent event) {
+
+        //todo imbarcarli con il codice..
         bagagliHbox.setVisible(true);
         inviaButton.setVisible(true);
+    }
+
+
+    public void restart(ActionEvent event) {
+        bigliettoTextField.setText("");
+        erroreLabel.setVisible(false);
+        inviaButton.setVisible(false);
+        bagagliHbox.setVisible(false);
+        cartaImbarcoHbox.setVisible(false);
+        spinnerBagagli.setVisible(false);
+        bagagliLabel.setVisible(false);
+        numeroBagagliButton.setVisible(false);
+
     }
 }

@@ -128,30 +128,49 @@ CREATE TABLE CodaImbarco(
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
 
-/*
 CREATE TABLE Cliente(
-    CF VARCHAR(16) PRIMARY KEY, 
-    Nome VARCHAR(30) NOT NULL, 
-    Cognome VARCHAR(30) NOT NULL, 
-    Carta VARCHAR(9) NOT NULL, 
-    Passaporto VARCHAR(9),
-    Email VARCHAR(30) NOT NULL, 
-    Età INT NOT NULL
+      CF VARCHAR(16) PRIMARY KEY,
+      Nome VARCHAR(30) NOT NULL,
+      Cognome VARCHAR(30) NOT NULL,
+      Carta VARCHAR(9) NOT NULL,
+      Passaporto VARCHAR(9),
+      Email VARCHAR(30) NOT NULL,
+      Età INT NOT NULL
 );
 
+
 CREATE TABLE Biglietto(
-    CodiceBiglietto VARCHAR(8) PRIMARY KEY, 
-    Prezzo REAL NOT NULL, 
-    Fila CHAR NOT NULL, 
-    Posto INT NOT NULL, 
-    Classe EnumCoda NOT NULL, // foreign key su code
-    CheckIn BOOLEAN, 
+    CodiceBiglietto VARCHAR(8) PRIMARY KEY,
+    Prezzo REAL NOT NULL,
+    Fila CHAR(1) NOT NULL,
+    Posto INT NOT NULL,
+    Classe EnumCoda NOT NULL, /* foreign key su code */
+    CheckIn BOOLEAN,
     Imbarcato BOOLEAN,
     Numerovolo VARCHAR(8) NOT NULL,
     CF VARCHAR(16) NOT NULL,
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo),
     CONSTRAINT fk_CF FOREIGN KEY(CF) REFERENCES Cliente(CF)
 );
+
+CREATE TABLE Dipendente(
+           CodiceImpiegato VARCHAR(8) PRIMARY KEY,
+           Nome VARCHAR(30) NOT NULL,
+           Cognome VARCHAR(30) NOT NULL,
+           Email VARCHAR(30) NOT NULL,
+           Password VARCHAR(30) NOT NULL,
+           Ruolo EnumImpiegati NOT NULL,
+           Compagnia VARCHAR(30) NOT NULL,
+           CONSTRAINT fk_Company FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
+
+);
+
+insert into Dipendente values
+            ('1','Francesco', 'De Stasio', 'destasiofrancesco_@libero.it','password', 'Amministratore', 'Alitalia'),
+            ('2','Matteo', 'Gaudino', 'matteogaudino_@libero.it','password', 'Amministratore', 'Alitalia'),
+            ('3','Luca', 'Abete', 'lucabete@libero.it','password', 'TicketAgent', 'Ryanair')
+;
+/*
 
 CREATE TABLE Bagaglio(
     CodiceBagaglio VARCHAR(8) PRIMARY KEY,
@@ -179,13 +198,4 @@ CREATE TABLE UscitaEmergenza(
     CONSTRAINT fk_Sezione FOREIGN KEY(CodiceSezione) REFERENCES Sezione(CodiceSezione)
 );
 
-CREATE TABLE Dipendente(
-    CodiceImpiegato VARCHAR(8) PRIMARY KEY, 
-    Nome VARCHAR(30) NOT NULL, 
-    Cognome VARCHAR(30) NOT NULL, 
-    Email VARCHAR(30) NOT NULL, 
-    Password VARCHAR(30) NOT NULL, 
-    Ruolo EnumImpiegati NOT NULL, 
-    Compagnia VARCHAR(30) NOT NULL
-    CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
-); */
+ */

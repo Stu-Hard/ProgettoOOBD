@@ -1,9 +1,11 @@
 package customComponents;
 
 import com.jfoenix.controls.JFXButton;
+import data.Dipendente;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import enumeration.DipendentiEnum;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
@@ -15,6 +17,7 @@ public class DipendentiCard extends AnchorPane {
     private JFXButton bottoneUtente;
     private Label gerarchia;
     public AnchorPane pannello;
+
 
     public FontAwesomeIcon getUtente() {
         return utente;
@@ -76,18 +79,18 @@ public class DipendentiCard extends AnchorPane {
     }
     //Costruttore della DipendentiCard
 
-    public DipendentiCard(String bottoneUtente, DipendentiEnum gerarchia) {
+    public DipendentiCard(Dipendente dipendente) {
         try{
             caricaComponenti();
-            setBottoneUtente(bottoneUtente);
-            setGerarchia(gerarchia);
+            setGerarchia(dipendente.getRuolo());
+            bottoneUtente.setText(dipendente.getNome()+ " " + dipendente.getCognome());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-      private void caricaComponenti() throws IOException {
+    private void caricaComponenti() throws IOException {
           getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/DipendentiCard.fxml")));
           this.pannello = ((AnchorPane) lookup("#pannello"));
           this.gerarchia = ((Label) lookup("#gerarchia"));

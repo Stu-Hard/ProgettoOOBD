@@ -1,29 +1,21 @@
 package controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,7 +43,7 @@ public class ControllerImbarco implements Initializable {
     @FXML
     JFXTextField codiceTextField;
     @FXML
-    Label nome, cognome;
+    Label nome, cognome, imbarcoCheckLabel;
 
 
     /*
@@ -63,6 +55,10 @@ public class ControllerImbarco implements Initializable {
     SpinnerValueFactory<Integer> svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(minValue,maxValue,initialValue);
     //per settare le due frecce
     String spinnerClass =  Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL;
+
+
+
+
 
     //funzione per creare un codice del bagaglio in base a quanti sono
     int bagagli;
@@ -121,6 +117,7 @@ public class ControllerImbarco implements Initializable {
     }
 
 
+
     public void inviaCodes(ActionEvent actionEvent) throws IOException {
         List<Node> codiciBagagli = new ArrayList<>();
         if(!vboxLabel.getChildren().isEmpty() && !(spinnerBagagli.getValue() == 0)){
@@ -134,19 +131,29 @@ public class ControllerImbarco implements Initializable {
         /*message dialog controller*/
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CheckIn_ImbarcoConfirm.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initModality(Modality.APPLICATION_MODAL);
+        AnchorPane root = fxmlLoader.load();
+       //Scene scene = new Scene(root);
+       //Stage stage = new Stage();
+        //stage.initStyle(StageStyle.UNDECORATED);
+        //stage.initModality(Modality.APPLICATION_MODAL);
         Integer bagagliQuantita = codiciBagagli.size();
 
+
         ControllerConfirmCheckImbarco controller = fxmlLoader.getController();
+        controller.setImbarcoCheckLabel("Imbarco");
+        controller.setIconCheckImbarco("ANCHOR");
         controller.setBagagli(bagagliQuantita.toString());
         controller.setPasseggero(nome.getText() +" "+ cognome.getText());
 
-        stage.setScene(scene);
-        stage.show();
+
+        JFXAlert<Void> alert = new JFXAlert(vboxLabel.getScene().getWindow());
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(root);
+        alert.initModality(Modality.NONE);
+        alert.showAndWait();
+        //stage.setScene(scene);
+        //stage.show();
 
         /*message dialog controller*/
 
@@ -200,7 +207,33 @@ public class ControllerImbarco implements Initializable {
         erroreLabel.setVisible(false);
         hboxCartaImbarco.setVisible(false);
         inviaButton.setVisible(false);
+
+
+        verificaButton.disableProperty().bind(new BooleanBinding() {
+            {
+                super.bind(
+                        codiceTextField.textProperty()
+                );
+            }
+
+            @Override
+            protected boolean computeValue() {
+                return codiceTextField.getText().isEmpty();
+            }
+        });
+
     }
 
-}
+    //evento del cancelBtn
+    public void restart(ActionEvent event) {
+        codiceTextField.setText("");
+        hboxCodiciBagagli.setVisible(false);
+        labelBagagli.setVisible(false);
+        bagagliButton.setVisible(false);
+        spinnerBagagli.setVisible(false);
+        erroreLabel.setVisible(false);
+        hboxCartaImbarco.setVisible(false);
+        inviaButton.setVisible(false);
 
+    }
+}
