@@ -46,7 +46,9 @@ public class AereoDao {
         ResultSet resultSet = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aereo WHERE compagnia = '" + compagnia.getNome() + "'");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aereo WHERE compagnia = ?");
+            statement.setString(1, compagnia.getNome());
+
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new Aereo(
@@ -63,8 +65,34 @@ public class AereoDao {
             if (statement != null) statement.close();
             if (resultSet != null) resultSet.close();
         }
-
         return list;
     }
 
+    public Aereo getAereoByCode(String codiceAereo) throws SQLException {
+        Aereo aereo = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aereo WHERE codiceaereo = ?");
+            statement.setString(1, codiceAereo);
+            resultSet = statement.executeQuery();
+            CompagniaDao compDao = new CompagniaDao();
+            if (resultSet.next()) {
+                aereo = new Aereo(
+                        resultSet.getString("CodiceAereo"),
+                        compDao.getByNome(resultSet.getString("compagnia")),
+                        resultSet.getInt("file"),
+                        resultSet.getInt("colonne")
+                );
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return aereo;
+    }
 }

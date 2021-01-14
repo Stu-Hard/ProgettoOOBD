@@ -1,14 +1,8 @@
 package controllers;
 
 import com.jfoenix.controls.*;
-import data.Aereo;
-import data.Aeroporto;
-import data.Compagnia;
-import data.Tratta;
-import database.dao.AereoDao;
-import database.dao.AeroportoDao;
-import database.dao.CompagniaDao;
-import database.dao.TrattaDao;
+import data.*;
+import database.dao.*;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import utility.WindowDragger;
@@ -37,6 +32,14 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     JFXComboBox<Aereo> aerei;
 
     @FXML
+    JFXComboBox<Gate> gate;
+    @FXML
+    JFXCheckBox conclusa;
+    @FXML
+    Label gateLbl;
+
+
+    @FXML
     JFXDatePicker data;
     @FXML
     JFXTimePicker ora;
@@ -46,6 +49,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     @FXML
     JFXButton conferma;
 
+    // solo per prova
     public String randomStr() {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
@@ -72,6 +76,16 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     }
 
     @FXML
+    public void disableGate(ActionEvent e){
+        gate.setDisable(!conclusa.isSelected());
+        gateLbl.setDisable(gate.isDisable());
+        if (gate.isDisable()){
+            gate.getSelectionModel().clearSelection();
+
+        }
+    }
+
+    @FXML
     public void conferma(ActionEvent e){
         Tratta tratta = new Tratta(
                 compagnia.getValue().getSigla() + randomStr(),
@@ -79,13 +93,13 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                 ora.getValue(),
                 Integer.parseInt(durata.getText()),
                 0,
-                false,
+                conclusa.isSelected(),
+                (conclusa.isSelected())? gate.getValue().getGateCode(): null,
                 compagnia.getValue(),
                 partenza.getValue(),
                 arrivo.getValue(),
                 aerei.getValue()
         );
-        System.out.println(tratta);
         try {
             new TrattaDao().add(tratta);
         } catch (SQLException throwables) {
@@ -119,7 +133,9 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                         arrivo.valueProperty(),
                         data.valueProperty(),
                         arrivo.valueProperty(),
-                        durata.textProperty());
+                        durata.textProperty(),
+                        gate.valueProperty(),
+                        conclusa.selectedProperty());
             }
             @Override
             protected boolean computeValue() {
@@ -130,7 +146,8 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                         data.getValue() == null ||
                         ora.getValue() == null ||
                         arrivo.getValue() == null ||
-                        durata.getText().isEmpty();
+                        durata.getText().isEmpty() ||
+                        (conclusa.isSelected() && gate.getValue() == null);
             }
         });
 
@@ -145,6 +162,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
             List<Aeroporto> a = new AeroportoDao().getAeroporti();
             partenza.getItems().addAll(a);
             arrivo.getItems().addAll(a);
+            gate.getItems().addAll(new GateDao().getGateCodes());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

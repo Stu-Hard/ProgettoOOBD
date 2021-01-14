@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="550.0" prefWidth="900.0" styleClass="background" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratteInfo">
    <children>
@@ -49,7 +54,7 @@
                         <FontAwesomeIcon iconName="LONG_ARROW_UP" />
                      </graphic>
                   </Label>
-                  <Label text="Arrivo" textFill="WHITE">
+                  <Label text="Durata" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -70,7 +75,7 @@
                         <Font size="24.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIcon iconName="TICKET" />
+                        <FontAwesomeIcon iconName="TH_LARGE" />
                      </graphic>
                   </Label>
                   <Label text="Aereo" textFill="WHITE">
@@ -89,6 +94,11 @@
                         <FontAwesomeIcon iconName="STREET_VIEW" />
                      </graphic>
                   </Label>
+                  <JFXCheckBox fx:id="completata" allowIndeterminate="true" checkedColor="TEAL" disable="true" style="-fx-opacity: 1;" text="Completata" textFill="WHITE" unCheckedColor="BLACK">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXCheckBox>
                </children>
             </VBox>
             <VBox spacing="15.0">
@@ -103,7 +113,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="dataArrivo" prefHeight="35.0" text="--/--/---- --:--" textFill="WHITE">
+                  <Label fx:id="durata" prefHeight="35.0" text="--''" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -113,7 +123,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="gate" text="A0" textFill="WHITE">
+                  <Label fx:id="gate" text="--" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -140,21 +150,25 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </LineChart>
-      <JFXButton fx:id="closeBtn" layoutX="775.0" layoutY="486.0" onAction="#close" opacity="0.7" prefHeight="45.0" prefWidth="99.0" style="-fx-background-color: red;" text="Chiudi" textFill="WHITE">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <graphic>
-            <FontAwesomeIcon iconName="TIMES_CIRCLE" />
-         </graphic>
-      </JFXButton>
-      <JFXButton fx:id="acquistaBtn" layoutX="648.0" layoutY="486.0" onAction="#buyTicket" prefHeight="45.0" prefWidth="117.0" style="-fx-background-color: teal;" text="Acquista" textFill="WHITE">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <graphic>
-            <FontAwesomeIcon iconName="DOLLAR" />
-         </graphic>
-      </JFXButton>
+      <HBox layoutX="648.0" layoutY="486.0">
+         <children>
+            <JFXButton fx:id="closeBtn" onAction="#close" opacity="0.47" prefHeight="45.0" prefWidth="99.0" style="-fx-background-radius: 0;" text="Chiudi" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon fill="RED" iconName="TIMES_CIRCLE" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="acquistaBtn" onAction="#buyTicket" prefHeight="45.0" prefWidth="117.0" style="-fx-background-color: teal; -fx-background-radius: 0;" text="Acquista" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" iconName="DOLLAR" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

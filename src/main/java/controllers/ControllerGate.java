@@ -3,12 +3,16 @@ package controllers;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import customComponents.GateCard;
+import customComponents.GateCardPopup;
 import customComponents.TrattaHbox;
+import data.CodaImbarco;
 import data.Gate;
 import data.Tratta;
+import database.dao.CodaImbarcoDao;
 import database.dao.GateDao;
 import database.dao.TrattaDao;
 import enumeration.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -94,6 +98,83 @@ public class ControllerGate implements Initializable {
         }*/
     }
 
+    private void showImpostaTratta(GateCard gCard, GateCardPopup popup){
+        JFXListView<TrattaHbox> l = new JFXListView<>();
+        l.setPrefSize(820, 300);
+        try {
+            new TrattaDao().getAllTratte().forEach(t -> {
+                l.getItems().add(new TrattaHbox(t));
+            });
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+        JFXAlert<Void> alert = new JFXAlert(flowPane.getScene().getWindow());
+        alert.setOverlayClose(true);
+        alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        alert.setContent(l);
+        alert.initModality(Modality.NONE);
+        l.setOnMouseClicked( e1 -> {
+            TrattaHbox t = l.getSelectionModel().getSelectedItem();
+            if (t != null){
+                gCard.getGate().setTratta(t.getTratta());
+                // todo aggiorna la colonna gate in tratta nel db
+                //gCard.updateLabels();
+                //alert.hide();
+                impostaCode(gCard, alert, popup);
+            }
+        });
+        alert.showAndWait();
+    }
+
+    private void impostaCode(GateCard gCard, JFXAlert<Void> alert, GateCardPopup popup){
+        VBox v = new VBox();
+        VBox v2 = new VBox();
+        JFXCheckBox diversamenteAbili = new JFXCheckBox("Diversamente abili");
+        JFXCheckBox famiglie = new JFXCheckBox("Famiglie");
+        JFXCheckBox business = new JFXCheckBox("Business");
+        JFXCheckBox priority = new JFXCheckBox("Priority");
+        JFXCheckBox economy = new JFXCheckBox("Economy");
+
+        JFXButton conferma = new JFXButton("Conferma");
+        conferma.setStyle("-fx-font-size: 15; -fx-background-radius: 0");
+
+        v.getChildren().addAll(diversamenteAbili, famiglie, business, priority, economy);
+        v.getChildren().forEach(n -> {
+            n.setStyle("-fx-font-size: 15");
+            ((JFXCheckBox) n).setSelected(true);
+        });
+        v.setSpacing(15);
+        v.setPadding(new Insets(20));
+        v2.getChildren().addAll(v, conferma);
+
+        conferma.setOnAction(e -> {
+            if (diversamenteAbili.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.DIVERSAMENTE_ABILI));
+            if (famiglie.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.FAMIGLIE));
+            if (business.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.BUSINESS));
+            if (priority.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.PRIORITY));
+            if (economy.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.ECONOMY));
+
+            try {
+                new GateDao().update(gCard.getGate());
+                CodaImbarcoDao codaImbarcoDao = new CodaImbarcoDao();
+                gCard.getGate().getCodeImbarco().forEach(codaImbarco -> {
+                    try {
+                        codaImbarcoDao.add(codaImbarco, gCard.getGate());
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                });
+                gCard.updateLabels();
+                popup.setOccupato();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            alert.hide();
+        });
+        alert.setContent(v2);
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         searchMode.getItems().addAll("Codice", "Coda");
@@ -116,92 +197,18 @@ public class ControllerGate implements Initializable {
 
 
         try {
+            CodaImbarcoDao codaImbarcoDao = new CodaImbarcoDao();
             new GateDao().getGateCodes().forEach(g ->{
+                try {
+                    if (g.getStatus() == GateStatus.OCCUPATO)
+                        g.setCodeImbarco(codaImbarcoDao.getByGateAndTratta(g));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 GateCard gCard = new GateCard(g);
-                JFXPopup popup = new JFXPopup();
-
-                VBox v = new VBox();
-
-                JFXButton chiudi = new JFXButton("Chiudi");
-                chiudi.setStyle("-fx-background-radius: 0");
-                JFXButton libera = new JFXButton("Libera");
-                libera.setStyle("-fx-background-radius: 0");
-                JFXButton impostaTratta = new JFXButton("Imposta Tratta");
-                impostaTratta.setStyle("-fx-background-radius: 0");
-
-                chiudi.setPrefWidth(100);
-                libera.setPrefWidth(100);
-                impostaTratta.setPrefWidth(100);
-
-                JFXButton terminaImbarco = new JFXButton("Termina imbarco");
-                terminaImbarco.setStyle("-fx-background-radius: 0");
-                //terminaImbarco.setPrefWidth(100);
-
-                chiudi.setOnAction(e -> {
-                    gCard.getGate().close();
-                    gCard.updateLabels();
-                    impostaTratta.setDisable(true);
-                });
-
-                libera.setOnAction(e ->{
-                    gCard.getGate().open();
-                    gCard.updateLabels();
-                    impostaTratta.setDisable(false);
-                });
-
-                impostaTratta.setOnAction(e -> {
-                    JFXListView<TrattaHbox> l = new JFXListView<>();
-                    try {
-                        new TrattaDao().getAllTratte().forEach(t -> {
-                            l.getItems().add(new TrattaHbox(t));
-                        });
-                        l.setPrefSize(820, 300);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-
-                    JFXAlert<Void> alert = new JFXAlert(gCard.getScene().getWindow());
-                    alert.setOverlayClose(true);
-                    alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                    alert.setContent(l);
-                    alert.initModality(Modality.NONE);
-                    l.setOnMouseClicked( e1 -> {
-                        TrattaHbox t = l.getSelectionModel().getSelectedItem();
-                        if (t != null){
-                            gCard.getGate().setTratta(t.getTratta());
-                            // todo aggiorna la colonna gate in tratta nel db
-                            gCard.updateLabels();
-                            alert.hide();
-                            v.getChildren().removeAll(chiudi, libera, impostaTratta);
-                            v.getChildren().add(terminaImbarco);
-                        }
-                    });
-                    alert.showAndWait();
-                });
-
-                terminaImbarco.setOnAction(e ->{
-                    gCard.getGate().end();
-                    gCard.updateLabels();
-                    v.getChildren().remove(terminaImbarco);
-                    v.getChildren().addAll(chiudi, libera, impostaTratta);
-                });
-
-                v.getChildren().addAll(
-                        chiudi,
-                        libera,
-                        impostaTratta
-                );
-
-                popup.setPopupContent(v);
-                gCard.setOnMouseClicked(m ->{
-                    if (m.getButton() == MouseButton.SECONDARY){
-                        popup.show(gCard.getScene().getWindow(), m.getSceneX(), m.getSceneY(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 0, 0);
-                    }
-                });
+                GateCardPopup popup = new GateCardPopup(gCard);
+                popup.setImpostaTratta(e -> showImpostaTratta(gCard, popup));
                 flowPane.getChildren().add(gCard);
-
-
-
             });
         } catch (SQLException e){
             e.printStackTrace();

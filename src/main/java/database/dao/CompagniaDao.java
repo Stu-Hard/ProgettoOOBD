@@ -43,7 +43,8 @@ public class CompagniaDao {
         ResultSet resultSet = null;
         Compagnia comp = null;
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM compagnia WHERE nome = '" + nome + "'");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM compagnia WHERE nome = ?");
+            statement.setString(1, nome);
             resultSet = statement.executeQuery();
             if (resultSet.next())
                 comp = new Compagnia(

@@ -41,7 +41,8 @@ public class AeroportoDao {
         ResultSet resultSet = null;
         Aeroporto aeroporto = null;
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aeroporto WHERE codice = '" + icao + "'");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aeroporto WHERE codice = ?");
+            statement.setString(1, icao);
             resultSet = statement.executeQuery();
             if (resultSet.next())
                 aeroporto = new Aeroporto(resultSet.getString("codice"), resultSet.getString("nome"), resultSet.getString("citta"));

@@ -38,13 +38,14 @@ public class Tratta {
         this.aereoportoArrivo = getAereoportoArrivo;
     }
 
-    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo, Aereo aereo) {
+    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, String gate, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo, Aereo aereo) {
         this.numeroVolo = numeroVolo;
         this.dataPartenza = dataPartenza;
         this.oraPartenza = oraPartenza;
         this.durataVolo = durataVolo;
         this.ritardo = ritardo;
         this.conclusa = conclusa;
+        this.gate = gate;
         this.compagnia = compagnia;
         this.aereoportoPartenza = aereoportoPartenza;
         this.aereoportoArrivo = aereoportoArrivo;
@@ -60,6 +61,7 @@ public class Tratta {
                 ", " + durataVolo +
                 ", " + ritardo +
                 ", " + conclusa +
+                ", '" + gate + '\'' +
                 ", '" + aereo.getCodice() + '\'' +
                 ", '" + compagnia.getNome() + '\'' +
                 ", '" + aereoportoPartenza.getCodiceICAO() + '\'' +
@@ -72,6 +74,10 @@ public class Tratta {
     }
     public String getOraPartenzaFormatted(){
         return timeFormat.format(oraPartenza);
+    }
+
+    public boolean isConclusa() {
+        return conclusa;
     }
 
     public Aereo getAereo() {

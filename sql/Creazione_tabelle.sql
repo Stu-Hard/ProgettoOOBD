@@ -3,11 +3,17 @@ DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 
 CREATE TYPE EnumCoda AS ENUM(
-    'famiglie', 
-    'diversamenteAbili' , 
-    'priority', 
-    'business', 
-    'economy'
+    'DIVERSAMENTE_ABILI',
+    'FAMIGLIE',
+    'BUSINESS',
+    'PRIORITY',
+    'ECONOMY'
+);
+
+CREATE TYPE GateStatus AS ENUM(
+    'LIBERO',
+    'OCCUPATO',
+    'CHIUSO'
 );
 
 CREATE TYPE EnumCitta AS ENUM(
@@ -51,7 +57,9 @@ insert into Aeroporto values
                              ('UUDD', 'Domodedovo', 'Mosca');
 
 CREATE TABLE Gate(
-    CodiceGate VARCHAR(4) PRIMARY KEY CHECK (UPPER(CodiceGate) = CodiceGate) /*tra lettere e numeri sono 36^4 gate possibili... Pattern standard: A1, B3, C20...*/
+    CodiceGate VARCHAR(4) PRIMARY KEY CHECK (UPPER(CodiceGate) = CodiceGate), /*tra lettere e numeri sono 36^4 gate possibili... Pattern standard: A1, B3, C20...*/
+    Stato GateStatus DEFAULT 'LIBERO' NOT NULL,
+    Tratta VARCHAR(8)
 );
 insert into Gate values
                         ('A0'), ('A1'), ('A2'), ('A3'), ('A4'), ('A5'),
@@ -95,33 +103,36 @@ insert into Aereo values
                          ('LY5NNHJ7', 'Ryanair', 33, 6);
 
 CREATE TABLE Tratta(
-    NumeroVolo VARCHAR(8) PRIMARY KEY, 
+    NumeroVolo VARCHAR(8) PRIMARY KEY CHECK (UPPER(NumeroVolo) = NumeroVolo),
     DataPartenza DATE NOT NULL, 
     OraPartenza TIME NOT NULL, 
     DurataVolo INT NOT NULL CHECK(DurataVolo > 0),
     Ritardo INT DEFAULT 0 CHECK(DurataVolo + Ritardo > 0), /*è possibile che l'aereo ci metta meno tempo del previsto e quindi il ritardo sia negativo*/
     Conclusa BOOLEAN DEFAULT FALSE NOT NULL,
-    CodiceAereo VARCHAR(8) NOT NULL,
+    CodiceGate VARCHAR(4) CHECK ((Conclusa or CodiceGate IS NULL) AND (CodiceGate IS NOT NULL or NOT Conclusa)), /* è conclusa se e solo se gate è not null*/
+    CodiceAereo VARCHAR(8) NOT NULL CHECK (UPPER(CodiceAereo) = CodiceAereo),
     Compagnia VARCHAR(30) NOT NULL, 
     AeroportoPartenza VARCHAR(4) NOT NULL, 
     AeroportoArrivo VARCHAR(4) NOT NULL,
     CONSTRAINT fk_Aereo FOREIGN KEY(CodiceAereo) REFERENCES Aereo(CodiceAereo),
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
+    CONSTRAINT fk_Gate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
     CONSTRAINT fk_AeroportoA FOREIGN KEY(AeroportoArrivo) REFERENCES Aeroporto(Codice),
     CONSTRAINT fk_AeroportoB FOREIGN KEY(AeroportoPartenza) REFERENCES Aeroporto(Codice)
 );
 
+ALTER TABLE Gate ADD CONSTRAINT fk_Tratta FOREIGN KEY(Tratta) REFERENCES Tratta(NumeroVolo);
+
 insert into Tratta values
-                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL' ),
-                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, TRUE, 'LY5NNHJ7', 'Ryanair', 'EGLC', 'LIRN'),
-                          ('VLGuAZ8', '2021-01-05', '21:18:00', 111, 0, false, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL')
-;
+                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, NULL, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL' ),
+                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, TRUE, 'A0', 'LY5NNHJ7', 'Ryanair', 'EGLC', 'LIRN'),
+                          ('VLGUAZ84', '2021-01-05', '21:18:00', 111, 0, false, NULL, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL');
 
 CREATE TABLE CodaImbarco(
     CodiceCoda VARCHAR(8) PRIMARY KEY,
-    TempoStimato INT NOT NULL, 
-    TempoEffettivo INT, 
-    Classe EnumCoda  NOT NULL, 
+    TempoStimato INT NOT NULL,
+    TempoEffettivo INT,
+    Classe EnumCoda  NOT NULL,
     CodiceGate VARCHAR(4)  NOT NULL,
     NumeroVolo VARCHAR(8) NOT NULL,
     CONSTRAINT fk_CodiceGate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),

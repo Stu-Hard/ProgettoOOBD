@@ -1,7 +1,6 @@
 package customComponents;
 
 import data.Gate;
-import data.Tratta;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
 import enumeration.CodeEnum;
@@ -57,17 +56,19 @@ public class GateCard extends Pane{
     }
 
     // ablilita le code di imbarco
-    public void enableCode(CodeEnum... code){
-        for (CodeEnum c : code)
-            (lookup("#" + c.toString())).setDisable(false);
+    public void enableCode(CodeEnum... coda){
+        for (CodeEnum c : coda)
+            (code.lookup("#" + c.toString())).setDisable(false);
     }
     // disabilita le code
-    public void disableCode(CodeEnum ... code){
-        for (CodeEnum c : code)
-            (lookup("#" + c.toString())).setDisable(true);
+    public void disableCode(CodeEnum ... coda){
+        for (CodeEnum c : coda)
+            (code.lookup("#" + c.toString())).setDisable(true);
+    }
+    public void disableAllCode(){
+        code.getChildren().forEach(n -> n.setDisable(true));
     }
 
-    // costruttore con pià informazioni
     public GateCard(Gate gate){
         try {
             this.gate = gate;
@@ -85,6 +86,8 @@ public class GateCard extends Pane{
             arrivo.setText(gate.getTratta().getAereoportoArrivo().getCitta());
         }
         setStato(gate.getStatus());
+        disableAllCode();
+        enableCode(gate.getCodeArray());
         setTempo(null); // tempo stimato per l'imbarco.
     }
 
