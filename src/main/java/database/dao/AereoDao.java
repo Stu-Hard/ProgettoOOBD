@@ -29,7 +29,7 @@ public class AereoDao {
                         resultSet.getInt("colonne")
                 ));
             }
-        } catch (SQLException e){
+        } catch (SQLException | NullPointerException e){
             e.printStackTrace();
         } finally {
             if (PGConnection.getConnection() != null) PGConnection.getConnection().close();

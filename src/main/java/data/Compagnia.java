@@ -56,6 +56,7 @@ public class Compagnia {
     public void setPrezzoBagagli(Float prezzoBagagli) {
         this.prezzoBagagli = prezzoBagagli;
     }
+
     public Float getPesoMassimo() {
         return pesoMassimo;
     }

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import customComponents.DipendentiCard;
 import customComponents.GateCard;
+import database.dao.DipendentiDao;
 import enumeration.DipendentiEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.layout.FlowPane;
 
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +60,18 @@ public class ControllerDipendenti implements Initializable {
 
         DipendentiList = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        try {
+            new DipendentiDao().getDipendenti().forEach(n ->{
+                    DipendentiCard dipendentiCard = new DipendentiCard(n);
+                    flowPane.getChildren().add(dipendentiCard);
+            });
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        scrollPane.setContent(flowPane);
+
+       /* for (int i = 0; i < 10; i++) {
             DipendentiCard dipendentiCard;
             int r = (int) (Math.random()*4);
             switch (r){
@@ -71,7 +84,7 @@ public class ControllerDipendenti implements Initializable {
             DipendentiList.add(dipendentiCard);
             flowPane.getChildren().add(dipendentiCard);
         }
-        scrollPane.setContent(flowPane);
+        scrollPane.setContent(flowPane);*/
     }
 
 

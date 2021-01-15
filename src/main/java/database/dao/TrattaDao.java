@@ -46,7 +46,7 @@ public class TrattaDao {
                 );
                 list.add(tratta);
             }
-        } catch (SQLException e){
+        } catch (SQLException | NullPointerException e){
             e.printStackTrace();
         } finally {
             if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
