@@ -5,14 +5,17 @@ import enumeration.CodeEnum;
 public class Biglietto {
     private String codiceBiglietto;
     private double prezzo;
-    private char fila;
+    private String fila;
     private int posto;
-    private CodeEnum classe;
+    private String classe;
     private boolean checkIn, imbarcato;
     private String numeroVolo;
     private String cF;
 
-    public Biglietto(String codiceBiglietto, double prezzo, char fila, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, String cF) {
+    public Biglietto() {
+    }
+
+    public Biglietto(String codiceBiglietto, double prezzo, String fila, int posto, String classe, boolean checkIn, boolean imbarcato, String numeroVolo, String cF) {
         this.codiceBiglietto = codiceBiglietto;
         this.prezzo = prezzo;
         this.fila = fila;
@@ -40,11 +43,11 @@ public class Biglietto {
         this.prezzo = prezzo;
     }
 
-    public char getFila() {
+    public String getFila() {
         return fila;
     }
 
-    public void setFila(char fila) {
+    public void setFila(String fila) {
         this.fila = fila;
     }
 
@@ -56,11 +59,11 @@ public class Biglietto {
         this.posto = posto;
     }
 
-    public CodeEnum getClasse() {
+    public String getClasse() {
         return classe;
     }
 
-    public void setClasse(CodeEnum classe) {
+    public void setClasse(String classe) {
         this.classe = classe;
     }
 

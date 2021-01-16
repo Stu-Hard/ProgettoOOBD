@@ -2,6 +2,13 @@ package controllers;
 
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
+import data.Aeroporto;
+import data.Biglietto;
+import data.Cliente;
+import data.Tratta;
+import database.dao.BigliettoDao;
+import database.dao.ClienteDao;
+import database.dao.TrattaDao;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,10 +25,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.util.*;
 
 public class ControllerImbarco implements Initializable {
     @FXML
@@ -43,7 +48,8 @@ public class ControllerImbarco implements Initializable {
     @FXML
     JFXTextField codiceTextField;
     @FXML
-    Label nome, cognome, imbarcoCheckLabel;
+    Label nome, cognome, imbarcoCheckLabel, codiceBiglietto, tratta,
+            classe, posto, gate, cf, documentoNumero;
 
 
     /*
@@ -101,20 +107,55 @@ public class ControllerImbarco implements Initializable {
     /*END: funzione che restituisce una stringa random e attributi che lo permettono */
 
     //dopo la verifica dei bagagli
-    public void verificaBagagli(ActionEvent actionEvent){
+    public void verificaBagagli(ActionEvent actionEvent) throws SQLException {
 
         //todo if codice è corretto allora..
 
-            hboxCodiciBagagli.setVisible(true);
-            labelBagagli.setVisible(true);
-            bagagliButton.setVisible(true);
-            spinnerBagagli.setVisible(true);
-            hboxCartaImbarco.setVisible(true);
-        /* todo else
-        * erroreLabel.setVisible(true)
-        *
-        * */
+
+        BigliettoDao bDao = new BigliettoDao();
+
+        Biglietto biglietto = bDao.getBigliettoByCodice(codiceTextField.getText());
+        if(biglietto != null){
+            if (biglietto.isCheckIn() == true) {
+                TrattaDao trattaDao = new TrattaDao();
+
+                Tratta trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
+                ClienteDao clienteDao = new ClienteDao();
+                Cliente cliente = clienteDao.getClienteByCf(biglietto.getcF());
+
+                Aeroporto partenza = trattastring.getAereoportoPartenza();
+                Aeroporto arrivo = trattastring.getAereoportoArrivo();
+
+                codiceBiglietto.setText(biglietto.getCodiceBiglietto());
+                tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
+                classe.setText(biglietto.getClasse());
+                posto.setText(biglietto.getFila() + biglietto.getPosto());        // dai il risultato
+                gate.setText(trattastring.getGate());
+                cf.setText(biglietto.getcF());
+                documentoNumero.setText(cliente.getPassaporto());
+                nome.setText(cliente.getNome());
+                cognome.setText(cliente.getCognome());
+
+                hboxCodiciBagagli.setVisible(true);         //dai risultato
+                labelBagagli.setVisible(true);
+                bagagliButton.setVisible(true);
+                spinnerBagagli.setVisible(true);
+                hboxCartaImbarco.setVisible(true);
+            }else{
+                if(biglietto.isCheckIn() == false){
+                    erroreLabel.setText("Errore -> non e' ancora stato fatto il checkIn");
+                }else{
+                    erroreLabel.setText("Errore");
+                }
+                erroreLabel.setVisible(true);
+            }
+        }else{
+
+        }
+
     }
+
+
 
 
 

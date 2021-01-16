@@ -146,9 +146,12 @@ CREATE TABLE Cliente(
       Carta VARCHAR(9) NOT NULL,
       Passaporto VARCHAR(9),
       Email VARCHAR(30) NOT NULL,
-      Età INT NOT NULL
+      Eta INT NOT NULL
 );
 
+insert into Cliente values
+                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'Identita', 'FF0FF0FF0', 'destasiofrancesco@libero.it', 20)
+;
 
 CREATE TABLE Biglietto(
     CodiceBiglietto VARCHAR(8) PRIMARY KEY,
@@ -163,6 +166,11 @@ CREATE TABLE Biglietto(
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo),
     CONSTRAINT fk_CF FOREIGN KEY(CF) REFERENCES Cliente(CF)
 );
+
+insert into Biglietto values
+                             ('ABCDEFGH', 20, 'A', 1, 'PRIORITY',FALSE, FALSE, 'VLG87937', 'DSTFNC00R06F839I')
+;
+
 
 CREATE TABLE Dipendente(
            CodiceImpiegato VARCHAR(8) PRIMARY KEY,

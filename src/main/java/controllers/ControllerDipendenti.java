@@ -64,6 +64,7 @@ public class ControllerDipendenti implements Initializable {
             new DipendentiDao().getDipendenti().forEach(n ->{
                     DipendentiCard dipendentiCard = new DipendentiCard(n);
                     flowPane.getChildren().add(dipendentiCard);
+                    DipendentiList.add(dipendentiCard);
             });
 
         } catch (SQLException throwables) {
@@ -71,20 +72,6 @@ public class ControllerDipendenti implements Initializable {
         }
         scrollPane.setContent(flowPane);
 
-       /* for (int i = 0; i < 10; i++) {
-            DipendentiCard dipendentiCard;
-            int r = (int) (Math.random()*4);
-            switch (r){
-                case 0 -> dipendentiCard = new DipendentiCard("Lele", DipendentiEnum.ADDETTO_IMBARCO);
-                case 1 -> dipendentiCard = new DipendentiCard("Mamma frocia", DipendentiEnum.TICKET_AGENT);
-                case 2 -> dipendentiCard = new DipendentiCard("Trota", DipendentiEnum.RESPONSABILE_VOLI);
-                case 3 -> dipendentiCard = new DipendentiCard("Giada", DipendentiEnum.AMMINISTRATORE);
-                default -> throw new IllegalStateException("Unexpected value: " + r);
-            }
-            DipendentiList.add(dipendentiCard);
-            flowPane.getChildren().add(dipendentiCard);
-        }
-        scrollPane.setContent(flowPane);*/
     }
 
 

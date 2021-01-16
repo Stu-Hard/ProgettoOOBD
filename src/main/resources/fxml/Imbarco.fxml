@@ -25,9 +25,9 @@
                 <Font size="19.0" />
             </font>
         </JFXButton>
-        <Label fx:id="erroreLabel" layoutX="471.0" layoutY="85.0" prefHeight="48.0" prefWidth="203.0" text="Errore --&gt; exception" textFill="RED">
+        <Label fx:id="erroreLabel" layoutX="471.0" layoutY="85.0" prefHeight="48.0" prefWidth="399.0" text="Errore --&gt; exception" textFill="RED">
             <font>
-                <Font size="21.0" />
+                <Font size="16.0" />
             </font>
         </Label>
         <JFXButton fx:id="verificaButton" layoutX="339.0" layoutY="93.0" onAction="#verificaBagagli" onMouseEntered="#changeColor" onMouseExited="#backingColor" prefHeight="35.0" prefWidth="77.0" style="-fx-background-color: #1d487c;" text="Verifica" textFill="WHITE">
@@ -104,27 +104,27 @@
                 </VBox>
                 <VBox prefHeight="333.0" prefWidth="212.0" spacing="12.0">
                     <children>
-                        <Label text="AB35678" textFill="#fff200">
+                        <Label fx:id="codiceBiglietto" text="AB35678" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="Barcellona-Napoli" textFill="#fff200">
+                        <Label fx:id="tratta" text="Barcellona-Napoli" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="Business" textFill="#fff200">
+                        <Label fx:id="classe" text="Business" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="A12" textFill="#fff200">
+                        <Label fx:id="posto" text="A12" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="12" textFill="#fff200">
+                        <Label fx:id="gate" text="12" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
@@ -139,12 +139,12 @@
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="BCPL23P4512P890I" textFill="#fff200">
+                        <Label fx:id="cf" text="BCPL23P4512P890I" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label text="c61717b" textFill="#fff200">
+                        <Label fx:id="documentoNumero" text="c61717b" textFill="#fff200">
                             <font>
                                 <Font size="17.0" />
                             </font>
