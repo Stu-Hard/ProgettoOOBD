@@ -1,16 +1,15 @@
 package database.dao;
 
+import data.CodaImbarco;
 import data.Compagnia;
 import data.Gate;
 import data.Tratta;
 import database.PGConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class GateDao {
     public List<Gate> getGateCodes() throws SQLException {
@@ -23,7 +22,12 @@ public class GateDao {
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tratta tratta = new TrattaDao().getByNumeroVolo(resultSet.getString("tratta"));
-                list.add(new Gate(resultSet.getString("CodiceGate"), tratta));
+                List<CodaImbarco> code = new ArrayList();
+                if (tratta != null)
+                    code = new CodaImbarcoDao().getByGateAndTratta(resultSet.getString("CodiceGate"), tratta.getNumeroVolo());
+                Boolean chiuso = false;
+                if (resultSet.getString("stato").toUpperCase().contains("CHIUSO")) chiuso = true;
+                list.add(new Gate(resultSet.getString("CodiceGate"), tratta, code, chiuso));
             }
         } catch (SQLException | NullPointerException e){
             e.printStackTrace();
@@ -42,7 +46,10 @@ public class GateDao {
 
         try {
             statement = PGConnection.getConnection().prepareStatement(String.format("UPDATE gate SET stato = '%s', tratta = ? WHERE codicegate = ?", gate.getStatus().toString()));
-            statement.setString(1, gate.getTratta().getNumeroVolo());
+            if (gate.getTratta() != null)
+                statement.setString(1, gate.getTratta().getNumeroVolo());
+            else
+                statement.setNull(1, Types.VARCHAR);
             statement.setString(2, gate.getGateCode());
             statement.executeUpdate();
         } catch (SQLException e){

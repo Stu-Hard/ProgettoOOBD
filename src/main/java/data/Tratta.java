@@ -55,13 +55,13 @@ public class Tratta {
     @Override
     public String toString() {
         return "(" +
-                "'" + numeroVolo + '\'' +
+                "'" + numeroVolo.toUpperCase() + '\'' +
                 ", '" + Date.valueOf(dataPartenza) + '\'' +
                 ", '" + Time.valueOf(oraPartenza) + '\'' +
                 ", " + durataVolo +
                 ", " + ritardo +
                 ", " + conclusa +
-                ", '" + gate + '\'' +
+                ", " + ((gate == null)? "NULL": "'" + gate + "'")   +
                 ", '" + aereo.getCodice() + '\'' +
                 ", '" + compagnia.getNome() + '\'' +
                 ", '" + aereoportoPartenza.getCodiceICAO() + '\'' +
@@ -158,5 +158,9 @@ public class Tratta {
 
     public void setDurataVolo(int durataVolo) {
         this.durataVolo = durataVolo;
+    }
+
+    public void concludi() {
+        conclusa = true;
     }
 }

@@ -80,7 +80,6 @@ insert into Compagnia values
                              ('Easyjet', 'EZS', 'Svizzera', 32.0, 12.0),
                              ('Ryanair', 'RYR', 'Irlanda', 32.0, 12.0);
 
-
 CREATE TABLE Risiede( /* si potrebbe anche eliminare e dare per scontato che tutte le compagnie possano organizzare tratte per tutti gli aeroporti...*/
     Compagnia VARCHAR(30) NOT NULL, 
     CodiceAeroporto VARCHAR(4) NOT NULL,
@@ -109,14 +108,14 @@ CREATE TABLE Tratta(
     DurataVolo INT NOT NULL CHECK(DurataVolo > 0),
     Ritardo INT DEFAULT 0 CHECK(DurataVolo + Ritardo > 0), /*è possibile che l'aereo ci metta meno tempo del previsto e quindi il ritardo sia negativo*/
     Conclusa BOOLEAN DEFAULT FALSE NOT NULL,
-    CodiceGate VARCHAR(4) CHECK ((Conclusa or CodiceGate IS NULL) AND (CodiceGate IS NOT NULL or NOT Conclusa)), /* è conclusa se e solo se gate è not null*/
+    CodiceGate VARCHAR(4) CHECK (NOT Conclusa OR CodiceGate IS NOT NULL), /*Se è conclusa allora codice gate è null*/
     CodiceAereo VARCHAR(8) NOT NULL CHECK (UPPER(CodiceAereo) = CodiceAereo),
     Compagnia VARCHAR(30) NOT NULL, 
     AeroportoPartenza VARCHAR(4) NOT NULL, 
     AeroportoArrivo VARCHAR(4) NOT NULL,
+    CONSTRAINT fk_Gate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
     CONSTRAINT fk_Aereo FOREIGN KEY(CodiceAereo) REFERENCES Aereo(CodiceAereo),
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
-    CONSTRAINT fk_Gate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
     CONSTRAINT fk_AeroportoA FOREIGN KEY(AeroportoArrivo) REFERENCES Aeroporto(Codice),
     CONSTRAINT fk_AeroportoB FOREIGN KEY(AeroportoPartenza) REFERENCES Aeroporto(Codice)
 );
@@ -127,6 +126,7 @@ insert into Tratta values
                           ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, NULL, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL' ),
                           ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, TRUE, 'A0', 'LY5NNHJ7', 'Ryanair', 'EGLC', 'LIRN'),
                           ('VLGUAZ84', '2021-01-05', '21:18:00', 111, 0, false, NULL, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL');
+
 
 CREATE TABLE CodaImbarco(
     CodiceCoda VARCHAR(8) PRIMARY KEY,
@@ -144,19 +144,18 @@ CREATE TABLE Cliente(
       Nome VARCHAR(30) NOT NULL,
       Cognome VARCHAR(30) NOT NULL,
       Carta VARCHAR(9) NOT NULL,
-      Passaporto VARCHAR(9),
       Email VARCHAR(30) NOT NULL,
       Eta INT NOT NULL
 );
 
 insert into Cliente values
-                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'Identita', 'FF0FF0FF0', 'destasiofrancesco@libero.it', 20)
+                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'F00f00f00', 'destasiofrancesco@libero.it', 20)
 ;
 
 CREATE TABLE Biglietto(
     CodiceBiglietto VARCHAR(8) PRIMARY KEY,
     Prezzo REAL NOT NULL,
-    Fila CHAR(1) NOT NULL,
+    Fila INT NOT NULL,
     Posto INT NOT NULL,
     Classe EnumCoda NOT NULL, /* foreign key su code */
     CheckIn BOOLEAN,
@@ -179,7 +178,7 @@ CREATE TABLE Dipendente(
            Email VARCHAR(30) NOT NULL,
            Password VARCHAR(30) NOT NULL,
            Ruolo EnumImpiegati NOT NULL,
-           Compagnia VARCHAR(30) NOT NULL,
+           Compagnia VARCHAR(30),
            CONSTRAINT fk_Company FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
 
 );
@@ -187,8 +186,13 @@ CREATE TABLE Dipendente(
 insert into Dipendente values
             ('1','Francesco', 'De Stasio', 'destasiofrancesco_@libero.it','password', 'Amministratore', 'Alitalia'),
             ('2','Matteo', 'Gaudino', 'matteogaudino_@libero.it','password', 'Amministratore', 'Alitalia'),
-            ('3','Luca', 'Abete', 'lucabete@libero.it','password', 'TicketAgent', 'Ryanair')
-;
+            ('3','Luca', 'Abete', 'lucabete@libero.it','password', 'TicketAgent', 'Ryanair');
+
+CREATE TABLE AeroportoGestito(
+    CodiceAeroporto VARCHAR(4) NOT NULL REFERENCES Aeroporto(Codice) /*TODO trigger per unicità*/
+);
+insert into AeroportoGestito values ('LIRN');
+
 /*
 
 CREATE TABLE Bagaglio(
