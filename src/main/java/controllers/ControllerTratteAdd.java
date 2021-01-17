@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import utility.IdFactory;
 import utility.WindowDragger;
 
 import java.net.URL;
@@ -49,22 +50,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     @FXML
     JFXButton conferma;
 
-    // solo per prova
-    public String randomStr() {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-
-        return generatedString.substring(0, 4);
-    }
-
     @FXML
     public void compagniaAction(ActionEvent e){
         aerei.getItems().remove(0, aerei.getItems().size());
@@ -88,7 +73,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     @FXML
     public void conferma(ActionEvent e){
         Tratta tratta = new Tratta(
-                compagnia.getValue().getSigla() + randomStr(),
+                new IdFactory().newNumeroVolo(compagnia.getValue()),
                 data.getValue(),
                 ora.getValue(),
                 Integer.parseInt(durata.getText()),

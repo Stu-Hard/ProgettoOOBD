@@ -2,6 +2,7 @@ package data;
 
 import enumeration.CodeEnum;
 import enumeration.GateStatus;
+import javafx.util.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,9 +13,10 @@ public class Gate {
     private Tratta tratta = null; // Tratta che sta gestendo al momento.
     private List<CodaImbarco> codeImbarco = new LinkedList();
 
-    public Gate(String gateCode, Tratta tratta) {
+    public Gate(String gateCode, Tratta tratta, List<CodaImbarco> codeImbarco, Boolean isClosed) {
         this.gateCode = gateCode;
-        setTratta(tratta);
+        if (isClosed) status = GateStatus.CHIUSO;
+        setTratta(tratta, codeImbarco);
     }
 
     public Gate(String gateCode, Boolean isClosed){
@@ -53,19 +55,27 @@ public class Gate {
     public void open(){
         if (status != GateStatus.OCCUPATO) status = GateStatus.LIBERO;
     }
-    public void end(){ // conclude l'imbarco
+    public Pair<Tratta, List<CodaImbarco>> end(){ // conclude l'imbarco
+        Tratta t = null;
+        List<CodaImbarco> code = null;
         if (status == GateStatus.OCCUPATO) {
             status = GateStatus.LIBERO;
+            tratta.concludi();
+            t = tratta;
+            code = codeImbarco;
+            codeImbarco.forEach(c -> c.setTempoEffettivo(c.getTempoStimato() + tratta.getRitardo())); // setta il tempo effettivo. da cambiare todo
+
             tratta = null;
             codeImbarco.clear();
-            //codeImbarco.forEach(c -> c.setTempoEffettivo(c.getTempoStimato() + (new Random().nextInt(10))));
-            // todo aggiorna nel db le code
         }
+        return new Pair(t, code);
     }
 
-    public void setTratta(Tratta tratta) {
+    public void setTratta(Tratta tratta, List<CodaImbarco> codeImbarco) {
         if (status == GateStatus.LIBERO && tratta != null) {
+            tratta.setGate(gateCode);
             this.tratta = tratta;
+            this.codeImbarco = codeImbarco;
             status = GateStatus.OCCUPATO;
         }
     }

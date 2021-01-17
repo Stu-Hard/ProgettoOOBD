@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import data.Biglietto;
 import data.Tratta;
 import database.dao.BigliettoDao;
+import database.dao.TrattaDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +50,6 @@ public class ControllerTratteInfo extends WindowDragger {
             Parent parent = fxmlLoader.load();
             ControllerAcquisto controller = fxmlLoader.getController();
             controller.setTratta(tratta);
-
 
             Scene scene = new Scene(parent);
             Stage stage = new Stage();

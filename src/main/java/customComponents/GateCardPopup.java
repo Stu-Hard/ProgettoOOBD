@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class GateCardPopup extends JFXPopup {
 
     private JFXButton chiudi;
-    private JFXButton libera;
+    private JFXButton apri;
     private JFXButton impostaTratta;
     private JFXButton terminaImbarco;
     private VBox v;
@@ -27,38 +27,24 @@ public class GateCardPopup extends JFXPopup {
 
         chiudi = new JFXButton("Chiudi");
         chiudi.setStyle("-fx-background-radius: 0");
-        libera = new JFXButton("Libera");
-        libera.setStyle("-fx-background-radius: 0");
+        apri = new JFXButton("Apri");
+        apri.setStyle("-fx-background-radius: 0");
         impostaTratta = new JFXButton("Imposta Tratta");
         impostaTratta.setStyle("-fx-background-radius: 0");
 
         chiudi.setPrefWidth(100);
-        libera.setPrefWidth(100);
+        apri.setPrefWidth(100);
         impostaTratta.setPrefWidth(100);
 
         terminaImbarco = new JFXButton("Termina imbarco");
         terminaImbarco.setStyle("-fx-background-radius: 0");
         //terminaImbarco.setPrefWidth(100);
 
-        chiudi.setOnAction(e -> {
-            gCard.getGate().close();
-            gCard.updateLabels();
-            impostaTratta.setDisable(true);
-        });
-
-        libera.setOnAction(e ->{
-            gCard.getGate().open();
-            gCard.updateLabels();
-            impostaTratta.setDisable(false);
-        });
-
-        terminaImbarco.setOnAction(e ->{
-            gCard.getGate().end();
-            gCard.updateLabels();
-            setLibero();
-        });
-
-        setLibero();
+        switch (gCard.getGate().getStatus()){
+            case CHIUSO -> setChiuso();
+            case LIBERO -> setAperto();
+            case OCCUPATO -> setOccupato();
+        }
 
         setPopupContent(v);
         gCard.setOnMouseClicked(m ->{
@@ -72,18 +58,37 @@ public class GateCardPopup extends JFXPopup {
         v.getChildren().clear();
         v.getChildren().add(terminaImbarco);
     }
-    public void setLibero(){
+    public void setAperto(){
         v.getChildren().clear();
         v.getChildren().addAll(
                 chiudi,
-                libera,
+                apri,
                 impostaTratta
         );
+        impostaTratta.setDisable(false);
     }
 
     public VBox getVBox() { return v; }
 
     public void setImpostaTratta(EventHandler<ActionEvent> e) {
         impostaTratta.setOnAction(e);
+    }
+    public void setTerminaImbarco(EventHandler<ActionEvent> e) {
+        terminaImbarco.setOnAction(e);
+    }
+    public void setChiudiGate(EventHandler<ActionEvent> e) {
+        chiudi.setOnAction(e);
+    }
+    public void setChiuso() {
+        v.getChildren().clear();
+        v.getChildren().addAll(
+                chiudi,
+                apri,
+                impostaTratta
+        );
+        impostaTratta.setDisable(true);
+    }
+    public void setApriGate(EventHandler<ActionEvent> e) {
+        apri.setOnAction(e);
     }
 }

@@ -61,7 +61,7 @@ public class TrattaDao {
         PreparedStatement statement = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("insert into tratta values" + tratta.toString());
+            statement = PGConnection.getConnection().prepareStatement("insert into tratta values " + tratta.toString());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
@@ -112,5 +112,50 @@ public class TrattaDao {
             if (resultSet != null) resultSet.close();
         }
         return t;
+    }
+
+    public void update(Tratta tratta) throws SQLException {
+        PreparedStatement statement = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("UPDATE tratta SET conclusa = ?, codicegate = ?, ritardo = ? WHERE numerovolo = ?");
+            statement.setBoolean(1, tratta.isConclusa());
+            statement.setString(2, tratta.getGate());
+            statement.setInt(3, tratta.getRitardo());
+            statement.setString(4, tratta.getNumeroVolo());
+            statement.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+        }
+    }
+
+    public int getPasseggeri(Tratta tratta)throws SQLException{
+        int passeggeri = 0;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM passeggeritotali WHERE numerovolo = ?");
+            statement.setString(1, tratta.getNumeroVolo());
+            resultSet = statement.executeQuery();
+            AeroportoDao aDao = new AeroportoDao();
+            CompagniaDao cDao = new CompagniaDao();
+            AereoDao aereoDao = new AereoDao();
+
+            if (resultSet.next()){
+                passeggeri = resultSet.getInt("Passeggeri");
+            }
+        } catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+
+        return passeggeri;
     }
 }

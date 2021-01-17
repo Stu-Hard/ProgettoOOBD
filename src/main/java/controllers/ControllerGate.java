@@ -25,6 +25,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -48,9 +49,6 @@ public class ControllerGate implements Initializable {
     @FXML
     private JFXButton cancelBtn;
 
-    private List<GateCard> gateCardList = null; // lista che contiene tutti i gate.
-                                        // N.B. gateCardList è diverso da flowPane.getChildren(). Indovinello: Perch'è sono diversi?
-                                        // (Suggerimento) per diversi non si intende il tipo.
     @FXML
     private Label nessunGate;
 
@@ -118,17 +116,15 @@ public class ControllerGate implements Initializable {
         l.setOnMouseClicked( e1 -> {
             TrattaHbox t = l.getSelectionModel().getSelectedItem();
             if (t != null){
-                gCard.getGate().setTratta(t.getTratta());
-                // todo aggiorna la colonna gate in tratta nel db
                 //gCard.updateLabels();
                 //alert.hide();
-                impostaCode(gCard, alert, popup);
+                impostaCode(gCard, alert, popup, t.getTratta());
             }
         });
         alert.showAndWait();
     }
 
-    private void impostaCode(GateCard gCard, JFXAlert<Void> alert, GateCardPopup popup){
+    private void impostaCode(GateCard gCard, JFXAlert<Void> alert, GateCardPopup popup, Tratta tratta){
         VBox v = new VBox();
         VBox v2 = new VBox();
         JFXCheckBox diversamenteAbili = new JFXCheckBox("Diversamente abili");
@@ -150,13 +146,15 @@ public class ControllerGate implements Initializable {
         v2.getChildren().addAll(v, conferma);
 
         conferma.setOnAction(e -> {
-            if (diversamenteAbili.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.DIVERSAMENTE_ABILI));
-            if (famiglie.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.FAMIGLIE));
-            if (business.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.BUSINESS));
-            if (priority.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.PRIORITY));
-            if (economy.isSelected()) gCard.getGate().addCoda(new CodaImbarco(CodeEnum.ECONOMY));
+            List<CodaImbarco> code = new ArrayList();
+            if (diversamenteAbili.isSelected()) code.add(new CodaImbarco(CodeEnum.DIVERSAMENTE_ABILI));
+            if (famiglie.isSelected()) code.add(new CodaImbarco(CodeEnum.FAMIGLIE));
+            if (business.isSelected()) code.add(new CodaImbarco(CodeEnum.BUSINESS));
+            if (priority.isSelected()) code.add(new CodaImbarco(CodeEnum.PRIORITY));
+            if (economy.isSelected()) code.add(new CodaImbarco(CodeEnum.ECONOMY));
 
             try {
+                gCard.getGate().setTratta(tratta, code);
                 new GateDao().update(gCard.getGate());
                 CodaImbarcoDao codaImbarcoDao = new CodaImbarcoDao();
                 gCard.getGate().getCodeImbarco().forEach(codaImbarco -> {
@@ -175,6 +173,46 @@ public class ControllerGate implements Initializable {
         });
         alert.setContent(v2);
     }
+
+    public void terminaImbarco(GateCard gCard, GateCardPopup popup){
+        Gate g = gCard.getGate();
+        try {
+            Pair<Tratta, List<CodaImbarco>> p = g.end();
+            new TrattaDao().update(p.getKey());
+            new GateDao().update(g);
+            CodaImbarcoDao cDao = new CodaImbarcoDao();
+            for (CodaImbarco c: p.getValue()) {
+                cDao.update(c);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        gCard.updateLabels();
+        popup.setAperto();
+    }
+
+    public void chiudiGate(GateCard gCard, GateCardPopup popup){
+        gCard.getGate().close();
+        try {
+            new GateDao().update(gCard.getGate());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        popup.setChiuso();
+        gCard.updateLabels();
+    }
+
+    private void apriGate(GateCard gCard, GateCardPopup popup) {
+        gCard.getGate().open();
+        try {
+            new GateDao().update(gCard.getGate());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        popup.setAperto();
+        gCard.updateLabels();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         searchMode.getItems().addAll("Codice", "Coda");
@@ -197,17 +235,20 @@ public class ControllerGate implements Initializable {
 
 
         try {
-            CodaImbarcoDao codaImbarcoDao = new CodaImbarcoDao();
+            //CodaImbarcoDao codaImbarcoDao = new CodaImbarcoDao();
             new GateDao().getGateCodes().forEach(g ->{
-                try {
-                    if (g.getStatus() == GateStatus.OCCUPATO)
-                        g.setCodeImbarco(codaImbarcoDao.getByGateAndTratta(g));
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+            //    try {
+            //        //if (g.getStatus() == GateStatus.OCCUPATO)
+            //        //    g.setCodeImbarco(codaImbarcoDao.getByGateAndTratta(g));
+            //    } catch (SQLException throwables) {
+            //        throwables.printStackTrace();
+            //    }
                 GateCard gCard = new GateCard(g);
                 GateCardPopup popup = new GateCardPopup(gCard);
                 popup.setImpostaTratta(e -> showImpostaTratta(gCard, popup));
+                popup.setTerminaImbarco(e -> terminaImbarco(gCard, popup));
+                popup.setChiudiGate(e -> chiudiGate(gCard, popup));
+                popup.setApriGate(e -> apriGate(gCard, popup));
                 flowPane.getChildren().add(gCard);
             });
         } catch (SQLException e){
