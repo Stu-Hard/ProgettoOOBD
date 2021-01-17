@@ -79,7 +79,7 @@ public class BigliettoDao {
 
     public void update(Biglietto biglietto) throws SQLException{
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
+
 
         try {
             statement = PGConnection.getConnection().prepareStatement("UPDATE biglietto SET checkin = ?, imbarcato = ? WHERE codicebiglietto = ?");
@@ -88,6 +88,29 @@ public class BigliettoDao {
             statement.setString(3, biglietto.getCodiceBiglietto());
             statement.executeUpdate();
         } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+        }
+    }
+
+    public void insert(Biglietto biglietto) throws SQLException{
+        PreparedStatement statement = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("INSERT INTO biglietto values (?,?,?,?,?,?,?,?,?)");
+            statement.setString(1, biglietto.getCodiceBiglietto());
+            statement.setDouble(2, biglietto.getPrezzo());
+            statement.setString(3, biglietto.getFila());
+            statement.setInt(4, biglietto.getPosto());
+            statement.setString(5, biglietto.getClasse());
+            statement.setBoolean(6, biglietto.isCheckIn());
+            statement.setBoolean(7, biglietto.isImbarcato());
+            statement.setString(8, biglietto.getNumeroVolo());
+            statement.setString(9, biglietto.getcF());
+            statement.execute();
+        }catch (SQLException e){
             e.printStackTrace();
         } finally {
             if (PGConnection.getConnection() != null) PGConnection.getConnection().close();

@@ -2,7 +2,9 @@ package controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import data.Biglietto;
 import data.Tratta;
+import database.dao.BigliettoDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,7 @@ import javafx.stage.StageStyle;
 import utility.WindowDragger;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class ControllerTratteInfo extends WindowDragger {
@@ -46,6 +49,7 @@ public class ControllerTratteInfo extends WindowDragger {
             Parent parent = fxmlLoader.load();
             ControllerAcquisto controller = fxmlLoader.getController();
             controller.setTratta(tratta);
+
 
             Scene scene = new Scene(parent);
             Stage stage = new Stage();

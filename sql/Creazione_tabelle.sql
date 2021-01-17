@@ -143,14 +143,13 @@ CREATE TABLE Cliente(
       CF VARCHAR(16) PRIMARY KEY,
       Nome VARCHAR(30) NOT NULL,
       Cognome VARCHAR(30) NOT NULL,
-      Carta VARCHAR(9) NOT NULL,
-      Passaporto VARCHAR(9),
+      Carta VARCHAR(9),
       Email VARCHAR(30) NOT NULL,
       Eta INT NOT NULL
 );
 
 insert into Cliente values
-                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'Identita', 'FF0FF0FF0', 'destasiofrancesco@libero.it', 20)
+                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'FF0FF0FF0', 'destasiofrancesco@libero.it', 20)
 ;
 
 CREATE TABLE Biglietto(
@@ -189,6 +188,19 @@ insert into Dipendente values
             ('2','Matteo', 'Gaudino', 'matteogaudino_@libero.it','password', 'Amministratore', 'Alitalia'),
             ('3','Luca', 'Abete', 'lucabete@libero.it','password', 'TicketAgent', 'Ryanair')
 ;
+
+CREATE OR REPLACE FUNCTION deleteOld() RETURNS TRIGGER AS $example_Table$
+    BEGIN
+        Delete from Cliente
+         where Cliente.CF = new.CF;     /*non funziona, trovare un modo per inserire o fare l'update del cliente*/
+    END;
+$example_Table$
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER clienteOldorNew BEFORE INSERT
+    ON cliente
+    execute procedure deleteOld();
+
 /*
 
 CREATE TABLE Bagaglio(

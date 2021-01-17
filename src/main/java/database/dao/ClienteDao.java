@@ -26,7 +26,6 @@ public class ClienteDao {
                         resultSet.getString("nome"),
                         resultSet.getString("cognome"),
                         resultSet.getString("carta"),
-                        resultSet.getString("passaporto"),
                         resultSet.getString("email"),
                         resultSet.getInt("eta")
                 ));
@@ -56,7 +55,6 @@ public class ClienteDao {
                         resultSet.getString("nome"),
                         resultSet.getString("cognome"),
                         resultSet.getString("carta"),
-                        resultSet.getString("passaporto"),
                         resultSet.getString("email"),
                         resultSet.getInt("eta")
                 );
@@ -69,5 +67,26 @@ public class ClienteDao {
             if (resultSet != null) resultSet.close();
         }
         return cliente;
+    }
+
+    public void insert(Cliente cliente) throws SQLException{
+        PreparedStatement statement = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("INSERT INTO cliente values (?,?,?,?,?,?)");
+            statement.setString(1, cliente.getCodiceFiscale());
+            statement.setString(2, cliente.getNome());
+            statement.setString(3, cliente.getCognome());
+            statement.setString(4, cliente.getCarta());
+            statement.setString(5, cliente.getEmail());
+            statement.setInt(6, cliente.getEta());
+
+            statement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+        }
     }
 }

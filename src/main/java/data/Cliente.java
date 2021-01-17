@@ -5,20 +5,19 @@ public class Cliente {
     private String nome;
     private String cognome;
     private String carta;
-    private String passaporto = null;
     private String email;
     private int eta;
 
 
-    public Cliente(String codiceFiscale, String nome, String cognome, String carta, String passaporto, String email, int eta) {
+    public Cliente(String codiceFiscale, String nome, String cognome, String carta, String email, int eta) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome;
         this.cognome = cognome;
         this.carta = carta;
-        this.passaporto = passaporto;
         this.email = email;
         this.eta = eta;
     }
+
 
     public String getCodiceFiscale() {
         return codiceFiscale;
@@ -50,14 +49,6 @@ public class Cliente {
 
     public void setCarta(String carta) {
         this.carta = carta;
-    }
-
-    public String getPassaporto() {
-        return passaporto;
-    }
-
-    public void setPassaporto(String passaporto) {
-        this.passaporto = passaporto;
     }
 
     public String getEmail() {

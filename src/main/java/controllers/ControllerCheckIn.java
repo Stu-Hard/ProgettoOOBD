@@ -79,7 +79,7 @@ public class ControllerCheckIn implements Initializable{
                         posto.setText(biglietto.getFila() + biglietto.getPosto());        // dai il risultato
                         gate.setText(trattastring.getGate());
                         cf.setText(biglietto.getcF());
-                        documentoNumero.setText(cliente.getPassaporto());
+                        documentoNumero.setText(cliente.getCarta());
                         nome.setText(cliente.getNome());
                         cognome.setText(cliente.getCognome());
 
@@ -174,8 +174,6 @@ public class ControllerCheckIn implements Initializable{
         alert.setContent(root);
         alert.initModality(Modality.NONE);
         alert.showAndWait();
-
-
 
 
         bigliettoTextField.setText("");

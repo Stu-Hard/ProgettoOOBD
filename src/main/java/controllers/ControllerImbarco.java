@@ -62,10 +62,6 @@ public class ControllerImbarco implements Initializable {
     //per settare le due frecce
     String spinnerClass =  Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL;
 
-
-
-
-
     //funzione per creare un codice del bagaglio in base a quanti sono
     int bagagli;
     public void createBagaglioCode(ActionEvent actionEvent) {
@@ -106,6 +102,8 @@ public class ControllerImbarco implements Initializable {
     }
     /*END: funzione che restituisce una stringa random e attributi che lo permettono */
 
+
+    Biglietto biglietto = null;
     //dopo la verifica dei bagagli
     public void verificaBagagli(ActionEvent actionEvent) throws SQLException {
 
@@ -114,7 +112,7 @@ public class ControllerImbarco implements Initializable {
 
         BigliettoDao bDao = new BigliettoDao();
 
-        Biglietto biglietto = bDao.getBigliettoByCodice(codiceTextField.getText());
+        biglietto = bDao.getBigliettoByCodice(codiceTextField.getText());
         if(biglietto != null){
             if (biglietto.isCheckIn() == true) {
                 TrattaDao trattaDao = new TrattaDao();
@@ -132,7 +130,7 @@ public class ControllerImbarco implements Initializable {
                 posto.setText(biglietto.getFila() + biglietto.getPosto());        // dai il risultato
                 gate.setText(trattastring.getGate());
                 cf.setText(biglietto.getcF());
-                documentoNumero.setText(cliente.getPassaporto());
+                documentoNumero.setText(cliente.getCarta());
                 nome.setText(cliente.getNome());
                 cognome.setText(cliente.getCognome());
 
@@ -155,10 +153,6 @@ public class ControllerImbarco implements Initializable {
 
     }
 
-
-
-
-
     public void inviaCodes(ActionEvent actionEvent) throws IOException {
         List<Node> codiciBagagli = new ArrayList<>();
         if(!vboxLabel.getChildren().isEmpty() && !(spinnerBagagli.getValue() == 0)){
@@ -173,12 +167,8 @@ public class ControllerImbarco implements Initializable {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CheckIn_ImbarcoConfirm.fxml"));
         AnchorPane root = fxmlLoader.load();
-       //Scene scene = new Scene(root);
-       //Stage stage = new Stage();
-        //stage.initStyle(StageStyle.UNDECORATED);
-        //stage.initModality(Modality.APPLICATION_MODAL);
-        Integer bagagliQuantita = codiciBagagli.size();
 
+        Integer bagagliQuantita = codiciBagagli.size();
 
         ControllerConfirmCheckImbarco controller = fxmlLoader.getController();
         controller.setImbarcoCheckLabel("Imbarco");
@@ -186,6 +176,12 @@ public class ControllerImbarco implements Initializable {
         controller.setBagagli(bagagliQuantita.toString());
         controller.setPasseggero(nome.getText() +" "+ cognome.getText());
 
+        try {
+            biglietto.setImbarcato(true);
+            new BigliettoDao().update(biglietto);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
 
         JFXAlert<Void> alert = new JFXAlert(vboxLabel.getScene().getWindow());
         alert.setOverlayClose(true);
