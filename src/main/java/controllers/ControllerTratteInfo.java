@@ -3,6 +3,7 @@ package controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import data.Tratta;
+import database.dao.TrattaDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.stage.StageStyle;
 import utility.WindowDragger;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class ControllerTratteInfo extends WindowDragger {
@@ -74,7 +76,11 @@ public class ControllerTratteInfo extends WindowDragger {
         if (tratta.getAereo() != null)
             codiceAereo.setText(tratta.getAereo().getCodice());
         completata.setSelected(tratta.isConclusa());
-        //passeggeri.setText(todo calculate N° passeggeri tramite biglietti ecc...);
+        try {
+            passeggeri.setText(String.valueOf(new TrattaDao().getPasseggeri(tratta)));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override

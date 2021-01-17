@@ -131,4 +131,31 @@ public class TrattaDao {
             if (statement != null) statement.close();
         }
     }
+
+    public int getPasseggeri(Tratta tratta)throws SQLException{
+        int passeggeri = 0;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM passeggeritotali WHERE numerovolo = ?");
+            statement.setString(1, tratta.getNumeroVolo());
+            resultSet = statement.executeQuery();
+            AeroportoDao aDao = new AeroportoDao();
+            CompagniaDao cDao = new CompagniaDao();
+            AereoDao aereoDao = new AereoDao();
+
+            if (resultSet.next()){
+                passeggeri = resultSet.getInt("Passeggeri");
+            }
+        } catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+
+        return passeggeri;
+    }
 }

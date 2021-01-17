@@ -91,8 +91,8 @@ CREATE TABLE Risiede( /* si potrebbe anche eliminare e dare per scontato che tut
 CREATE TABLE Aereo(
     CodiceAereo VARCHAR(8) PRIMARY KEY CHECK (UPPER(CodiceAereo) = CodiceAereo),
     Compagnia VARCHAR(30) NOT NULL,
-    File INT NOT NULL,
-    Colonne INT NOT NULL,
+    File INT NOT NULL CHECK (File > 0),
+    Colonne INT NOT NULL CHECK (File > 0),
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
 );
 insert into Aereo values
@@ -108,7 +108,7 @@ CREATE TABLE Tratta(
     DurataVolo INT NOT NULL CHECK(DurataVolo > 0),
     Ritardo INT DEFAULT 0 CHECK(DurataVolo + Ritardo > 0), /*è possibile che l'aereo ci metta meno tempo del previsto e quindi il ritardo sia negativo*/
     Conclusa BOOLEAN DEFAULT FALSE NOT NULL,
-    CodiceGate VARCHAR(4) CHECK (NOT Conclusa OR CodiceGate IS NOT NULL), /*Se è conclusa allora codice gate è null*/
+    CodiceGate VARCHAR(4),
     CodiceAereo VARCHAR(8) NOT NULL CHECK (UPPER(CodiceAereo) = CodiceAereo),
     Compagnia VARCHAR(30) NOT NULL, 
     AeroportoPartenza VARCHAR(4) NOT NULL, 
@@ -140,17 +140,16 @@ CREATE TABLE CodaImbarco(
 );
 
 CREATE TABLE Cliente(
-      CF VARCHAR(16) PRIMARY KEY,
+      CF VARCHAR(16) PRIMARY KEY CHECK (CF ~* '^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$' ),
       Nome VARCHAR(30) NOT NULL,
       Cognome VARCHAR(30) NOT NULL,
-      Carta VARCHAR(9) NOT NULL,
-      Email VARCHAR(30) NOT NULL,
+      Carta VARCHAR(9) NOT NULL UNIQUE,
+      Email VARCHAR(30) NOT NULL UNIQUE CHECK (Email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
       Eta INT NOT NULL
 );
 
 insert into Cliente values
-                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'F00f00f00', 'destasiofrancesco@libero.it', 20)
-;
+                            ('GNNPNI00A01F839L', 'Francesco', 'De Stasio', 'F00f00f01', 'destasiofran1@libero.it', 20);
 
 CREATE TABLE Biglietto(
     CodiceBiglietto VARCHAR(8) PRIMARY KEY,
@@ -158,29 +157,31 @@ CREATE TABLE Biglietto(
     Fila INT NOT NULL,
     Posto INT NOT NULL,
     Classe EnumCoda NOT NULL, /* foreign key su code */
-    CheckIn BOOLEAN,
-    Imbarcato BOOLEAN,
+    CheckIn BOOLEAN DEFAULT FALSE NOT NULL,
+    Imbarcato BOOLEAN DEFAULT FALSE NOT NULL CHECK (NOT Imbarcato or CheckIn), /*imbarcato -> checkin*/
     Numerovolo VARCHAR(8) NOT NULL,
     CF VARCHAR(16) NOT NULL,
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo),
-    CONSTRAINT fk_CF FOREIGN KEY(CF) REFERENCES Cliente(CF)
+    CONSTRAINT fk_CF FOREIGN KEY(CF) REFERENCES Cliente(CF),
+    UNIQUE(Fila, Posto)
 );
 
 insert into Biglietto values
-                             ('ABCDEFGH', 20, 'A', 1, 'PRIORITY',FALSE, FALSE, 'VLG87937', 'DSTFNC00R06F839I')
-;
-
+                             ('ABCDEFGH', 20, 1, 1, 'PRIORITY',FALSE, FALSE, 'VLG87937', 'DSTFNC00R06F839I');
+insert into Biglietto values
+('ABCDEFGA', 20, 1, 1, 'PRIORITY',TRUE, FALSE, 'VLG87937', 'DSTFNC00R06F839I');
+insert into Biglietto values
+('ABCDEFGB', 20, 1, 1, 'PRIORITY',TRUE, TRUE, 'VLG87937', 'DSTFNC00R06F839I');
 
 CREATE TABLE Dipendente(
            CodiceImpiegato VARCHAR(8) PRIMARY KEY,
            Nome VARCHAR(30) NOT NULL,
            Cognome VARCHAR(30) NOT NULL,
-           Email VARCHAR(30) NOT NULL,
+           Email VARCHAR(30) NOT NULL CHECK (Email LIKE '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'),
            Password VARCHAR(30) NOT NULL,
            Ruolo EnumImpiegati NOT NULL,
-           Compagnia VARCHAR(30),
+           Compagnia VARCHAR(30) CHECK (Compagnia IS NOT NULL or Ruolo = 'Amministratore'),
            CONSTRAINT fk_Company FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
-
 );
 
 insert into Dipendente values
@@ -188,11 +189,31 @@ insert into Dipendente values
             ('2','Matteo', 'Gaudino', 'matteogaudino_@libero.it','password', 'Amministratore', 'Alitalia'),
             ('3','Luca', 'Abete', 'lucabete@libero.it','password', 'TicketAgent', 'Ryanair');
 
-CREATE TABLE AeroportoGestito(
-    CodiceAeroporto VARCHAR(4) NOT NULL REFERENCES Aeroporto(Codice) /*TODO trigger per unicità*/
+CREATE TABLE AeroportoGestito( /* l'aeroporto gestito è uno ed uno solo*/
+    CodiceAeroporto VARCHAR(4) NOT NULL REFERENCES Aeroporto(Codice),
+    isSingleton BOOLEAN NOT NULL DEFAULT TRUE PRIMARY KEY CHECK(isSingleton)
 );
-insert into AeroportoGestito values ('LIRN');
+insert into AeroportoGestito values ('LIRN'); /*Aeroporto di napoli*/
 
+CREATE OR REPLACE VIEW PasseggeriTotali(NumeroVolo, Passeggeri) AS
+    SELECT t.numeroVolo, COUNT(*) AS Passeggeri
+    FROM Biglietto b
+    NATURAL JOIN Tratta t
+    GROUP BY t.NumeroVolo;
+
+CREATE OR REPLACE VIEW PasseggeriCheckIn(NumeroVolo, PasseggeriCheckin) AS
+    SELECT t.NumeroVolo, COUNT(*)
+    FROM Biglietto b
+    NATURAL JOIN Tratta t
+    WHERE b.CheckIn
+    GROUP BY t.NumeroVolo;
+
+CREATE OR REPLACE VIEW PasseggeriImbarcati(NumeroVolo, PasseggeriImbarcati) AS
+    SELECT t.NumeroVolo, COUNT(*)
+    FROM Biglietto b
+    NATURAL JOIN Tratta t
+    WHERE b.imbarcato
+    GROUP BY t.NumeroVolo;
 /*
 
 CREATE TABLE Bagaglio(
