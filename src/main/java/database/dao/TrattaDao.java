@@ -132,6 +132,50 @@ public class TrattaDao {
         }
     }
 
+    public List<Tratta> getTratteAperte() throws SQLException {
+        List<Tratta> list = new ArrayList();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa");
+            resultSet = statement.executeQuery();
+            AeroportoDao aDao = new AeroportoDao();
+            CompagniaDao cDao = new CompagniaDao();
+            AereoDao aereoDao = new AereoDao();
+
+            while (resultSet.next()) {
+                Aeroporto partenza = aDao.getByCodice(resultSet.getString("AeroportoPartenza"));
+                Aeroporto arrivo = aDao.getByCodice(resultSet.getString("AeroportoArrivo"));
+                Compagnia comp = cDao.getByNome(resultSet.getString("Compagnia"));
+                Aereo aereo = aereoDao.getAereoByCode(resultSet.getString("CodiceAereo"));
+
+                Tratta tratta = new Tratta(
+                        resultSet.getString("NumeroVolo"),
+                        resultSet.getDate("DataPartenza").toLocalDate(),
+                        resultSet.getTime("OraPartenza").toLocalTime(),
+                        resultSet.getInt("DurataVolo"),
+                        resultSet.getInt("ritardo"),
+                        resultSet.getBoolean("conclusa"),
+                        resultSet.getString("CodiceGate"),
+                        comp,
+                        partenza,
+                        arrivo,
+                        aereo
+                );
+                list.add(tratta);
+            }
+        } catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+
+        return list;
+    }
+
     public int getPasseggeri(Tratta tratta)throws SQLException{
         int passeggeri = 0;
         PreparedStatement statement = null;

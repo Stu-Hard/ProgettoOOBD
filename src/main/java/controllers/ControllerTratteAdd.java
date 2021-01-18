@@ -50,9 +50,11 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     @FXML
     JFXButton conferma;
 
+    Aeroporto aeroportoGestito;
+
     @FXML
     public void compagniaAction(ActionEvent e){
-        aerei.getItems().remove(0, aerei.getItems().size());
+        aerei.getItems().clear();
         try {
             aerei.getItems().addAll(new AereoDao().getAereiByCompagnia(compagnia.getValue()));
         } catch (SQLException throwables) {
@@ -96,6 +98,25 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     public void annulla(ActionEvent e){
         ((Node) e.getSource()).getScene().getWindow().hide();
     }
+
+    public void controlloAeroporto(ActionEvent e){
+        if (e.getSource().equals(partenza)){
+            if (!partenza.getValue().equals(aeroportoGestito)){
+                arrivo.getSelectionModel().select(aeroportoGestito);
+                conclusa.setSelected(true);
+                conclusa.setDisable(true);
+                gateLbl.setDisable(true);
+                gate.setDisable(true);
+            }
+        } else {
+            if (!arrivo.getValue().equals(aeroportoGestito)){
+                partenza.getSelectionModel().select(aeroportoGestito);
+                conclusa.setSelected(false);
+                conclusa.setDisable(false);
+            }
+        }
+    }
+
 
     @Override
     public void setOffset(MouseEvent e) {
@@ -143,6 +164,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
         });
 
         try {
+            aeroportoGestito = new AeroportoDao().getAeroportoGestito();
             compagnia.getItems().addAll(new CompagniaDao().getCompagnie());
             List<Aeroporto> a = new AeroportoDao().getAeroporti();
             partenza.getItems().addAll(a);

@@ -138,19 +138,14 @@ public class ControllerTratte implements Initializable {
             stage.initStyle(StageStyle.TRANSPARENT);
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
         }catch (IOException ex){
             ex.printStackTrace();
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        searchMode.getItems().addAll("Partenza", "Arrivo", "Compagnia", "NumeroVolo");
-        searchMode.getSelectionModel().selectFirst();
-
-        tratteHboxList = new ArrayList();
-
+    public void refresh(){
+        listView.getItems().clear();
         try {
             new TrattaDao().getAllTratte().forEach(tratta -> {
                 listView.getItems().add(new TrattaHbox(tratta));
@@ -158,5 +153,13 @@ public class ControllerTratte implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        searchMode.getItems().addAll("Partenza", "Arrivo", "Compagnia", "NumeroVolo");
+        searchMode.getSelectionModel().selectFirst();
+        tratteHboxList = new ArrayList();
+        refresh();
     }
 }

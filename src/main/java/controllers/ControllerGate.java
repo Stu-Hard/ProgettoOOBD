@@ -97,7 +97,7 @@ public class ControllerGate implements Initializable {
         JFXListView<TrattaHbox> l = new JFXListView<>();
         l.setPrefSize(820, 300);
         try {
-            new TrattaDao().getAllTratte().forEach(t -> {
+            new TrattaDao().getTratteAperte().forEach(t -> {
                 l.getItems().add(new TrattaHbox(t));
             });
         } catch (SQLException throwables) {

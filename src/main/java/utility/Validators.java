@@ -1,10 +1,8 @@
 package utility;
 
-import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.jfoenix.validation.base.ValidatorBase;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 
 public class Validators{
