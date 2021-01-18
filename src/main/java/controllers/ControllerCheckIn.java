@@ -73,10 +73,10 @@ public class ControllerCheckIn implements Initializable{
                         Aeroporto partenza = trattastring.getAereoportoPartenza();
                         Aeroporto arrivo = trattastring.getAereoportoArrivo();
 
-                        codiceBiglietto.setText(biglietto.getCodiceBiglietto());
+                        codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
                         tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
-                        classe.setText(biglietto.getClasse());
-                        posto.setText(biglietto.getFila() + biglietto.getPosto());        // dai il risultato
+                        classe.setText(String.valueOf(biglietto.getClasse()));
+                        posto.setText(biglietto.getFila() + "-" +biglietto.getPosto());        // dai il risultato
                         gate.setText(trattastring.getGate());
                         cf.setText(biglietto.getcF());
                         documentoNumero.setText(cliente.getCarta());

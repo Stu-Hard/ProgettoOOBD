@@ -5,6 +5,7 @@ import data.Biglietto;
 import data.Compagnia;
 import data.Gate;
 import database.PGConnection;
+import enumeration.CodeEnum;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,12 +24,26 @@ public class BigliettoDao {
             statement = PGConnection.getConnection().prepareStatement("SELECT * FROM biglietto");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                CodeEnum c = CodeEnum.ECONOMY;
+                String classe = resultSet.getString(("classe"));
+                if(classe.contains("ECONOMY")){
+                    c = CodeEnum.ECONOMY;
+                }else if(classe.contains("PRIORITY")){
+                    c = CodeEnum.PRIORITY;
+                }else if(classe.contains("BUSINESS")){
+                    c = CodeEnum.BUSINESS;
+                }else if(classe.contains("FAMIGLIE")){
+                    c = CodeEnum.FAMIGLIE;
+                }else{
+                    c = CodeEnum.DIVERSAMENTE_ABILI;
+                }
+
                 list.add(new Biglietto(
-                            resultSet.getString("codicebiglietto"),
+                            resultSet.getInt("codicebiglietto"),
                             resultSet.getInt("prezzo"),
-                            resultSet.getString("fila"),
+                            resultSet.getInt("fila"),
                             resultSet.getInt("posto"),
-                            resultSet.getString("classe"),
+                            c,
                             resultSet.getBoolean("checkin"),
                             resultSet.getBoolean("imbarcato"),
                             resultSet.getString("numerovolo"),
@@ -54,18 +69,33 @@ public class BigliettoDao {
             statement = PGConnection.getConnection().prepareStatement("SELECT * FROM biglietto WHERE codicebiglietto = ?");
             statement.setString(1, codice);
             resultSet = statement.executeQuery();
-            if (resultSet.next())
+            if (resultSet.next()) {
+                CodeEnum c;
+                String classe = resultSet.getString(("classe"));
+                if(classe.contains("ECONOMY")){
+                    c = CodeEnum.ECONOMY;
+                }else if(classe.contains("PRIORITY")){
+                    c = CodeEnum.PRIORITY;
+                }else if(classe.contains("BUSINESS")){
+                    c = CodeEnum.BUSINESS;
+                }else if(classe.contains("FAMIGLIE")){
+                    c = CodeEnum.FAMIGLIE;
+                }else{
+                    c = CodeEnum.DIVERSAMENTE_ABILI;
+                }
+
                 biglietto = new Biglietto(
-                         resultSet.getString("codicebiglietto"),
-                         resultSet.getInt("prezzo"),
-                         resultSet.getString("fila"),
-                         resultSet.getInt("posto"),
-                         resultSet.getString("classe"),
-                         resultSet.getBoolean("checkin"),
-                         resultSet.getBoolean("imbarcato"),
-                         resultSet.getString("numerovolo"),
-                         resultSet.getString("cf")
-                        );
+                        resultSet.getInt("codicebiglietto"),
+                        resultSet.getInt("prezzo"),
+                        resultSet.getInt("fila"),
+                        resultSet.getInt("posto"),
+                        c,
+                        resultSet.getBoolean("checkin"),
+                        resultSet.getBoolean("imbarcato"),
+                        resultSet.getString("numerovolo"),
+                        resultSet.getString("cf")
+                );
+            }
         } catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -85,7 +115,7 @@ public class BigliettoDao {
             statement = PGConnection.getConnection().prepareStatement("UPDATE biglietto SET checkin = ?, imbarcato = ? WHERE codicebiglietto = ?");
             statement.setBoolean(1, biglietto.isCheckIn());
             statement.setBoolean(2, biglietto.isImbarcato());
-            statement.setString(3, biglietto.getCodiceBiglietto());
+            statement.setInt(3, biglietto.getCodiceBiglietto());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
@@ -99,17 +129,15 @@ public class BigliettoDao {
         PreparedStatement statement = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("INSERT INTO biglietto values (?,?,?,?,?,?,?,?,?)");
-            statement.setString(1, biglietto.getCodiceBiglietto());
-            statement.setDouble(2, biglietto.getPrezzo());
-            statement.setString(3, biglietto.getFila());
-            statement.setInt(4, biglietto.getPosto());
-            statement.setString(5, biglietto.getClasse());
-            statement.setBoolean(6, biglietto.isCheckIn());
-            statement.setBoolean(7, biglietto.isImbarcato());
-            statement.setString(8, biglietto.getNumeroVolo());
-            statement.setString(9, biglietto.getcF());
-            statement.execute();
+            statement = PGConnection.getConnection().prepareStatement("INSERT INTO biglietto( prezzo, fila, posto, classe, checkin, imbarcato, numerovolo, cf) values (?,?,?,'"+biglietto.getClasse()+"',?,?,?,?)");
+            statement.setDouble(1, biglietto.getPrezzo());
+            statement.setInt(2, biglietto.getFila());
+            statement.setInt(3, biglietto.getPosto());
+            statement.setBoolean(4, biglietto.isCheckIn());
+            statement.setBoolean(5, biglietto.isImbarcato());
+            statement.setString(6, biglietto.getNumeroVolo());
+            statement.setString(7, biglietto.getcF());
+            statement.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
         } finally {

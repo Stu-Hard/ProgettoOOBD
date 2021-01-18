@@ -2,25 +2,25 @@ package controllers;
 
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
-import com.jfoenix.validation.RequiredFieldValidator;
+
 import data.Biglietto;
 import data.Cliente;
 import data.Tratta;
+
 import database.dao.BigliettoDao;
 import database.dao.ClienteDao;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
+
 import enumeration.CodeEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
-import javafx.scene.control.TextField;
+
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
-import javafx.stage.Window;
+
 import utility.Validators;
 import utility.WindowDragger;
 
@@ -35,7 +35,13 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
     @FXML
     JFXTextField nome, cognome, riconoscimento, eta, cf, email, telefono;
     @FXML
-    JFXComboBox classe, documento;
+    JFXComboBox<CodeEnum> classe;
+    @FXML
+    JFXComboBox<String> documento;
+    @FXML
+    JFXButton pagaBtn;
+
+    double prezzo = 19.99;
 
     public void setTratta(Tratta tratta) {
         this.tratta = tratta;
@@ -51,7 +57,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
     @FXML
     public void buy(ActionEvent e) throws  IOException {
-        // todo crea un nuovo utente e lo inserisce nel db
+
 
         email.validate();
         riconoscimento.validate();
@@ -59,17 +65,25 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         nome.validate();
         cognome.validate();
         cf.validate();
-        if (cf.validate() && riconoscimento.validate() && eta.validate() && nome.validate() && cognome.validate()) {
-            Cliente cliente = new Cliente(getCf(), getNome(), getCognome(), getRiconoscimento(), getEmail(), getEta());
+        if (cf.validate() && riconoscimento.validate() && eta.validate() && nome.validate() && cognome.validate() && classe.getValue() != null) {
+            Cliente cliente = new Cliente(getCf(), getNome(), getCognome(), getRiconoscimento(), (getEmail() == "")?null: getEmail(), getEta());
             ClienteDao cDao = new ClienteDao();
             try {
                 cDao.insert(cliente);
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
             }
-            /*Biglietto biglietto = new Biglietto(codiceBigliettoRandom, prezzo, fila, posto, classe, checkin, imbarcato, numerovolo,getcf);
+
+
+
+            //todo fila e posto -> trigger
+            Biglietto biglietto = new Biglietto(prezzo, 1, 1, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente.getCodiceFiscale());
             BigliettoDao bDao = new BigliettoDao();
-            bDao.insert(biglietto);*/
+            try {
+                bDao.insert(biglietto);
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
             close(e);
 
 
@@ -104,7 +118,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
             }
         }
 
-    
+
 
     public String getNome() {
         return nome.getText();
@@ -199,9 +213,9 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         cognome.getValidators().add(new Validators().createRequiredValidator("Inserire cognome"));
         riconoscimento.getValidators().add(new Validators().createRequiredValidator("Inserire n. documento"));
 
-        classe.getItems().add(CodeEnum.FAMIGLIE);
-        classe.getItems().add(CodeEnum.BUSINESS);
         classe.getItems().add(CodeEnum.ECONOMY);
+        classe.getItems().add(CodeEnum.BUSINESS);
+        classe.getItems().add(CodeEnum.FAMIGLIE);
         classe.getItems().add(CodeEnum.PRIORITY);
         classe.getItems().add(CodeEnum.DIVERSAMENTE_ABILI);
 
@@ -220,5 +234,17 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
             }
         });
 
+    }
+
+    public void computePrezzo(ActionEvent event) {
+        prezzo = 19.99;
+        switch (classe.getValue()){
+            case ECONOMY -> prezzo -= 5;
+            case BUSINESS -> prezzo *= 1.5;
+            case FAMIGLIE -> prezzo -= 1;
+            case PRIORITY -> prezzo = prezzo*2 +1.99;
+            case DIVERSAMENTE_ABILI -> prezzo /= 2;
+        }
+        pagaBtn.setText(String.format("%.2f$", prezzo));
     }
 }

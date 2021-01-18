@@ -3,11 +3,11 @@ package data;
 import enumeration.CodeEnum;
 
 public class Biglietto {
-    private String codiceBiglietto;
+    private Integer codiceBiglietto;
     private double prezzo;
-    private String fila;
+    private int fila;
     private int posto;
-    private String classe;
+    private CodeEnum classe;
     private boolean checkIn, imbarcato;
     private String numeroVolo;
     private String cF;
@@ -15,7 +15,7 @@ public class Biglietto {
     public Biglietto() {
     }
 
-    public Biglietto(String codiceBiglietto, double prezzo, String fila, int posto, String classe, boolean checkIn, boolean imbarcato, String numeroVolo, String cF) {
+    public Biglietto(Integer codiceBiglietto, double prezzo, int fila, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, String cF) {
         this.codiceBiglietto = codiceBiglietto;
         this.prezzo = prezzo;
         this.fila = fila;
@@ -27,11 +27,22 @@ public class Biglietto {
         this.cF = cF;
     }
 
-    public String getCodiceBiglietto() {
+    public Biglietto(double prezzo, int fila, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, String cF) {
+        this.prezzo = prezzo;
+        this.fila = fila;
+        this.posto = posto;
+        this.classe = classe;
+        this.checkIn = checkIn;
+        this.imbarcato = imbarcato;
+        this.numeroVolo = numeroVolo;
+        this.cF = cF;
+    }
+
+    public Integer getCodiceBiglietto() {
         return codiceBiglietto;
     }
 
-    public void setCodiceBiglietto(String codiceBiglietto) {
+    public void setCodiceBiglietto(Integer codiceBiglietto) {
         this.codiceBiglietto = codiceBiglietto;
     }
 
@@ -43,11 +54,11 @@ public class Biglietto {
         this.prezzo = prezzo;
     }
 
-    public String getFila() {
+    public int getFila() {
         return fila;
     }
 
-    public void setFila(String fila) {
+    public void setFila(int fila) {
         this.fila = fila;
     }
 
@@ -59,11 +70,11 @@ public class Biglietto {
         this.posto = posto;
     }
 
-    public String getClasse() {
+    public CodeEnum getClasse() {
         return classe;
     }
 
-    public void setClasse(String classe) {
+    public void setClasse(CodeEnum classe) {
         this.classe = classe;
     }
 

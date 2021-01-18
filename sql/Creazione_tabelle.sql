@@ -144,15 +144,15 @@ CREATE TABLE Cliente(
       Nome VARCHAR(30) NOT NULL,
       Cognome VARCHAR(30) NOT NULL,
       Carta VARCHAR(9) NOT NULL UNIQUE,
-      Email VARCHAR(30) NOT NULL UNIQUE CHECK (Email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
+      Email VARCHAR(30) UNIQUE CHECK (Email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
       Eta INT NOT NULL
 );
 
 insert into Cliente values
-                            ('GNNPNI00A01F839L', 'Francesco', 'De Stasio', 'F00f00f01', 'destasiofran1@libero.it', 20);
+                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'F00f00f01', 'destasiofran1@libero.it', 20);
 
 CREATE TABLE Biglietto(
-    CodiceBiglietto VARCHAR(8) PRIMARY KEY,
+    CodiceBiglietto serial PRIMARY KEY, /*incrementa automaticamente*/
     Prezzo REAL NOT NULL,
     Fila INT NOT NULL,
     Posto INT NOT NULL,
@@ -166,18 +166,13 @@ CREATE TABLE Biglietto(
     UNIQUE(Fila, Posto)
 );
 
-insert into Biglietto values
-                             ('ABCDEFGH', 20, 1, 1, 'PRIORITY',FALSE, FALSE, 'VLG87937', 'DSTFNC00R06F839I');
-insert into Biglietto values
-('ABCDEFGA', 20, 1, 1, 'PRIORITY',TRUE, FALSE, 'VLG87937', 'DSTFNC00R06F839I');
-insert into Biglietto values
-('ABCDEFGB', 20, 1, 1, 'PRIORITY',TRUE, TRUE, 'VLG87937', 'DSTFNC00R06F839I');
+
 
 CREATE TABLE Dipendente(
            CodiceImpiegato VARCHAR(8) PRIMARY KEY,
            Nome VARCHAR(30) NOT NULL,
            Cognome VARCHAR(30) NOT NULL,
-           Email VARCHAR(30) NOT NULL CHECK (Email LIKE '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'),
+           Email VARCHAR(30) NOT NULL CHECK (Email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
            Password VARCHAR(30) NOT NULL,
            Ruolo EnumImpiegati NOT NULL,
            Compagnia VARCHAR(30) CHECK (Compagnia IS NOT NULL or Ruolo = 'Amministratore'),
@@ -214,6 +209,32 @@ CREATE OR REPLACE VIEW PasseggeriImbarcati(NumeroVolo, PasseggeriImbarcati) AS
     NATURAL JOIN Tratta t
     WHERE b.imbarcato
     GROUP BY t.NumeroVolo;
+
+CREATE OR REPLACE FUNCTION deleteCliente()
+    RETURNS TRIGGER as $deleteCliente$
+        begin
+            if (select Cliente.CF from Cliente where Cliente.CF = new.CF) is null  then
+                return new;
+            else
+                UPDATE Cliente set Carta = new.Carta,
+                                   Cognome = new.Cognome,
+                                   Nome = new.Nome,
+                                   Email = new.Email,
+                                   Eta = new.Eta
+                WHERE CF = new.CF;
+                return null;
+            end if;
+        end;
+
+$deleteCliente$ language 'plpgsql';
+
+CREATE TRIGGER t
+    BEFORE INSERT ON CLIENTE
+    FOR EACH ROW
+    execute PROCEDURE  deleteCliente();
+
+
+
 /*
 
 CREATE TABLE Bagaglio(
