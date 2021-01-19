@@ -62,13 +62,13 @@ public class Dipendente {
     }
 
     public DipendentiEnum getRuolo() {
-        if (ruolo.contains("Addetto")) return DipendentiEnum.ADDETTO_IMBARCO;
+        if (ruolo.contains("Imbarco")) return DipendentiEnum.ADDETTO_IMBARCO;
         if (ruolo.contains("Amministratore")) return DipendentiEnum.AMMINISTRATORE;
         if (ruolo.contains("Check")) return DipendentiEnum.CHECK_IN;
         if (ruolo.contains("Ticket")) return DipendentiEnum.TICKET_AGENT;
         else return DipendentiEnum.RESPONSABILE_VOLI;
-
     }
+
 
     public void setRuolo(String ruolo) {
         this.ruolo = ruolo;

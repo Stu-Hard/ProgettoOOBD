@@ -123,4 +123,11 @@ public class ControllerDipendenti implements Initializable {
         filtroLavoro(scelta);
         search(null);
     }
+
+
+    public void addDipendente(ActionEvent event) {
+    }
+
+    public void removeDipendente(ActionEvent event) {
+    }
 }

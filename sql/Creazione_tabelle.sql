@@ -180,7 +180,13 @@ CREATE TABLE Dipendente(
 insert into Dipendente values
             ('1','Francesco', 'De Stasio', 'destasiofrancesco_@libero.it','password', 'Amministratore', 'Alitalia'),
             ('2','Matteo', 'Gaudino', 'matteogaudino_@libero.it','password', 'Amministratore', 'Alitalia'),
-            ('3','Luca', 'Abete', 'lucabete@libero.it','password', 'TicketAgent', 'Ryanair');
+            ('3','Luca', 'Abete', 'lucabete@libero.it','password', 'AddettoImbarco', 'Ryanair'),
+            ('4','Mario', 'Paolo', 'mariopaolo@gmail.com','password', 'AddettoCheckIn', 'Alitalia'),
+            ('5','Giovanni', 'Giovanna', 'giovannigiovanna@libero.it','password', 'TicketAgent', 'Alitalia'),
+            ('6','Matteo', 'Esposito', 'mattiaesposito@gmail.com','password', 'AddettoImbarco', 'Alitalia'),
+            ('7','Nicola', 'Nicolas', 'nicola@libero.it','password', 'ResponsabileVoli', 'Ryanair'),
+            ('8','Maria', 'Grazia', 'mariagrazia@libero.it','password', 'TicketAgent', 'Alitalia'),
+            ('9','Francesco', 'De Luca', 'francesacodeluca@outlook.it','password', 'AddettoCheckIn', 'Alitalia');
 
 CREATE TABLE AeroportoGestito( /* l'aeroporto gestito è uno ed uno solo*/
     CodiceAeroporto VARCHAR(4) NOT NULL REFERENCES Aeroporto(Codice),
