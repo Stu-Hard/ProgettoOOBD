@@ -1,5 +1,6 @@
 package database.dao;
 
+import data.Cliente;
 import data.Compagnia;
 import data.Dipendente;
 import database.PGConnection;
@@ -41,5 +42,25 @@ public class DipendentiDao {
         }
 
         return list;
+    }
+
+
+    public void insert(Dipendente dipendente) throws SQLException{
+        PreparedStatement statement = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("INSERT INTO dipendente values (?,?,?,?,?,'"+dipendente.getRuolo()+"')");
+            statement.setString(1, dipendente.getNome());
+            statement.setString(2, dipendente.getCognome());
+            statement.setString(3, dipendente.getEmail());
+            statement.setString(4, dipendente.getPassword());
+
+            statement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+        }
     }
 }

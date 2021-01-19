@@ -126,8 +126,11 @@ public class ControllerDipendenti implements Initializable {
 
 
     public void addDipendente(ActionEvent event) {
+           //todo creare scheda per inserire utente e il suo controller
+        // new DipendentiDao().insert();
     }
 
     public void removeDipendente(ActionEvent event) {
+
     }
 }
