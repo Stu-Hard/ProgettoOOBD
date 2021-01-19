@@ -1,6 +1,7 @@
 package customComponents;
 
 import com.jfoenix.controls.JFXButton;
+import controllers.ControllerDipendentiCard;
 import data.Dipendente;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import enumeration.DipendentiEnum;
@@ -11,36 +12,22 @@ import javafx.scene.layout.AnchorPane;
 
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 public class DipendentiCard extends AnchorPane {
     private FontAwesomeIcon utente;
     private JFXButton bottoneUtente;
     private Label gerarchia;
     public AnchorPane pannello;
-
-
-    public FontAwesomeIcon getUtente() {
-        return utente;
-    }
-
-    public void setUtente(FontAwesomeIcon utente) {
-        this.utente = utente;
-    }
-
+    //private WeakReference<Dipendente> dipendente;
+    private Dipendente m_dipendente;
     public String getBottoneUtente() {
         //per sapere il nome del dipendente
         return bottoneUtente.getText().toUpperCase();
-
     }
-
-    public void setBottoneUtente(String bottoneNome) {
-        this.bottoneUtente.setText(bottoneNome);
-    }
-
-
 
     public DipendentiEnum getGerarchia(){
-        if(gerarchia.getText().contains("Addetto")) return DipendentiEnum.ADDETTO_IMBARCO;
+        if(gerarchia.getText().contains("Imbarco")) return DipendentiEnum.ADDETTO_IMBARCO;
         else if(gerarchia.getText().contains("Amministratore")) return DipendentiEnum.AMMINISTRATORE;
         else if(gerarchia.getText().contains("Check")) return DipendentiEnum.CHECK_IN;
         else if(gerarchia.getText().contains("Ticket")) return DipendentiEnum.TICKET_AGENT;
@@ -59,7 +46,7 @@ public class DipendentiCard extends AnchorPane {
                 break;
             case CHECK_IN:
                 this.gerarchia.setText("Addetto al Check In");
-                setStyle("-fx-background-color: #1d915f; -fx-background-radius: 25px;");
+                setStyle("-fx-background-color: #0475c3; -fx-background-radius: 25px;");
                 break;
             case ADDETTO_IMBARCO:
                 this.gerarchia.setText("Addetto all'Imbarco");
@@ -75,11 +62,11 @@ public class DipendentiCard extends AnchorPane {
                 break;
         }
 
-
     }
     //Costruttore della DipendentiCard
 
     public DipendentiCard(Dipendente dipendente) {
+        this.m_dipendente = dipendente;
         try{
             caricaComponenti();
             setGerarchia(dipendente.getRuolo());
@@ -87,15 +74,22 @@ public class DipendentiCard extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 
+
     private void caricaComponenti() throws IOException {
-          getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/DipendentiCard.fxml")));
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DipendentiCard.fxml"));
+          getChildren().add(loader.load());
+          ControllerDipendentiCard cDipenCard = loader.getController();
+          cDipenCard.setDipendente(this.m_dipendente);
+
           this.pannello = ((AnchorPane) lookup("#pannello"));
           this.gerarchia = ((Label) lookup("#gerarchia"));
           this.bottoneUtente = ((JFXButton) lookup("#bottoneUtente"));
           this.utente = ((FontAwesomeIcon) lookup("#utente"));
+
       }
 
 

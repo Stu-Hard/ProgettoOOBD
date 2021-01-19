@@ -62,7 +62,6 @@ public class ControllerCheckIn implements Initializable{
                 biglietto = bDao.getBigliettoByCodice(bigliettoTextField.getText());
                 if(biglietto != null) {
 
-
                         TrattaDao trattaDao = new TrattaDao();
 
                         Tratta trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
