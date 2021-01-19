@@ -25,7 +25,7 @@ public class CodaImbarcoDao {
             while (resultSet.next()) {
                 Compagnia compagnia = cDao.getByNome(resultSet.getString("compagnia"));
                 list.add(new CodaImbarco(
-                        resultSet.getString("codiceCoda"),
+                        resultSet.getInt("codiceCoda"),
                         resultSet.getString("classe"),
                         resultSet.getInt("tempoStimato"),
                         resultSet.getInt("tempoEffettivo")
@@ -39,34 +39,6 @@ public class CodaImbarcoDao {
             if (resultSet != null) resultSet.close();
         }
 
-        return list;
-    }
-
-    public List<CodaImbarco> getByGateAndTratta(Gate gate) throws SQLException{
-        List<CodaImbarco> list = new LinkedList();
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM codaimbarco WHERE codicegate = ? AND numerovolo = ?");
-            statement.setString(1, gate.getGateCode());
-            statement.setString(2, gate.getTratta().getNumeroVolo());
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                list.add(new CodaImbarco(
-                        resultSet.getString("codiceCoda"),
-                        resultSet.getString("classe"),
-                        resultSet.getInt("tempoStimato"),
-                        resultSet.getInt("tempoEffettivo")
-                ));
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
-            if (statement != null) statement.close();
-            if (resultSet != null) resultSet.close();
-        }
         return list;
     }
 
@@ -82,7 +54,7 @@ public class CodaImbarcoDao {
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(new CodaImbarco(
-                        resultSet.getString("codiceCoda"),
+                        resultSet.getInt("codiceCoda"),
                         resultSet.getString("classe"),
                         resultSet.getInt("tempoStimato"),
                         resultSet.getInt("tempoEffettivo")
@@ -98,18 +70,39 @@ public class CodaImbarcoDao {
         return list;
     }
 
-    public void add(CodaImbarco coda, Gate gate) throws SQLException {
+    public List<CodaImbarco> getByTratta(Tratta t) throws SQLException{
+        List<CodaImbarco> list = new LinkedList();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM codaimbarco WHERE numerovolo = ?");
+            statement.setString(1, t.getNumeroVolo());
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new CodaImbarco(
+                        resultSet.getInt("codiceCoda"),
+                        resultSet.getString("classe"),
+                        resultSet.getInt("tempoStimato"),
+                        resultSet.getInt("tempoEffettivo")
+                ));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return list;
+    }
+
+    public void addNew(CodeEnum coda, Tratta tratta) throws SQLException {
         PreparedStatement statement = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement(String.format("insert into codaimbarco(tempoStimato, tempoEffettivo, classe, CodiceGate, NumeroVolo) values(?, ?, '%s', ?, ?)", coda.getClasse().toString()));
-            statement.setInt(1, coda.getTempoStimato());
-            if (coda.getTempoEffettivo() != null)
-                statement.setInt(2, coda.getTempoEffettivo());
-            else
-                statement.setNull(2, Types.INTEGER);
-            statement.setString(3, gate.getGateCode());
-            statement.setString(4, gate.getTratta().getNumeroVolo());
+            statement = PGConnection.getConnection().prepareStatement(String.format("insert into codaimbarco(tempoStimato, classe, NumeroVolo) values(0, '%s', ?)", coda.toString()));
+            statement.setString(1, tratta.getNumeroVolo());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
@@ -123,9 +116,10 @@ public class CodaImbarcoDao {
         PreparedStatement statement = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET tempoeffettivo = ? WHERE codicecoda = ?");
+            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET tempoeffettivo = ?, codicegate = ? WHERE codicecoda = ?");
             statement.setInt(1, coda.getTempoEffettivo());
-            statement.setString(2, coda.getCodiceCoda());
+            statement.setString(2, coda.getCodiceGate());
+            statement.setInt(3, coda.getCodiceCoda());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();

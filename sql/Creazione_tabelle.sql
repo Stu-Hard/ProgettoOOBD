@@ -133,7 +133,7 @@ CREATE TABLE CodaImbarco(
     TempoStimato INT NOT NULL,
     TempoEffettivo INT,
     Classe EnumCoda  NOT NULL,
-    CodiceGate VARCHAR(4)  NOT NULL,
+    CodiceGate VARCHAR(4),
     NumeroVolo VARCHAR(8) NOT NULL,
     CONSTRAINT fk_CodiceGate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
@@ -165,8 +165,6 @@ CREATE TABLE Biglietto(
     CONSTRAINT fk_CF FOREIGN KEY(CF) REFERENCES Cliente(CF),
     UNIQUE(Fila, Posto)
 );
-
-
 
 CREATE TABLE Dipendente(
            CodiceImpiegato VARCHAR(8) PRIMARY KEY,
@@ -214,7 +212,7 @@ CREATE OR REPLACE VIEW PasseggeriImbarcati(NumeroVolo, PasseggeriImbarcati) AS
 CREATE OR REPLACE FUNCTION deleteCliente()
     RETURNS TRIGGER as $deleteCliente$
         begin
-            if NOT EXISTS(select Cliente.CF from Cliente where Cliente.CF = new.CF) then
+            if (select Cliente.CF from Cliente where Cliente.CF = new.CF) IS NULL then
                 return new;
             else
                 UPDATE Cliente set Carta = new.Carta,
@@ -226,7 +224,6 @@ CREATE OR REPLACE FUNCTION deleteCliente()
                 return null;
             end if;
         end;
-
 $deleteCliente$ language 'plpgsql';
 
 CREATE TRIGGER t
@@ -234,7 +231,6 @@ CREATE TRIGGER t
     FOR EACH ROW
     execute PROCEDURE  deleteCliente();
 
-DROP VIEW TempoStimatoImbarco;
 CREATE OR REPLACE VIEW TempoStimatoImbarco AS
     SELECT CI.CodiceGate, T.AeroportoPartenza, T.AeroportoArrivo, AVG(CI.TempoEffettivo)
     FROM Tratta T

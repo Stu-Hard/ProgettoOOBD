@@ -138,7 +138,7 @@ public class TrattaDao {
         ResultSet resultSet = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL");
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();

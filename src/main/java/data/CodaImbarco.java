@@ -2,16 +2,15 @@ package data;
 
 import enumeration.CodeEnum;
 
-import java.util.Random;
-
 public class CodaImbarco {
-    private String codiceCoda;
+    private int codiceCoda;
+    private String codiceGate;
     private CodeEnum classe;
     private Integer tempoStimato;
     private Integer tempoEffettivo;
     private int passeggeri;
 
-    public CodaImbarco(String codiceCoda, String classe, int tempoStimato, int tempoEffettivo) {
+    public CodaImbarco(int codiceCoda, String classe, int tempoStimato, int tempoEffettivo) {
         this.codiceCoda = codiceCoda;
         setClasse(classe);
         this.tempoStimato = tempoStimato;
@@ -25,7 +24,7 @@ public class CodaImbarco {
         tempoEffettivo = null;
     }
 
-    public String getCodiceCoda() {
+    public int getCodiceCoda() {
         return codiceCoda;
     }
 
@@ -68,5 +67,13 @@ public class CodaImbarco {
 
     public void setPasseggeri(int passeggeri) {
         this.passeggeri = passeggeri;
+    }
+
+    public String getCodiceGate() {
+        return codiceGate;
+    }
+
+    public void setCodiceGate(String codiceGate) {
+        this.codiceGate = codiceGate;
     }
 }

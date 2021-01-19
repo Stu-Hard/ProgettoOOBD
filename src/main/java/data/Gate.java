@@ -71,12 +71,18 @@ public class Gate {
         return new Pair(t, code);
     }
 
+    public int getTempoStimatoTotale(){
+        return codeImbarco.stream().map(CodaImbarco::getTempoStimato).reduce(0, Integer::sum);
+    }
+
     public void setTratta(Tratta tratta, List<CodaImbarco> codeImbarco) {
         if (status == GateStatus.LIBERO && tratta != null) {
             tratta.setGate(gateCode);
             this.tratta = tratta;
             this.codeImbarco = codeImbarco;
             status = GateStatus.OCCUPATO;
+            codeImbarco.forEach(c -> c.setCodiceGate(gateCode));
+            setCodeImbarco(codeImbarco);
         }
     }
 
@@ -93,7 +99,6 @@ public class Gate {
     }
 
     public CodeEnum[] getCodeArray() {
-        //CodeEnum[] codeEnums = new CodeEnum[codeImbarco.size()];
-        return codeImbarco.stream().map(c -> c.getClasse()).toArray(CodeEnum[]::new);
+        return codeImbarco.stream().map(CodaImbarco::getClasse).toArray(CodeEnum[]::new);
     }
 }

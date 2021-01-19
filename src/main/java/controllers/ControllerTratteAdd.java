@@ -3,15 +3,13 @@ package controllers;
 import com.jfoenix.controls.*;
 import data.*;
 import database.dao.*;
+import enumeration.CodeEnum;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import utility.IdFactory;
 import utility.WindowDragger;
@@ -19,12 +17,20 @@ import utility.WindowDragger;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 
 public class ControllerTratteAdd extends WindowDragger implements Initializable {
-
+    @FXML
+    public JFXCheckBox diversamenteAbili;
+    @FXML
+    public JFXCheckBox famiglie;
+    @FXML
+    public JFXCheckBox business;
+    @FXML
+    public JFXCheckBox priorty;
+    @FXML
+    public JFXCheckBox economy;
     @FXML
     JFXComboBox<Compagnia> compagnia;
     @FXML
@@ -38,8 +44,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     JFXCheckBox conclusa;
     @FXML
     Label gateLbl;
-
-
     @FXML
     JFXDatePicker data;
     @FXML
@@ -89,6 +93,12 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
         );
         try {
             new TrattaDao().add(tratta);
+            CodaImbarcoDao cDao = new CodaImbarcoDao();
+            if (diversamenteAbili.isSelected()) cDao.addNew(CodeEnum.DIVERSAMENTE_ABILI, tratta);
+            if (famiglie.isSelected()) cDao.addNew(CodeEnum.FAMIGLIE, tratta);
+            if (business.isSelected()) cDao.addNew(CodeEnum.BUSINESS, tratta);
+            if (priorty.isSelected()) cDao.addNew(CodeEnum.PRIORITY, tratta);
+            if (economy.isSelected()) cDao.addNew(CodeEnum.ECONOMY, tratta);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

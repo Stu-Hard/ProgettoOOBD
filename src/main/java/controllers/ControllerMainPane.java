@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import utility.WindowDragger;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -30,6 +31,8 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             imbarcoPane, compagniePane,  aereiPane,
             dipendentiPane, statistichePane, tabellonePane;
 
+    private ControllerTratte controllerTratte;
+
 
     public void close(MouseEvent e){
         Platform.exit();
@@ -47,6 +50,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
 
         if (tratteBtn.equals(b)) {
             trattePane.toFront();
+            controllerTratte.refresh();
         } else if (gateBtn.equals(b)) {
             gatePane.toFront();
         } else if (checkInBtn.equals(b)) {
@@ -70,9 +74,13 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            FXMLLoader tratteLoader = new FXMLLoader(getClass().getResource("/fxml/Tratte.fxml"));
             trattePane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/Tratte.fxml"))
+                    tratteLoader.load()
             );
+            controllerTratte = tratteLoader.getController();
+
+
             gatePane.getChildren().add(
                     FXMLLoader.load(getClass().getResource("/fxml/Gate.fxml"))
             );

@@ -5,6 +5,8 @@ import com.jfoenix.controls.*;
 import customComponents.TrattaHbox;
 import data.Tratta;
 import database.dao.TrattaDao;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +29,7 @@ import javafx.stage.StageStyle;
 
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -44,6 +47,8 @@ public class ControllerTratte implements Initializable {
     private JFXButton cancelBtn;
     @FXML
     private TextField searchBar;
+    @FXML
+    private JFXSpinner spinner;
 
     @FXML
     private JFXListView<TrattaHbox> listView;
@@ -144,14 +149,28 @@ public class ControllerTratte implements Initializable {
         }
     }
 
-    public void refresh(){
-        listView.getItems().clear();
-        try {
-            new TrattaDao().getAllTratte().forEach(tratta -> {
-                listView.getItems().add(new TrattaHbox(tratta));
+    public void refresh() {
+        if (!spinner.isVisible()){
+            listView.getItems().clear();
+            spinner.setVisible(true);
+            Task<List<Tratta>> task = new Task<>() {
+                @Override
+                protected List<Tratta> call() {
+                    try {
+                        return new TrattaDao().getAllTratte();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            task.setOnSucceeded(e -> {
+                listView.getItems().addAll(task.getValue().stream().map(TrattaHbox::new).toArray(TrattaHbox[]::new));
+                spinner.setVisible(false);
             });
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            th.start();
         }
     }
 
@@ -160,6 +179,5 @@ public class ControllerTratte implements Initializable {
         searchMode.getItems().addAll("Partenza", "Arrivo", "Compagnia", "NumeroVolo");
         searchMode.getSelectionModel().selectFirst();
         tratteHboxList = new ArrayList();
-        refresh();
     }
 }

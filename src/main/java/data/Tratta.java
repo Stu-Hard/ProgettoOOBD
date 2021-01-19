@@ -2,10 +2,9 @@ package data;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Tratta {
     private String numeroVolo;
@@ -160,7 +159,12 @@ public class Tratta {
         this.durataVolo = durataVolo;
     }
 
+    public int dateDistance(){
+        return (int) ChronoUnit.MINUTES.between(LocalDateTime.of(dataPartenza, oraPartenza), Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
+    }
+
     public void concludi() {
+        ritardo = dateDistance();
         conclusa = true;
     }
 }

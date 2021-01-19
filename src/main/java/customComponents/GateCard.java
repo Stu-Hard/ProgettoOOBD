@@ -19,6 +19,10 @@ public class GateCard extends Pane{
     private Label gateCode, partenza, arrivo, stato, tempo; // le label principali
     private Pane trattaPane; // pannello con partenza arrivo e tempo
     public VBox code; // pannello con code di imbarco
+    private Label stimaDiversamenteAbili, stimaFamiglie,
+            stimaBusiness, stimaPriority, stimaEconomy;
+    private Label diversamenteAbili, famiglie,
+            business, priority, economy;
 
     // tempo stimato di imbarco in minuti
     public void setTempo(Integer tempo) {
@@ -55,18 +59,18 @@ public class GateCard extends Pane{
         }
     }
 
-    // ablilita le code di imbarco
-    public void enableCode(CodeEnum... coda){
-        for (CodeEnum c : coda)
-            (code.lookup("#" + c.toString())).setDisable(false);
-    }
-    // disabilita le code
-    public void disableCode(CodeEnum ... coda){
-        for (CodeEnum c : coda)
-            (code.lookup("#" + c.toString())).setDisable(true);
-    }
     public void disableAllCode(){
-        code.getChildren().forEach(n -> n.setDisable(true));
+        diversamenteAbili.setDisable(true);
+        famiglie.setDisable(true);
+        business.setDisable(true);
+        priority.setDisable(true);
+        economy.setDisable(true);
+
+        stimaBusiness.setText("");
+        stimaDiversamenteAbili.setText("");
+        stimaEconomy.setText("");
+        stimaFamiglie.setText("");
+        stimaPriority.setText("");
     }
 
     public GateCard(Gate gate){
@@ -87,20 +91,54 @@ public class GateCard extends Pane{
         }
         setStato(gate.getStatus());
         disableAllCode();
-        enableCode(gate.getCodeArray());
-        setTempo(null); // tempo stimato per l'imbarco.
+        gate.getCodeImbarco().forEach(c -> {
+            switch (c.getClasse()){
+                case ECONOMY -> {
+                    stimaEconomy.setText(c.getTempoStimato() + "''");
+                    economy.setDisable(false);
+                }
+                case BUSINESS -> {
+                    stimaBusiness.setText(c.getTempoStimato() + "''");
+                    business.setDisable(false);
+                }
+                case DIVERSAMENTE_ABILI -> {
+                    stimaDiversamenteAbili.setText(c.getTempoStimato() + "''");
+                    diversamenteAbili.setDisable(false);
+                }
+                case FAMIGLIE -> {
+                    stimaFamiglie.setText(c.getTempoStimato() + "''");
+                    stimaFamiglie.setDisable(false);
+                }
+                case PRIORITY -> {
+                    stimaPriority.setText(c.getTempoStimato() + "''");
+                    priority.setDisable(false);
+                }
+            }
+        });
+        setTempo(gate.getTempoStimatoTotale()); // tempo stimato per l'imbarco.
     }
 
     // carica i componenti dal file fxml
     private void loadComponents() throws IOException{
         getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/GateCard.fxml")));
-        this.gateCode = ((Label) lookup("#gateCode")); // "lockup" serve per ricercare i componenti tramite l'id
-        this.partenza = ((Label) lookup("#partenza"));
-        this.arrivo = ((Label) lookup("#arrivo"));
-        this.tempo = ((Label) lookup("#tempo"));
-        this.stato = (Label) lookup("#stato");
-        this.trattaPane = (Pane) lookup("#trattaPane");
-        this.code = (VBox) lookup("#code");
+        gateCode = ((Label) lookup("#gateCode")); // "lockup" serve per ricercare i componenti tramite l'id
+        partenza = ((Label) lookup("#partenza"));
+        arrivo = ((Label) lookup("#arrivo"));
+        tempo = ((Label) lookup("#tempo"));
+        stato = (Label) lookup("#stato");
+        trattaPane = (Pane) lookup("#trattaPane");
+        code = (VBox) lookup("#code");
+        stimaBusiness = (Label) lookup("#stimaBusiness");
+        stimaDiversamenteAbili = (Label) lookup("#stimaDiversamenteAbili");
+        stimaEconomy = (Label) lookup("#stimaEconomy");
+        stimaFamiglie = (Label) lookup("#stimaFamiglie");
+        stimaPriority = (Label) lookup("#stimaPriority");
+
+        diversamenteAbili = (Label) lookup("#DIVERSAMENTE_ABILI");
+        famiglie = (Label) lookup("#FAMIGLIE");
+        business = (Label) lookup("#BUSINESS");
+        priority = (Label) lookup("#PRIORITY");
+        economy = (Label) lookup("#ECONOMY");
     }
 
     public Gate getGate() {
