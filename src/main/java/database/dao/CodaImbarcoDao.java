@@ -102,14 +102,14 @@ public class CodaImbarcoDao {
         PreparedStatement statement = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement(String.format("insert into codaimbarco values(?, ?, ?, '%s', ?, ?)", coda.getClasse().toString()));
-            statement.setString(1, coda.getCodiceCoda());
-            statement.setInt(2, coda.getTempoStimato());
+            statement = PGConnection.getConnection().prepareStatement(String.format("insert into codaimbarco(tempoStimato, tempoEffettivo, classe, CodiceGate, NumeroVolo) values(?, ?, '%s', ?, ?)", coda.getClasse().toString()));
+            statement.setInt(1, coda.getTempoStimato());
             if (coda.getTempoEffettivo() != null)
-                statement.setInt(3, coda.getTempoEffettivo());
-            else statement.setNull(3, Types.INTEGER);
-            statement.setString(4, gate.getGateCode());
-            statement.setString(5, gate.getTratta().getNumeroVolo());
+                statement.setInt(2, coda.getTempoEffettivo());
+            else
+                statement.setNull(2, Types.INTEGER);
+            statement.setString(3, gate.getGateCode());
+            statement.setString(4, gate.getTratta().getNumeroVolo());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();

@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTimePicker?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="495.0" prefWidth="573.0" styleClass="background" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratteAdd">
     <children>
@@ -81,8 +73,8 @@
                 <VBox prefHeight="287.0" prefWidth="222.0" spacing="24.0">
                <children>
                   <JFXComboBox fx:id="compagnia" onAction="#compagniaAction" prefWidth="190.0" style="-fx-font-size: 15;" stylesheets="@../css/white.css" />
-                  <JFXComboBox fx:id="partenza" prefHeight="31.0" prefWidth="190.0" style="-fx-font-size: 15;" styleClass="jfx-combo-box" stylesheets="@../css/white.css" />
-                  <JFXComboBox fx:id="arrivo" prefHeight="31.0" prefWidth="190.0" style="-fx-font-size: 15;" stylesheets="@../css/white.css" />
+                  <JFXComboBox fx:id="partenza" onAction="#controlloAeroporto" prefHeight="31.0" prefWidth="190.0" style="-fx-font-size: 15;" styleClass="jfx-combo-box" stylesheets="@../css/white.css" />
+                  <JFXComboBox fx:id="arrivo" onAction="#controlloAeroporto" prefHeight="31.0" prefWidth="190.0" style="-fx-font-size: 15;" stylesheets="@../css/white.css" />
                   <HBox>
                      <children>
                         <JFXDatePicker fx:id="data" defaultColor="BLACK" prefHeight="31.0" prefWidth="146.0" style="-fx-font-size: 15; -fx-text-fill: white; -fx-prompt-text-fill: white;" stylesheets="@../css/white.css" />

@@ -129,7 +129,7 @@ insert into Tratta values
 
 
 CREATE TABLE CodaImbarco(
-    CodiceCoda VARCHAR(8) PRIMARY KEY,
+    CodiceCoda SERIAL PRIMARY KEY,
     TempoStimato INT NOT NULL,
     TempoEffettivo INT,
     Classe EnumCoda  NOT NULL,
@@ -152,7 +152,7 @@ insert into Cliente values
                             ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'F00f00f01', 'destasiofran1@libero.it', 20);
 
 CREATE TABLE Biglietto(
-    CodiceBiglietto serial PRIMARY KEY, /*incrementa automaticamente*/
+    CodiceBiglietto SERIAL PRIMARY KEY, /*incrementa automaticamente*/
     Prezzo REAL NOT NULL,
     Fila INT NOT NULL,
     Posto INT NOT NULL,
@@ -201,7 +201,7 @@ CREATE OR REPLACE VIEW PasseggeriTotali(NumeroVolo, Passeggeri) AS
     FROM Biglietto b
     NATURAL JOIN Tratta t
     GROUP BY t.NumeroVolo;
-
+/*
 CREATE OR REPLACE VIEW PasseggeriCheckIn(NumeroVolo, PasseggeriCheckin) AS
     SELECT t.NumeroVolo, COUNT(*)
     FROM Biglietto b
@@ -215,11 +215,12 @@ CREATE OR REPLACE VIEW PasseggeriImbarcati(NumeroVolo, PasseggeriImbarcati) AS
     NATURAL JOIN Tratta t
     WHERE b.imbarcato
     GROUP BY t.NumeroVolo;
+*/
 
 CREATE OR REPLACE FUNCTION deleteCliente()
     RETURNS TRIGGER as $deleteCliente$
         begin
-            if (select Cliente.CF from Cliente where Cliente.CF = new.CF) is null  then
+            if NOT EXISTS(select Cliente.CF from Cliente where Cliente.CF = new.CF) then
                 return new;
             else
                 UPDATE Cliente set Carta = new.Carta,
@@ -239,7 +240,12 @@ CREATE TRIGGER t
     FOR EACH ROW
     execute PROCEDURE  deleteCliente();
 
-
+DROP VIEW TempoStimatoImbarco;
+CREATE OR REPLACE VIEW TempoStimatoImbarco AS
+    SELECT CI.CodiceGate, T.AeroportoPartenza, T.AeroportoArrivo, AVG(CI.TempoEffettivo)
+    FROM Tratta T
+    JOIN CodaImbarco CI ON T.CodiceGate = CI.CodiceGate
+    GROUP BY CI.CodiceGate, T.AeroportoPartenza, T.AeroportoArrivo;
 
 /*
 

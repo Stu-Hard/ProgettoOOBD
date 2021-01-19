@@ -78,7 +78,11 @@ public class ControllerTratteInfo extends WindowDragger {
         if (tratta.getAereo() != null)
             codiceAereo.setText(tratta.getAereo().getCodice());
         completata.setSelected(tratta.isConclusa());
-        //passeggeri.setText(todo calculate N° passeggeri tramite biglietti ecc...);
+        try {
+            passeggeri.setText(new TrattaDao().getPasseggeri(tratta) + "");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override

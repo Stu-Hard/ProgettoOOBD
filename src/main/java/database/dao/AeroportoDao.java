@@ -55,4 +55,23 @@ public class AeroportoDao {
         }
         return aeroporto;
     }
+
+    public Aeroporto getAeroportoGestito() throws SQLException{
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Aeroporto aeroporto = null;
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM aeroportogestito NATURAL JOIN aeroporto");
+            resultSet = statement.executeQuery();
+            if (resultSet.next())
+                aeroporto = new Aeroporto(resultSet.getString("codice"), resultSet.getString("nome"), resultSet.getString("citta"));
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return aeroporto;
+    }
 }
