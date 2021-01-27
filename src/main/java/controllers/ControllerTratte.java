@@ -21,6 +21,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -28,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URL;
@@ -123,11 +125,10 @@ public class ControllerTratte implements Initializable {
                 ioException.printStackTrace();
             }
         } else if(e.getButton() == MouseButton.SECONDARY){
-            Label elimina = new Label("Elimina");
-            JFXListView<Label> l = new JFXListView();
-            l.getItems().add(elimina);
-            JFXPopup popup = new JFXPopup(l);
-            popup.show(listView.getSelectionModel().getSelectedItem());
+            JFXButton elimina = new JFXButton("Elimina");
+            elimina.setStyle("-fx-background-radius: 0; -fx-font-size: 18; -fx-background-color: red; -fx-text-fill: white");
+            JFXPopup popup = new JFXPopup(elimina);
+            popup.show(listView.getScene().getWindow(), e.getSceneX(), e.getSceneY(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 0, 0);
         }
     }
 
@@ -136,8 +137,6 @@ public class ControllerTratte implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TratteAdd.fxml"));
             Parent parent = fxmlLoader.load();
-            //ControllerTratteInfo controller = fxmlLoader.getController();
-
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.initStyle(StageStyle.TRANSPARENT);
@@ -157,7 +156,7 @@ public class ControllerTratte implements Initializable {
                 @Override
                 protected List<Tratta> call() {
                     try {
-                        return new TrattaDao().getAllTratte();
+                        return new TrattaDao().getTratteWithDate(dpk1.getValue(), dpk2.getValue());
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }

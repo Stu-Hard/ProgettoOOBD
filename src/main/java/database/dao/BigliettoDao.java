@@ -1,9 +1,6 @@
 package database.dao;
 
-import data.Aeroporto;
-import data.Biglietto;
-import data.Compagnia;
-import data.Gate;
+import data.*;
 import database.PGConnection;
 import enumeration.CodeEnum;
 
@@ -24,7 +21,7 @@ public class BigliettoDao {
             statement = PGConnection.getConnection().prepareStatement("SELECT * FROM biglietto");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                CodeEnum c = CodeEnum.ECONOMY;
+                CodeEnum c;
                 String classe = resultSet.getString(("classe"));
                 if(classe.contains("ECONOMY")){
                     c = CodeEnum.ECONOMY;
@@ -41,13 +38,16 @@ public class BigliettoDao {
                 list.add(new Biglietto(
                             resultSet.getInt("codicebiglietto"),
                             resultSet.getInt("prezzo"),
-                            resultSet.getInt("fila"),
                             resultSet.getInt("posto"),
                             c,
                             resultSet.getBoolean("checkin"),
                             resultSet.getBoolean("imbarcato"),
                             resultSet.getString("numerovolo"),
-                            resultSet.getString("cf")
+                            new Cliente(
+                                    resultSet.getString("cf"),
+                                    resultSet.getString("NomeCliente"),
+                                    resultSet.getString("Documento")
+                            )
                 ));
             }
         } catch (SQLException | NullPointerException e){
@@ -87,13 +87,16 @@ public class BigliettoDao {
                 biglietto = new Biglietto(
                         resultSet.getInt("codicebiglietto"),
                         resultSet.getInt("prezzo"),
-                        resultSet.getInt("fila"),
                         resultSet.getInt("posto"),
                         c,
                         resultSet.getBoolean("checkin"),
                         resultSet.getBoolean("imbarcato"),
                         resultSet.getString("numerovolo"),
-                        resultSet.getString("cf")
+                        new Cliente(
+                                resultSet.getString("cf"),
+                                resultSet.getString("NomeCliente"),
+                                resultSet.getString("Documento")
+                        )
                 );
             }
         } catch (SQLException e){
@@ -127,16 +130,18 @@ public class BigliettoDao {
 
     public void insert(Biglietto biglietto) throws SQLException{
         PreparedStatement statement = null;
-
+        int codiceCoda = new CodaImbarcoDao().getByBiglietto(biglietto).getCodiceCoda();
         try {
-            statement = PGConnection.getConnection().prepareStatement("INSERT INTO biglietto( prezzo, fila, posto, classe, checkin, imbarcato, numerovolo, cf) values (?,?,?,'"+biglietto.getClasse()+"',?,?,?,?)");
+            statement = PGConnection.getConnection().prepareStatement("INSERT INTO biglietto(prezzo, posto, checkin, imbarcato, numerovolo, nomecliente, documento, codicecoda, cf) values (?,?,?,?,?,?,?,?,?)");
             statement.setDouble(1, biglietto.getPrezzo());
-            statement.setInt(2, biglietto.getFila());
-            statement.setInt(3, biglietto.getPosto());
-            statement.setBoolean(4, biglietto.isCheckIn());
-            statement.setBoolean(5, biglietto.isImbarcato());
-            statement.setString(6, biglietto.getNumeroVolo());
-            statement.setString(7, biglietto.getcF());
+            statement.setInt(2, biglietto.getPosto());
+            statement.setBoolean(3, biglietto.isCheckIn());
+            statement.setBoolean(4, biglietto.isImbarcato());
+            statement.setString(5, biglietto.getNumeroVolo());
+            statement.setString(6, biglietto.getCliente().getNome());
+            statement.setString(7, biglietto.getCliente().getDocumento());
+            statement.setInt(8, codiceCoda);
+            statement.setString(9, biglietto.getCliente().getCodiceFiscale());
             statement.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();

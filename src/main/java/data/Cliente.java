@@ -3,19 +3,13 @@ package data;
 public class Cliente {
     private String codiceFiscale;
     private String nome;
-    private String cognome;
-    private String carta;
-    private String email;
-    private int eta;
+    private String documento;
 
 
-    public Cliente(String codiceFiscale, String nome, String cognome, String carta, String email, int eta) {
+    public Cliente(String codiceFiscale, String nome, String documento) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome;
-        this.cognome = cognome;
-        this.carta = carta;
-        this.email = email;
-        this.eta = eta;
+        this.documento = documento;
     }
 
 
@@ -35,35 +29,11 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getCognome() {
-        return cognome;
+    public String getDocumento() {
+        return documento;
     }
 
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public String getCarta() {
-        return carta;
-    }
-
-    public void setCarta(String carta) {
-        this.carta = carta;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getEta() {
-        return eta;
-    }
-
-    public void setEta(int eta) {
-        this.eta = eta;
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
 }

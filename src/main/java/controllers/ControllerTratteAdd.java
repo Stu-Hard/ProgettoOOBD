@@ -35,8 +35,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     JFXComboBox<Compagnia> compagnia;
     @FXML
     JFXComboBox<Aeroporto> partenza, arrivo;
-    @FXML
-    JFXComboBox<Aereo> aerei;
 
     @FXML
     JFXComboBox<Gate> gate;
@@ -58,12 +56,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
 
     @FXML
     public void compagniaAction(ActionEvent e){
-        aerei.getItems().clear();
-        try {
-            aerei.getItems().addAll(new AereoDao().getAereiByCompagnia(compagnia.getValue()));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
     }
 
     @FXML
@@ -88,8 +81,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                 (conclusa.isSelected())? gate.getValue().getGateCode(): null,
                 compagnia.getValue(),
                 partenza.getValue(),
-                arrivo.getValue(),
-                aerei.getValue()
+                arrivo.getValue()
         );
         try {
             new TrattaDao().add(tratta);
@@ -144,7 +136,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
             {
                 super.bind(
                         compagnia.valueProperty(),
-                        aerei.valueProperty(),
                         partenza.valueProperty(),
                         arrivo.valueProperty(),
                         data.valueProperty(),
@@ -156,7 +147,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
             @Override
             protected boolean computeValue() {
                 return compagnia.getValue() == null ||
-                        aerei.getValue() == null ||
                         partenza.getValue() == null ||
                         arrivo.getValue() == null ||
                         data.getValue() == null ||

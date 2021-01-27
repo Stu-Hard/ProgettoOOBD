@@ -3,39 +3,36 @@ package data;
 import enumeration.CodeEnum;
 
 public class Biglietto {
+    private Cliente cliente;
     private Integer codiceBiglietto;
     private double prezzo;
-    private int fila;
     private int posto;
     private CodeEnum classe;
     private boolean checkIn, imbarcato;
     private String numeroVolo;
-    private String cF;
 
     public Biglietto() {
     }
 
-    public Biglietto(Integer codiceBiglietto, double prezzo, int fila, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, String cF) {
+    public Biglietto(Integer codiceBiglietto, double prezzo, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, Cliente cliente) {
         this.codiceBiglietto = codiceBiglietto;
         this.prezzo = prezzo;
-        this.fila = fila;
         this.posto = posto;
         this.classe = classe;
         this.checkIn = checkIn;
         this.imbarcato = imbarcato;
         this.numeroVolo = numeroVolo;
-        this.cF = cF;
+        this.cliente = cliente;
     }
 
-    public Biglietto(double prezzo, int fila, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, String cF) {
+    public Biglietto(double prezzo, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, Cliente cliente) {
         this.prezzo = prezzo;
-        this.fila = fila;
         this.posto = posto;
         this.classe = classe;
         this.checkIn = checkIn;
         this.imbarcato = imbarcato;
         this.numeroVolo = numeroVolo;
-        this.cF = cF;
+        this.cliente = cliente;
     }
 
     public Integer getCodiceBiglietto() {
@@ -52,14 +49,6 @@ public class Biglietto {
 
     public void setPrezzo(double prezzo) {
         this.prezzo = prezzo;
-    }
-
-    public int getFila() {
-        return fila;
-    }
-
-    public void setFila(int fila) {
-        this.fila = fila;
     }
 
     public int getPosto() {
@@ -102,11 +91,11 @@ public class Biglietto {
         this.numeroVolo = numeroVolo;
     }
 
-    public String getcF() {
-        return cF;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setcF(String cF) {
-        this.cF = cF;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

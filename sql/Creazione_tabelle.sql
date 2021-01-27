@@ -87,20 +87,6 @@ CREATE TABLE Risiede( /* si potrebbe anche eliminare e dare per scontato che tut
     CONSTRAINT fk_Aeroporto FOREIGN KEY(CodiceAeroporto) REFERENCES Aeroporto(Codice)
 );
 
-
-CREATE TABLE Aereo(
-    CodiceAereo VARCHAR(8) PRIMARY KEY CHECK (UPPER(CodiceAereo) = CodiceAereo),
-    Compagnia VARCHAR(30) NOT NULL,
-    File INT NOT NULL CHECK (File > 0),
-    Colonne INT NOT NULL CHECK (File > 0),
-    CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
-);
-insert into Aereo values
-                         ('RUXZWJB9', 'Vueling', 26, 6),
-                         ('7YSNJ6XD', 'Alitalia', 25, 6),
-                         ('YT72ZY6U', 'Easyjet', 26, 6),
-                         ('LY5NNHJ7', 'Ryanair', 33, 6);
-
 CREATE TABLE Tratta(
     NumeroVolo VARCHAR(8) PRIMARY KEY CHECK (UPPER(NumeroVolo) = NumeroVolo),
     DataPartenza DATE NOT NULL, 
@@ -109,12 +95,10 @@ CREATE TABLE Tratta(
     Ritardo INT DEFAULT 0 CHECK(DurataVolo + Ritardo > 0), /*è possibile che l'aereo ci metta meno tempo del previsto e quindi il ritardo sia negativo*/
     Conclusa BOOLEAN DEFAULT FALSE NOT NULL,
     CodiceGate VARCHAR(4),
-    CodiceAereo VARCHAR(8) NOT NULL CHECK (UPPER(CodiceAereo) = CodiceAereo),
-    Compagnia VARCHAR(30) NOT NULL, 
+    Compagnia VARCHAR(30) NOT NULL,
     AeroportoPartenza VARCHAR(4) NOT NULL, 
     AeroportoArrivo VARCHAR(4) NOT NULL,
     CONSTRAINT fk_Gate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
-    CONSTRAINT fk_Aereo FOREIGN KEY(CodiceAereo) REFERENCES Aereo(CodiceAereo),
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
     CONSTRAINT fk_AeroportoA FOREIGN KEY(AeroportoArrivo) REFERENCES Aeroporto(Codice),
     CONSTRAINT fk_AeroportoB FOREIGN KEY(AeroportoPartenza) REFERENCES Aeroporto(Codice)
@@ -123,9 +107,9 @@ CREATE TABLE Tratta(
 ALTER TABLE Gate ADD CONSTRAINT fk_Tratta FOREIGN KEY(Tratta) REFERENCES Tratta(NumeroVolo);
 
 insert into Tratta values
-                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, NULL, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL' ),
-                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, TRUE, 'A0', 'LY5NNHJ7', 'Ryanair', 'EGLC', 'LIRN'),
-                          ('VLGUAZ84', '2021-01-05', '21:18:00', 111, 0, false, NULL, 'RUXZWJB9', 'Vueling', 'LIRN', 'LEBL');
+                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, NULL, 'Vueling', 'LIRN', 'LEBL' ),
+                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, TRUE, 'A0', 'Ryanair', 'EGLC', 'LIRN'),
+                          ('VLGUAZ84', '2021-01-05', '21:18:00', 111, 0, false, NULL, 'Vueling', 'LIRN', 'LEBL');
 
 
 CREATE TABLE CodaImbarco(
@@ -139,31 +123,19 @@ CREATE TABLE CodaImbarco(
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
 
-CREATE TABLE Cliente(
-      CF VARCHAR(16) PRIMARY KEY CHECK (CF ~* '^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$' ),
-      Nome VARCHAR(30) NOT NULL,
-      Cognome VARCHAR(30) NOT NULL,
-      Carta VARCHAR(9) NOT NULL UNIQUE,
-      Email VARCHAR(30) UNIQUE CHECK (Email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
-      Eta INT NOT NULL
-);
-
-insert into Cliente values
-                            ('DSTFNC00R06F839I', 'Francesco', 'De Stasio', 'F00f00f01', 'destasiofran1@libero.it', 20);
-
 CREATE TABLE Biglietto(
     CodiceBiglietto SERIAL PRIMARY KEY, /*incrementa automaticamente*/
     Prezzo REAL NOT NULL,
-    Fila INT NOT NULL,
     Posto INT NOT NULL,
-    Classe EnumCoda NOT NULL, /* foreign key su code */
     CheckIn BOOLEAN DEFAULT FALSE NOT NULL,
     Imbarcato BOOLEAN DEFAULT FALSE NOT NULL CHECK (NOT Imbarcato or CheckIn), /*imbarcato -> checkin*/
     Numerovolo VARCHAR(8) NOT NULL,
-    CF VARCHAR(16) NOT NULL,
-    CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo),
-    CONSTRAINT fk_CF FOREIGN KEY(CF) REFERENCES Cliente(CF),
-    UNIQUE(Fila, Posto)
+    NomeCliente VARCHAR(30) NOT NULL,
+    Documento VARCHAR(9) NOT NULL,
+    CodiceCoda INT NOT NULL,
+    CF VARCHAR(16) CHECK (CF ~* '^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$'),
+    CONSTRAINT fk_CodiceCoda FOREIGN KEY(CodiceCoda) REFERENCES CodaImbarco(CodiceCoda),
+    CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
 
 CREATE TABLE Dipendente(
@@ -190,7 +162,7 @@ insert into Dipendente (nome, cognome, email, password, ruolo, compagnia) values
 
 CREATE TABLE AeroportoGestito( /* l'aeroporto gestito è uno ed uno solo*/
     CodiceAeroporto VARCHAR(4) NOT NULL REFERENCES Aeroporto(Codice),
-    isSingleton BOOLEAN NOT NULL DEFAULT TRUE PRIMARY KEY CHECK(isSingleton)
+    constr BOOLEAN NOT NULL DEFAULT TRUE PRIMARY KEY CHECK(constr)
 );
 insert into AeroportoGestito values ('LIRN'); /*Aeroporto di napoli*/
 
@@ -215,60 +187,8 @@ CREATE OR REPLACE VIEW PasseggeriImbarcati(NumeroVolo, PasseggeriImbarcati) AS
     GROUP BY t.NumeroVolo;
 */
 
-CREATE OR REPLACE FUNCTION deleteCliente()
-    RETURNS TRIGGER as $deleteCliente$
-        begin
-            if (select Cliente.CF from Cliente where Cliente.CF = new.CF) IS NULL then
-                return new;
-            else
-                UPDATE Cliente set Carta = new.Carta,
-                                   Cognome = new.Cognome,
-                                   Nome = new.Nome,
-                                   Email = new.Email,
-                                   Eta = new.Eta
-                WHERE CF = new.CF;
-                return null;
-            end if;
-        end;
-$deleteCliente$ language 'plpgsql';
-
-CREATE TRIGGER t
-    BEFORE INSERT ON CLIENTE
-    FOR EACH ROW
-    execute PROCEDURE  deleteCliente();
-
 CREATE OR REPLACE VIEW TempoStimatoImbarco AS
     SELECT CI.CodiceGate, T.AeroportoPartenza, T.AeroportoArrivo, AVG(CI.TempoEffettivo)
     FROM Tratta T
     JOIN CodaImbarco CI ON T.CodiceGate = CI.CodiceGate
     GROUP BY CI.CodiceGate, T.AeroportoPartenza, T.AeroportoArrivo;
-
-/*
-
-CREATE TABLE Bagaglio(
-    CodiceBagaglio VARCHAR(8) PRIMARY KEY,
-    Peso REAL NOT NULL, 
-    Costo REAL NOT NULL, 
-    Larghezza INT NOT NULL, 
-    Altezza INT NOT NULL, 
-    Profondità INT NOT NULL, 
-    CodiceBiglietto VARCHAR(8) NOT NULL,
-    CONSTRAINT fk_Biglietto FOREIGN KEY(CodiceBiglietto) REFERENCES Biglietto(CodiceBiglietto),
-);
-
-CREATE TABLE Sezione(
-    CodiceSezione VARCHAR(10) PRIMARY KEY, 
-    RangeFile VARCHAR(2) NOT NULL, 
-    RangeColonne VARCHAR(2) NOT NULL, 
-    Classe EnumCoda NOT NULL, 
-    CodiceAereo VARCHAR(8) NOT NULL,
-    CONSTRAINT fk_Aereo FOREIGN KEY(CodiceAereo) REFERENCES Aereo(CodiceAereo)
-);
-
-CREATE TABLE UscitaEmergenza(
-    CodiceSezione VARCHAR(10) NOT NULL, 
-    Fila CHAR NOT NULL,
-    CONSTRAINT fk_Sezione FOREIGN KEY(CodiceSezione) REFERENCES Sezione(CodiceSezione)
-);
-
- */

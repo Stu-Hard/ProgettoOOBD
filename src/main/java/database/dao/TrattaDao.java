@@ -1,14 +1,15 @@
 package database.dao;
 
-import data.Aereo;
 import data.Aeroporto;
 import data.Compagnia;
 import data.Tratta;
 import database.PGConnection;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +24,11 @@ public class TrattaDao {
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();
-            AereoDao aereoDao = new AereoDao();
 
             while (resultSet.next()) {
                 Aeroporto partenza = aDao.getByCodice(resultSet.getString("AeroportoPartenza"));
                 Aeroporto arrivo = aDao.getByCodice(resultSet.getString("AeroportoArrivo"));
                 Compagnia comp = cDao.getByNome(resultSet.getString("Compagnia"));
-                Aereo aereo = aereoDao.getAereoByCode(resultSet.getString("CodiceAereo"));
-
                 Tratta tratta = new Tratta(
                     resultSet.getString("NumeroVolo"),
                     resultSet.getDate("DataPartenza").toLocalDate(),
@@ -41,8 +39,55 @@ public class TrattaDao {
                     resultSet.getString("CodiceGate"),
                     comp,
                     partenza,
-                    arrivo,
-                    aereo
+                    arrivo
+                );
+                list.add(tratta);
+            }
+        } catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+
+        return list;
+    }
+
+    public List<Tratta> getTratteWithDate(LocalDate from, LocalDate to) throws SQLException {
+        List<Tratta> list = new ArrayList();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String query = "SELECT * FROM tratta WHERE TRUE";
+
+        if (from != null){
+            query += " AND datapartenza >= '" + Date.valueOf(from) + "'";
+        }
+        if (to != null){
+            query += " AND datapartenza <= '" + Date.valueOf(to) + "'";
+        }
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement(query);
+            resultSet = statement.executeQuery();
+            AeroportoDao aDao = new AeroportoDao();
+            CompagniaDao cDao = new CompagniaDao();
+
+            while (resultSet.next()) {
+                Aeroporto partenza = aDao.getByCodice(resultSet.getString("AeroportoPartenza"));
+                Aeroporto arrivo = aDao.getByCodice(resultSet.getString("AeroportoArrivo"));
+                Compagnia comp = cDao.getByNome(resultSet.getString("Compagnia"));
+                Tratta tratta = new Tratta(
+                        resultSet.getString("NumeroVolo"),
+                        resultSet.getDate("DataPartenza").toLocalDate(),
+                        resultSet.getTime("OraPartenza").toLocalTime(),
+                        resultSet.getInt("DurataVolo"),
+                        resultSet.getInt("ritardo"),
+                        resultSet.getBoolean("conclusa"),
+                        resultSet.getString("CodiceGate"),
+                        comp,
+                        partenza,
+                        arrivo
                 );
                 list.add(tratta);
             }
@@ -82,13 +127,11 @@ public class TrattaDao {
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();
-            AereoDao aereoDao = new AereoDao();
 
             if (resultSet.next()) {
                 Aeroporto partenza = aDao.getByCodice(resultSet.getString("AeroportoPartenza"));
                 Aeroporto arrivo = aDao.getByCodice(resultSet.getString("AeroportoArrivo"));
                 Compagnia comp = cDao.getByNome(resultSet.getString("Compagnia"));
-                Aereo aereo = aereoDao.getAereoByCode(resultSet.getString("CodiceAereo"));
 
                 t = new Tratta(
                         resultSet.getString("NumeroVolo"),
@@ -100,8 +143,7 @@ public class TrattaDao {
                         resultSet.getString("CodiceGate"),
                         comp,
                         partenza,
-                        arrivo,
-                        aereo
+                        arrivo
                 );
             }
         } catch (SQLException e){
@@ -142,13 +184,11 @@ public class TrattaDao {
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();
-            AereoDao aereoDao = new AereoDao();
 
             while (resultSet.next()) {
                 Aeroporto partenza = aDao.getByCodice(resultSet.getString("AeroportoPartenza"));
                 Aeroporto arrivo = aDao.getByCodice(resultSet.getString("AeroportoArrivo"));
                 Compagnia comp = cDao.getByNome(resultSet.getString("Compagnia"));
-                Aereo aereo = aereoDao.getAereoByCode(resultSet.getString("CodiceAereo"));
 
                 Tratta tratta = new Tratta(
                         resultSet.getString("NumeroVolo"),
@@ -160,8 +200,7 @@ public class TrattaDao {
                         resultSet.getString("CodiceGate"),
                         comp,
                         partenza,
-                        arrivo,
-                        aereo
+                        arrivo
                 );
                 list.add(tratta);
             }
@@ -187,7 +226,6 @@ public class TrattaDao {
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();
-            AereoDao aereoDao = new AereoDao();
 
             if (resultSet.next()){
                 passeggeri = resultSet.getInt("Passeggeri");

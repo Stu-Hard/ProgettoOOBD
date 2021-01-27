@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import data.*;
 import database.dao.BigliettoDao;
-import database.dao.ClienteDao;
 import database.dao.TrattaDao;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
@@ -21,16 +20,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ControllerCheckIn implements Initializable{
 
@@ -65,9 +61,6 @@ public class ControllerCheckIn implements Initializable{
                         TrattaDao trattaDao = new TrattaDao();
 
                         Tratta trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
-                        ClienteDao clienteDao = new ClienteDao();
-                        System.out.println(biglietto.getcF());
-                        Cliente cliente = clienteDao.getClienteByCf(biglietto.getcF());
 
                         Aeroporto partenza = trattastring.getAereoportoPartenza();
                         Aeroporto arrivo = trattastring.getAereoportoArrivo();
@@ -75,12 +68,12 @@ public class ControllerCheckIn implements Initializable{
                         codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
                         tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
                         classe.setText(String.valueOf(biglietto.getClasse()));
-                        posto.setText(biglietto.getFila() + "-" +biglietto.getPosto());        // dai il risultato
+                        posto.setText(biglietto.getPosto() + "");        // dai il risultato
                         gate.setText(trattastring.getGate());
-                        cf.setText(biglietto.getcF());
-                        documentoNumero.setText(cliente.getCarta());
-                        nome.setText(cliente.getNome());
-                        cognome.setText(cliente.getCognome());
+                        cf.setText(biglietto.getCliente().getCodiceFiscale());
+                        documentoNumero.setText(biglietto.getCliente().getDocumento());
+                        nome.setText(biglietto.getCliente().getNome().split("-")[0]);
+                        cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
 
 
                         cartaImbarcoHbox.setVisible(true);

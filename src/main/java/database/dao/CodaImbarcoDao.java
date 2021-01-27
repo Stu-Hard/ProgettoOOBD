@@ -128,4 +128,32 @@ public class CodaImbarcoDao {
             if (statement != null) statement.close();
         }
     }
+
+    public CodaImbarco getByBiglietto(Biglietto biglietto) throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        CodaImbarco coda = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM codaimbarco WHERE numerovolo = ? AND classe = '" + biglietto.getClasse() + "'");
+            System.out.println(biglietto.getClasse());
+            statement.setString(1, biglietto.getNumeroVolo());
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                coda = new CodaImbarco(
+                        resultSet.getInt("codiceCoda"),
+                        resultSet.getString("classe"),
+                        resultSet.getInt("tempoStimato"),
+                        resultSet.getInt("tempoEffettivo")
+                );
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return coda;
+    }
 }

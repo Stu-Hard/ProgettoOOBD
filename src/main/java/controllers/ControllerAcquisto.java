@@ -8,7 +8,6 @@ import data.Cliente;
 import data.Tratta;
 
 import database.dao.BigliettoDao;
-import database.dao.ClienteDao;
 
 import enumeration.CodeEnum;
 import javafx.event.ActionEvent;
@@ -66,18 +65,10 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         cognome.validate();
         cf.validate();
         if (cf.validate() && riconoscimento.validate() && eta.validate() && nome.validate() && cognome.validate() && classe.getValue() != null) {
-            Cliente cliente = new Cliente(getCf(), getNome(), getCognome(), getRiconoscimento(), (getEmail() == "")?null: getEmail(), getEta());
-            ClienteDao cDao = new ClienteDao();
-            try {
-                cDao.insert(cliente);
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-
-
+            Cliente cliente = new Cliente(getCf(), getNome() + "-" + getCognome(), getRiconoscimento());
 
             //todo fila e posto -> trigger
-            Biglietto biglietto = new Biglietto(prezzo, 1, 1, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente.getCodiceFiscale());
+            Biglietto biglietto = new Biglietto(prezzo, 1, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente);
             BigliettoDao bDao = new BigliettoDao();
             try {
                 bDao.insert(biglietto);

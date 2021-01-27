@@ -17,12 +17,9 @@ public class Tratta {
     private String gate = null; // come sopra da cambiare con Gate gate;
     private Aeroporto aereoportoPartenza;
     private Aeroporto aereoportoArrivo;
-    private Aereo aereo = null;
 
     public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
     public DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
-    public DateTimeFormatter dateDbFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-    public DateTimeFormatter timeDbFormat= DateTimeFormatter.ofPattern("HH:mm");
 
 
     // quando una tratta viene creata non si sa a prescindere il ritardo, il gate ecc...
@@ -37,7 +34,7 @@ public class Tratta {
         this.aereoportoArrivo = getAereoportoArrivo;
     }
 
-    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, String gate, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo, Aereo aereo) {
+    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, String gate, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo) {
         this.numeroVolo = numeroVolo;
         this.dataPartenza = dataPartenza;
         this.oraPartenza = oraPartenza;
@@ -48,7 +45,6 @@ public class Tratta {
         this.compagnia = compagnia;
         this.aereoportoPartenza = aereoportoPartenza;
         this.aereoportoArrivo = aereoportoArrivo;
-        this.aereo = aereo;
     }
 
     @Override
@@ -61,7 +57,6 @@ public class Tratta {
                 ", " + ritardo +
                 ", " + conclusa +
                 ", " + ((gate == null)? "NULL": "'" + gate + "'")   +
-                ", '" + aereo.getCodice() + '\'' +
                 ", '" + compagnia.getNome() + '\'' +
                 ", '" + aereoportoPartenza.getCodiceICAO() + '\'' +
                 ", '" + aereoportoArrivo.getCodiceICAO() + '\'' +
@@ -77,14 +72,6 @@ public class Tratta {
 
     public boolean isConclusa() {
         return conclusa;
-    }
-
-    public Aereo getAereo() {
-        return aereo;
-    }
-
-    public void setAereo(Aereo aereo) {
-        this.aereo = aereo;
     }
 
     public int getRitardo() {

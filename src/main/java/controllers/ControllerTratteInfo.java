@@ -27,7 +27,7 @@ public class ControllerTratteInfo extends WindowDragger {
 
     @FXML
     private Label partenza, arrivo, compagnia, dataPartenza, durata,
-    ritardo, gate, codiceAereo, passeggeri;
+    ritardo, gate, numeroVolo, passeggeri;
     @FXML
     private JFXCheckBox completata;
     @FXML
@@ -75,8 +75,7 @@ public class ControllerTratteInfo extends WindowDragger {
         ritardo.setText(tratta.getRitardo() + "''");
         if (tratta.getGate() != null)
             gate.setText(tratta.getGate());
-        if (tratta.getAereo() != null)
-            codiceAereo.setText(tratta.getAereo().getCodice());
+        numeroVolo.setText(tratta.getNumeroVolo());
         completata.setSelected(tratta.isConclusa());
         try {
             passeggeri.setText(new TrattaDao().getPasseggeri(tratta) + "");

@@ -7,7 +7,6 @@ import data.Biglietto;
 import data.Cliente;
 import data.Tratta;
 import database.dao.BigliettoDao;
-import database.dao.ClienteDao;
 import database.dao.TrattaDao;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
@@ -118,8 +117,6 @@ public class ControllerImbarco implements Initializable {
                 TrattaDao trattaDao = new TrattaDao();
 
                 Tratta trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
-                ClienteDao clienteDao = new ClienteDao();
-                Cliente cliente = clienteDao.getClienteByCf(biglietto.getcF());
 
                 Aeroporto partenza = trattastring.getAereoportoPartenza();
                 Aeroporto arrivo = trattastring.getAereoportoArrivo();
@@ -127,12 +124,12 @@ public class ControllerImbarco implements Initializable {
                 codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
                 tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
                 classe.setText(String.valueOf(biglietto.getClasse()));
-                posto.setText(biglietto.getFila() +"-" +biglietto.getPosto());        // dai il risultato
+                posto.setText(biglietto.getPosto() + "");        // dai il risultato
                 gate.setText(trattastring.getGate());
-                cf.setText(biglietto.getcF());
-                documentoNumero.setText(cliente.getCarta());
-                nome.setText(cliente.getNome());
-                cognome.setText(cliente.getCognome());
+                cf.setText(biglietto.getCliente().getCodiceFiscale());
+                documentoNumero.setText(biglietto.getCliente().getDocumento());
+                nome.setText(biglietto.getCliente().getNome().split("-")[0]);
+                cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
 
                 hboxCodiciBagagli.setVisible(true);         //dai risultato
                 labelBagagli.setVisible(true);
