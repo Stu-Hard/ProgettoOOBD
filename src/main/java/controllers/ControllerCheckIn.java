@@ -20,13 +20,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ControllerCheckIn implements Initializable{
 
@@ -91,6 +94,11 @@ public class ControllerCheckIn implements Initializable{
                         bagagliLabel.setVisible(false);
                         numeroBagagliButton.setVisible(false);
                 }
+        if(biglietto == null){
+            erroreLabel.setText("Errore -> biglietto non trovato");
+        }else if(biglietto.isCheckIn()){
+            erroreLabel.setText("Errore -> gia' fatto checkIn");
+        }
 
     }
 

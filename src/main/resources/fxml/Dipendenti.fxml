@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
@@ -44,11 +45,7 @@
                         <FontAwesomeIcon fill="WHITE" iconName="PLUS" size="2.8em" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="removeBtn" contentDisplay="GRAPHIC_ONLY" layoutX="755.0" layoutY="536.0" onAction="#removeDipendente" style="-fx-background-radius: 50; -fx-background-color: red;" text="Button">
-                     <graphic>
-                        <FontAwesomeIcon fill="#fffafa" iconName="CLOSE" size="2.8em" />
-                     </graphic>
-                  </JFXButton>
+                  <JFXSpinner fx:id="spinner" layoutX="415.0" layoutY="250.0" visible="false" />
                </children>
             </AnchorPane>
          </center>

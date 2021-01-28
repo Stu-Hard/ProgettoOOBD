@@ -8,10 +8,11 @@ public class Dipendente {
     private String cognome;
     private String email;
     private String password;
-    private String ruolo;
+    private DipendentiEnum ruolo;
     private String compagnia;
 
-    public Dipendente(String codiceImpiegato, String nome, String cognome, String email, String password, String ruolo, String compagnia) {
+    //costruttore con codiceImpiegato
+    public Dipendente(String codiceImpiegato, String nome, String cognome, String email, String password, DipendentiEnum ruolo, String compagnia) {
         this.codiceImpiegato = codiceImpiegato;
         this.nome = nome;
         this.cognome = cognome;
@@ -20,6 +21,16 @@ public class Dipendente {
         this.ruolo = ruolo;
         this.compagnia = compagnia;
     }
+    //costruttore senza codiceImpiegato
+    public Dipendente( String nome, String cognome, String email, String password, DipendentiEnum ruolo, String compagnia) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.password = password;
+        this.ruolo = ruolo;
+        this.compagnia = compagnia;
+    }
+
 
     public String getCodiceImpiegato() {
         return codiceImpiegato;
@@ -62,15 +73,11 @@ public class Dipendente {
     }
 
     public DipendentiEnum getRuolo() {
-        if (ruolo.contains("Imbarco")) return DipendentiEnum.ADDETTO_IMBARCO;
-        if (ruolo.contains("Amministratore")) return DipendentiEnum.AMMINISTRATORE;
-        if (ruolo.contains("Check")) return DipendentiEnum.CHECK_IN;
-        if (ruolo.contains("Ticket")) return DipendentiEnum.TICKET_AGENT;
-        else return DipendentiEnum.RESPONSABILE_VOLI;
+        return ruolo;
     }
 
 
-    public void setRuolo(String ruolo) {
+    public void setRuolo(DipendentiEnum ruolo) {
         this.ruolo = ruolo;
     }
 

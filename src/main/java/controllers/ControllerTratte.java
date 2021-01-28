@@ -79,6 +79,7 @@ public class ControllerTratte implements Initializable {
                 Parent parent = fxmlLoader.load();
                 ControllerTratteInfo controller = fxmlLoader.getController();
                 controller.setTratta(tratta);
+                controller.setMainWindow(cancelBtn.getScene().getWindow());
 
                 Scene scene = new Scene(parent);
                 Stage stage = new Stage();

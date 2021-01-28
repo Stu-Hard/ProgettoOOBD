@@ -121,6 +121,9 @@ public class ControllerImbarco implements Initializable {
                 Aeroporto partenza = trattastring.getAereoportoPartenza();
                 Aeroporto arrivo = trattastring.getAereoportoArrivo();
 
+            if (biglietto.isCheckIn() == true && trattastring.getGate() != null) {
+
+
                 codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
                 tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
                 classe.setText(String.valueOf(biglietto.getClasse()));
@@ -143,6 +146,18 @@ public class ControllerImbarco implements Initializable {
                     erroreLabel.setText("Errore");
                 }
                 erroreLabel.setVisible(true);
+
+                codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
+                tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
+                classe.setText(String.valueOf(biglietto.getClasse()));
+                posto.setText(biglietto.getPosto() + "");        // dai il risultato
+                gate.setText(trattastring.getGate());
+                cf.setText(biglietto.getCliente().getCodiceFiscale());
+                documentoNumero.setText(biglietto.getCliente().getDocumento());
+                nome.setText(biglietto.getCliente().getNome().split("-")[0]);
+                cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
+
+                hboxCartaImbarco.setVisible(true);
             }
         }else{
 

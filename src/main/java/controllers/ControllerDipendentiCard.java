@@ -21,6 +21,7 @@ public class ControllerDipendentiCard  {
 
     private Dipendente mDipendente;
 
+
     public void setDipendente(Dipendente dipendente){
         this.mDipendente = dipendente;
     }
@@ -29,14 +30,16 @@ public class ControllerDipendentiCard  {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DipendentiDati.fxml"));
         Parent root = loader.load();
         ControllerDipendentiDati cDipendentiDati = loader.getController();
+        cDipendentiDati.setMyDipendente(this.mDipendente);
+
 
         cDipendentiDati.setMail(mDipendente.getEmail());
         cDipendentiDati.setCodiceImpiegato(mDipendente.getCodiceImpiegato());
         cDipendentiDati.setNomeCognome(mDipendente.getCognome()+ " " + mDipendente.getNome());
         cDipendentiDati.setPassword(mDipendente.getPassword());
         cDipendentiDati.setRuolo(mDipendente.getRuolo().toString());
-        //cDipendentiDati.setCodiceImpiegato(mDipendente.getCodiceImpiegato());
-        /*Parent root = FXMLLoader.load(getClass().getResource("/fxml/DipendentiDati.fxml"));*/
+        cDipendentiDati.setCompagnia(mDipendente.getCompagnia());
+
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);

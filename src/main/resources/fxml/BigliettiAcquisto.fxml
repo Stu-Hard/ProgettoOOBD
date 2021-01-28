@@ -25,7 +25,7 @@
             <Font size="15.0" />
          </font>
       </JFXTextField>
-      <JFXComboBox fx:id="documento" focusColor="#4bb24b" layoutX="206.0" layoutY="134.0" prefHeight="32.0" prefWidth="111.0" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
+      <JFXComboBox fx:id="documento" focusColor="#4bb24b" layoutX="206.0" layoutY="134.0" prefHeight="32.0" prefWidth="176.0" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
       <JFXTextField fx:id="eta" focusColor="#4bb24b" labelFloat="true" layoutX="71.0" layoutY="195.0" prefHeight="31.0" prefWidth="46.0" promptText="Età*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
          <font>
             <Font size="15.0" />
@@ -63,6 +63,6 @@
             </JFXButton>
          </children>
       </HBox>
-      <JFXComboBox fx:id="classe" focusColor="#4bb24b" layoutX="64.0" layoutY="339.0" onAction="#computePrezzo" prefHeight="31.0" prefWidth="105.0" promptText="Classe*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
+      <JFXComboBox fx:id="classe" focusColor="#4bb24b" layoutX="64.0" layoutY="339.0" onAction="#computePrezzo" prefHeight="31.0" prefWidth="186.0" promptText="Classe*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
    </children>
 </AnchorPane>

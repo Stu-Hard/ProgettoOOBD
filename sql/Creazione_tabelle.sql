@@ -138,6 +138,7 @@ CREATE TABLE Biglietto(
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
 
+
 CREATE TABLE Dipendente(
            CodiceImpiegato SERIAL PRIMARY KEY,
            Nome VARCHAR(30) NOT NULL,

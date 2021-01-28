@@ -34,6 +34,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     private ControllerTratte controllerTratte;
     private ControllerGate controllerGate;
 
+    private ControllerDipendenti controllerDipendenti;
 
     public void close(MouseEvent e){
         Platform.exit();
@@ -65,6 +66,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             aereiPane.toFront();
         } else if (dipendentiBtn.equals(b)) {
             dipendentiPane.toFront();
+            controllerDipendenti.refresh();
         } else if (statisticheBtn.equals(b)) {
             statistichePane.toFront();
         } else if (tabelloneBtn.equals(b)) {
@@ -82,9 +84,9 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             );
             controllerTratte = tratteLoader.getController();
 
-            FXMLLoader gateLoader = new FXMLLoader(getClass().getResource("/fxml/Gate.fxml"));
+
             gatePane.getChildren().add(
-                    gateLoader.load()
+                    FXMLLoader.load(getClass().getResource("/fxml/Gate.fxml"))
             );
             controllerGate = gateLoader.getController();
 
@@ -97,9 +99,13 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             compagniePane.getChildren().add(
                     FXMLLoader.load(getClass().getResource("/fxml/Compagnie.fxml"))
             );
+
+            FXMLLoader dipendentiLoader = new FXMLLoader(getClass().getResource("/fxml/Dipendenti.fxml"));
             dipendentiPane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/Dipendenti.fxml"))
+                    dipendentiLoader.load()
             );
+            controllerDipendenti = dipendentiLoader.getController();
+
             //aereiPane = FXMLLoader.load(getClass().getResource("fxml/Aerei.fxml"));
             //statistichePane = FXMLLoader.load(getClass().getResource("fxml/Tratta.fxml"));
             tabellonePane.getChildren().add(

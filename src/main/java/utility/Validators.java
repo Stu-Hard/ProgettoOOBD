@@ -41,4 +41,31 @@ public class Validators{
         v.setIcon(f);
         return v;
     }
+
+
+    public ValidatorBase createCfValidator(String m){
+        ValidatorBase v = new ValidatorBase() {
+            @Override
+            protected void eval() {
+                if (srcControl.get() instanceof TextInputControl) {
+                    evalTextInputField();
+                }
+            }
+
+            private void evalTextInputField() {
+                TextInputControl textField = (TextInputControl) srcControl.get();
+                if (textField.getText().matches("^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$")) {
+                    hasErrors.set(false);
+                } else {
+                    hasErrors.set(true);
+                }
+            }
+        };
+
+        v.setMessage(m);
+        FontAwesomeIcon f = new FontAwesomeIcon();
+        f.setIconName("EXCLAMATION_TRIANGLE");
+        v.setIcon(f);
+        return v;
+    }
 }
