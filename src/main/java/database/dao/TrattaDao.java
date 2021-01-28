@@ -2,6 +2,7 @@ package database.dao;
 
 import data.Aeroporto;
 import data.Compagnia;
+import data.Gate;
 import data.Tratta;
 import database.PGConnection;
 
@@ -239,5 +240,24 @@ public class TrattaDao {
         }
 
         return passeggeri;
+    }
+
+    public void deleteTratta(Tratta tratta) throws SQLException{
+        PreparedStatement statement = null;
+        BigliettoDao bDao = new BigliettoDao();
+        CodaImbarcoDao cDao = new CodaImbarcoDao();
+
+        bDao.deleteByTratta(tratta);
+        cDao.deleteByTratta(tratta);
+        try {
+            statement = PGConnection.getConnection().prepareStatement("DELETE FROM tratta WHERE numerovolo = ?");
+            statement.setString(1, tratta.getNumeroVolo());
+            statement.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+        }
     }
 }

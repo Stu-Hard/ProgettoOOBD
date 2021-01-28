@@ -150,6 +150,20 @@ public class BigliettoDao {
             if (statement != null) statement.close();
         }
     }
+
+    public void deleteByTratta(Tratta tratta) throws SQLException{
+        PreparedStatement statement = null;
+        try {
+            statement = PGConnection.getConnection().prepareStatement("DELETE FROM BIGLIETTO WHERE numerovolo = ?");
+            statement.setString(1, tratta.getNumeroVolo());
+            statement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+        }
+    }
 }
 
 
