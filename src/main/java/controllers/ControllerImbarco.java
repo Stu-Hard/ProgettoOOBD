@@ -111,18 +111,21 @@ public class ControllerImbarco implements Initializable {
 
 
         BigliettoDao bDao = new BigliettoDao();
+        biglietto = bDao.getBigliettoByCodice(Integer.parseInt(codiceTextField.getText()));
 
-        biglietto = bDao.getBigliettoByCodice(codiceTextField.getText());
         if(biglietto != null){
-            if (biglietto.isCheckIn() == true) {
-                TrattaDao trattaDao = new TrattaDao();
 
-                Tratta trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
-                ClienteDao clienteDao = new ClienteDao();
-                Cliente cliente = clienteDao.getClienteByCf(biglietto.getcF());
+            TrattaDao trattaDao = new TrattaDao();
+            Tratta trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
 
-                Aeroporto partenza = trattastring.getAereoportoPartenza();
-                Aeroporto arrivo = trattastring.getAereoportoArrivo();
+            ClienteDao clienteDao = new ClienteDao();
+            Cliente cliente = clienteDao.getClienteByCf(biglietto.getcF());
+
+            Aeroporto partenza = trattastring.getAereoportoPartenza();
+            Aeroporto arrivo = trattastring.getAereoportoArrivo();
+
+            if (biglietto.isCheckIn() == true && trattastring.getGate() != null) {
+
 
                 codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
                 tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
@@ -139,18 +142,29 @@ public class ControllerImbarco implements Initializable {
                 bagagliButton.setVisible(true);
                 spinnerBagagli.setVisible(true);
                 hboxCartaImbarco.setVisible(true);
-            }else{
-                if(biglietto.isCheckIn() == false){
+            }else if(biglietto.isCheckIn() == false){
                     erroreLabel.setText("Errore -> non e' ancora stato fatto il checkIn");
-                }else{
-                    erroreLabel.setText("Errore");
-                }
+                    erroreLabel.setVisible(true);
+            }else{
+                erroreLabel.setText("Il gate non e' ancora aperto");
                 erroreLabel.setVisible(true);
+
+                codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
+                tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
+                classe.setText(String.valueOf(biglietto.getClasse()));
+                posto.setText(biglietto.getFila() +"-" +biglietto.getPosto());        // dai il risultato
+                gate.setText(trattastring.getGate());
+                cf.setText(biglietto.getcF());
+                documentoNumero.setText(cliente.getCarta());
+                nome.setText(cliente.getNome());
+                cognome.setText(cliente.getCognome());
+
+                hboxCartaImbarco.setVisible(true);
             }
         }else{
-
+            erroreLabel.setText("Errore --> non trovato");
+            erroreLabel.setVisible(true);
         }
-
     }
 
     public void inviaCodes(ActionEvent actionEvent) throws IOException {

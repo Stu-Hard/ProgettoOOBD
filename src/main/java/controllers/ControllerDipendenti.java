@@ -2,25 +2,33 @@ package controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXSpinner;
 import customComponents.DipendentiCard;
-import customComponents.GateCard;
+import data.Dipendente;
 import database.dao.DipendentiDao;
 import enumeration.DipendentiEnum;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ControllerDipendenti implements Initializable {
@@ -33,9 +41,12 @@ public class ControllerDipendenti implements Initializable {
     private JFXButton cancelBtn;
     @FXML
     private JFXComboBox<String> dipendentiType;
-
+    @FXML
+    JFXSpinner spinner;
     private List<DipendentiCard> DipendentiList;
     private FlowPane flowPane;
+    @FXML
+    JFXButton addBtn;
 
 
 
@@ -60,16 +71,6 @@ public class ControllerDipendenti implements Initializable {
 
         DipendentiList = new ArrayList<>();
 
-        try {
-            new DipendentiDao().getDipendenti().forEach(n ->{
-                    DipendentiCard dipendentiCard = new DipendentiCard(n);
-                    flowPane.getChildren().add(dipendentiCard);
-                    DipendentiList.add(dipendentiCard);
-            });
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         scrollPane.setContent(flowPane);
 
     }
@@ -93,26 +94,25 @@ public class ControllerDipendenti implements Initializable {
         switch (scelta){
             case("Amministratori"):
 
-                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.AMMINISTRATORE));
+                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.Amministratore));
                 break;
             case("Addetti al CheckIn"):
 
-
-                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.CHECK_IN));
+                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.AddettoCheckIn));
                 break;
             case("Ticket Agent"):
 
 
-                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.TICKET_AGENT));
+                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.TicketAgent));
                 break;
             case("Addetti all'Imbarco"):
 
 
-                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.ADDETTO_IMBARCO));
+                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.AddettoImbarco));
                 break;
             case("Responsabili Voli"):
 
-                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.RESPONSABILE_VOLI));
+                flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.ResponsabileVoli));
                 break;
 
         }
@@ -124,13 +124,46 @@ public class ControllerDipendenti implements Initializable {
         search(null);
     }
 
-
-    public void addDipendente(ActionEvent event) {
-           //todo creare scheda per inserire utente e il suo controller
-        // new DipendentiDao().insert();
+    public void addDipendente(ActionEvent event) throws IOException {
+        //crea scheda per inserire utente
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DipendentiAdd.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        scene.setFill(Color.TRANSPARENT);
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public void removeDipendente(ActionEvent event) {
 
+    public void refresh() {
+        if (!spinner.isVisible()){
+            flowPane.getChildren().clear();
+            spinner.setVisible(true);
+            Task<List<Dipendente>> task = new Task<>() {
+                @Override
+                protected List<Dipendente> call() {
+                    try {
+                        return new DipendentiDao().getDipendenti();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            task.setOnSucceeded(e -> {
+                DipendentiList.clear();
+                task.getValue().stream().distinct().forEach(d -> DipendentiList.add(new DipendentiCard(d)));
+                search(null);
+                //con questo non funziona, chissa (?)
+                //flowPane.getChildren().addAll(task.getValue().stream().map(DipendentiCard::new).toArray(DipendentiCard[]::new));
+                spinner.setVisible(false);
+            });
+
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            th.start();
+        }
     }
 }

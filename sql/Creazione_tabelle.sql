@@ -166,6 +166,7 @@ CREATE TABLE Biglietto(
     UNIQUE(Fila, Posto)
 );
 
+
 CREATE TABLE Dipendente(
            CodiceImpiegato SERIAL PRIMARY KEY,
            Nome VARCHAR(30) NOT NULL,

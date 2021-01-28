@@ -18,9 +18,11 @@ import javafx.fxml.Initializable;
 
 import javafx.scene.Parent;
 
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 
+import javafx.stage.Window;
 import utility.Validators;
 import utility.WindowDragger;
 
@@ -42,6 +44,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
     JFXButton pagaBtn;
 
     double prezzo = 19.99;
+    private Window window;
 
     public void setTratta(Tratta tratta) {
         this.tratta = tratta;
@@ -75,24 +78,27 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
             }
 
 
-
             //todo fila e posto -> trigger
             Biglietto biglietto = new Biglietto(prezzo, 1, 1, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente.getCodiceFiscale());
             BigliettoDao bDao = new BigliettoDao();
             try {
                 bDao.insert(biglietto);
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-            close(e);
-
-
-
-                //messaggio di conferma
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoConfirm.fxml"));
                 Parent root = fxmlLoader.load();
 
-                JFXAlert<Void> alert = new JFXAlert(nome.getScene().getWindow());
+                JFXAlert<Void> alert = new JFXAlert(window);
+                alert.setOverlayClose(true);
+                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                alert.setContent(root);
+                alert.initModality(Modality.NONE);
+                alert.showAndWait();
+            } catch (SQLException sqlException ) {
+                sqlException.printStackTrace();
+
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoError.fxml"));
+                Parent root = fxmlLoader.load();
+
+                JFXAlert<Void> alert = new JFXAlert(window);
                 JFXDialogLayout layout = new JFXDialogLayout();
                 layout.setHeading();
                 alert.setOverlayClose(true);
@@ -100,21 +106,16 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
                 alert.setContent(root);
                 alert.initModality(Modality.NONE);
                 alert.showAndWait();
+            }
+            close(e);
+
+                //messaggio di conferma
+
                 //messaggio di conferma
 
 
                /* MESSAGGIO DI ERRORE, NON VA
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoError.fxml"));
-                Parent root = fxmlLoader.load();
-
-                JFXAlert<Void> alert = new JFXAlert(nome.getScene().getWindow());
-                JFXDialogLayout layout = new JFXDialogLayout();
-                layout.setHeading();
-                alert.setOverlayClose(true);
-                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                alert.setContent(root);
-                alert.initModality(Modality.NONE);
-                alert.showAndWait();*/
+*/
             }
         }
 
@@ -212,16 +213,21 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         nome.getValidators().add(new Validators().createRequiredValidator("Inserire nome"));
         cognome.getValidators().add(new Validators().createRequiredValidator("Inserire cognome"));
         riconoscimento.getValidators().add(new Validators().createRequiredValidator("Inserire n. documento"));
+        cf.setValidators(new Validators().createCfValidator("CF sbagliato"));
+
 
         classe.getItems().add(CodeEnum.ECONOMY);
         classe.getItems().add(CodeEnum.BUSINESS);
         classe.getItems().add(CodeEnum.FAMIGLIE);
         classe.getItems().add(CodeEnum.PRIORITY);
         classe.getItems().add(CodeEnum.DIVERSAMENTE_ABILI);
+        classe.getSelectionModel().selectFirst();
+        computePrezzo(null);
 
-        documento.getItems().add("Patente");
         documento.getItems().add("Carta d'Identita'");
+        documento.getItems().add("Patente");
         documento.getItems().add("Passaporto");
+        documento.getSelectionModel().selectFirst();
 
         eta.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -246,5 +252,9 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
             case DIVERSAMENTE_ABILI -> prezzo /= 2;
         }
         pagaBtn.setText(String.format("%.2f$", prezzo));
+    }
+
+    public void setMainWindow(Window mainWindow) {
+        window = mainWindow;
     }
 }

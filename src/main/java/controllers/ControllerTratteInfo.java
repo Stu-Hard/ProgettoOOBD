@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import utility.WindowDragger;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class ControllerTratteInfo extends WindowDragger {
     private JFXCheckBox completata;
     @FXML
     private JFXButton closeBtn;
+    private Window mainWindow;
 
     @FXML
     private void close(ActionEvent e){
@@ -50,7 +52,7 @@ public class ControllerTratteInfo extends WindowDragger {
             Parent parent = fxmlLoader.load();
             ControllerAcquisto controller = fxmlLoader.getController();
             controller.setTratta(tratta);
-
+            controller.setMainWindow(mainWindow);
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.initStyle(StageStyle.TRANSPARENT);
@@ -93,5 +95,9 @@ public class ControllerTratteInfo extends WindowDragger {
     @Override
     public void moveWindow(MouseEvent e) {
         super.moveWindow(e);
+    }
+
+    public void setMainWindow(Window window) {
+        this.mainWindow = window;
     }
 }

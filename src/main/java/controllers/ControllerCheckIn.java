@@ -55,21 +55,38 @@ public class ControllerCheckIn implements Initializable{
     SpinnerValueFactory<Integer> svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(minValue,maxValue,initialValue);
     Biglietto biglietto = null;
 
-    public void verify(ActionEvent event) throws SQLException {
+    public void verify(ActionEvent event){
 
             BigliettoDao bDao = new BigliettoDao();
 
-                biglietto = bDao.getBigliettoByCodice(bigliettoTextField.getText());
-                if(biglietto != null) {
+        try {
+            biglietto = bDao.getBigliettoByCodice(Integer.parseInt(bigliettoTextField.getText()));
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            erroreLabel.setText("Errore --> Sql exception");
+        }
+        if(biglietto != null && biglietto.isCheckIn() != true) {
 
                         TrattaDao trattaDao = new TrattaDao();
 
-                        Tratta trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
-                        ClienteDao clienteDao = new ClienteDao();
+            Tratta trattastring = null;
+            try {
+                trattastring = trattaDao.getByNumeroVolo(biglietto.getNumeroVolo());
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                erroreLabel.setText("Errore --> Sql exception");
+            }
+            ClienteDao clienteDao = new ClienteDao();
                         System.out.println(biglietto.getcF());
-                        Cliente cliente = clienteDao.getClienteByCf(biglietto.getcF());
+            Cliente cliente = null;
+            try {
+                cliente = clienteDao.getClienteByCf(biglietto.getcF());
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                erroreLabel.setText("Errore --> Sql exception");
+            }
 
-                        Aeroporto partenza = trattastring.getAereoportoPartenza();
+            Aeroporto partenza = trattastring.getAereoportoPartenza();
                         Aeroporto arrivo = trattastring.getAereoportoArrivo();
 
                         codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
@@ -98,6 +115,11 @@ public class ControllerCheckIn implements Initializable{
                         bagagliLabel.setVisible(false);
                         numeroBagagliButton.setVisible(false);
                 }
+        if(biglietto == null){
+            erroreLabel.setText("Errore -> biglietto non trovato");
+        }else if(biglietto.isCheckIn()){
+            erroreLabel.setText("Errore -> gia' fatto checkIn");
+        }
 
     }
 
@@ -115,20 +137,6 @@ public class ControllerCheckIn implements Initializable{
         bagagliLabel.setVisible(false);
         numeroBagagliButton.setVisible(false);
 
-
-
-        inviaButton.disableProperty().bind(new BooleanBinding() {
-            {
-                super.bind(
-                        //todo abilita solo se ha inserito tutti i textField dei kg dei bagagli
-                );
-            }
-
-            @Override
-            protected boolean computeValue() {
-                return false;
-            }
-        });
         verificaButton.disableProperty().bind(new BooleanBinding() {
             {
                 super.bind(

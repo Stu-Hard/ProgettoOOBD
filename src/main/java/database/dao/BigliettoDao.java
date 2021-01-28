@@ -61,13 +61,13 @@ public class BigliettoDao {
         return list;
     }
 
-    public Biglietto getBigliettoByCodice(String codice) throws SQLException {
+    public Biglietto getBigliettoByCodice(int codice) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Biglietto biglietto = null;
         try {
             statement = PGConnection.getConnection().prepareStatement("SELECT * FROM biglietto WHERE codicebiglietto = ?");
-            statement.setString(1, codice);
+            statement.setInt(1, codice);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 CodeEnum c;
@@ -110,7 +110,6 @@ public class BigliettoDao {
     public void update(Biglietto biglietto) throws SQLException{
         PreparedStatement statement = null;
 
-
         try {
             statement = PGConnection.getConnection().prepareStatement("UPDATE biglietto SET checkin = ?, imbarcato = ? WHERE codicebiglietto = ?");
             statement.setBoolean(1, biglietto.isCheckIn());
@@ -145,6 +144,44 @@ public class BigliettoDao {
             if (statement != null) statement.close();
         }
     }
+
+    /*public Integer getCodiceByBiglietto(Biglietto biglietto) throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT biglietto.codicebiglietto FROM biglietto WHERE " +
+                    "prezzo = ?" +
+                    "AND fila = ?" +
+                    "AND posto = ?" +
+                    "AND classe = '"+ biglietto.getClasse()+ "'" +
+                    "AND biglietto.checkin = ?" +
+                    "AND imbarcato = ?" +
+                    "AND numerovolo = ?" +
+                    "AND cf = ?");
+
+            statement.setDouble(1,biglietto.getPrezzo());
+            statement.setInt(2,biglietto.getFila());
+            statement.setInt(3, biglietto.getPosto());
+            statement.setBoolean(4, biglietto.isCheckIn());
+            statement.setBoolean(5, biglietto.isImbarcato());
+            statement.setString(6, biglietto.getNumeroVolo());
+            statement.setString(7, biglietto.getcF());
+
+            resultSet = statement.executeQuery();
+            if  (resultSet.next()) {
+                return resultSet.getInt("codicebiglietto");
+            }
+        } catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+
+        return null;
+    }*/
 }
 
 
