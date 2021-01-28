@@ -57,7 +57,7 @@ public class ControllerCheckIn implements Initializable{
     public void verify(ActionEvent event) throws SQLException {
 
             BigliettoDao bDao = new BigliettoDao();
-
+                //todo forse bisogna cambiare int in String e quindi generare codici biglietti.
                 biglietto = bDao.getBigliettoByCodice(Integer.parseInt(bigliettoTextField.getText()));
                 if(biglietto != null) {
 
@@ -78,27 +78,29 @@ public class ControllerCheckIn implements Initializable{
                         nome.setText(biglietto.getCliente().getNome().split("-")[0]);
                         cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
 
+                        if(!biglietto.isCheckIn()) {
+                            cartaImbarcoHbox.setVisible(true);
+                            spinnerBagagli.setVisible(true);
+                            bagagliLabel.setVisible(true);                                 // rendi visibile
+                            numeroBagagliButton.setVisible(true);
+                            erroreLabel.setVisible(false);
+                        }else{
+                            erroreLabel.setText("Errore -> gia' fatto checkIn");
+                            erroreLabel.setVisible(true);
 
-                        cartaImbarcoHbox.setVisible(true);
-                        spinnerBagagli.setVisible(true);
-                        bagagliLabel.setVisible(true);                                 // rendi visibile
-                        numeroBagagliButton.setVisible(true);
-                        erroreLabel.setVisible(false);
+                            cartaImbarcoHbox.setVisible(true);
+                        }
 
                 } else {
-                        erroreLabel.setVisible(true);           // dai errore
-                        inviaButton.setVisible(false);
-                        bagagliHbox.setVisible(false);
-                        cartaImbarcoHbox.setVisible(false);
-                        spinnerBagagli.setVisible(false);
-                        bagagliLabel.setVisible(false);
-                        numeroBagagliButton.setVisible(false);
+                    erroreLabel.setText("Errore -> biglietto non trovato");
+                    erroreLabel.setVisible(true);           // dai errore
+                    inviaButton.setVisible(false);
+                    bagagliHbox.setVisible(false);
+                    cartaImbarcoHbox.setVisible(false);
+                    spinnerBagagli.setVisible(false);
+                    bagagliLabel.setVisible(false);
+                    numeroBagagliButton.setVisible(false);
                 }
-        if(biglietto == null){
-            erroreLabel.setText("Errore -> biglietto non trovato");
-        }else if(biglietto.isCheckIn()){
-            erroreLabel.setText("Errore -> gia' fatto checkIn");
-        }
 
     }
 

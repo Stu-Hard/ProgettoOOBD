@@ -211,11 +211,13 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         classe.getItems().add(CodeEnum.FAMIGLIE);
         classe.getItems().add(CodeEnum.PRIORITY);
         classe.getItems().add(CodeEnum.DIVERSAMENTE_ABILI);
-
+        classe.getSelectionModel().selectFirst();
         documento.getItems().add("Patente");
         documento.getItems().add("Carta d'Identita'");
         documento.getItems().add("Passaporto");
+        documento.getSelectionModel().selectFirst();
 
+        computePrezzo(null);
         eta.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 eta.setText(newValue.replaceAll("[^\\d]", ""));
