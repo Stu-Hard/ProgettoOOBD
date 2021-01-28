@@ -4,6 +4,8 @@ import enumeration.CodeEnum;
 import enumeration.GateStatus;
 import javafx.util.Pair;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,14 +59,13 @@ public class Gate {
     }
     public Pair<Tratta, List<CodaImbarco>> end(){ // conclude l'imbarco
         Tratta t = null;
-        List<CodaImbarco> code = null;
+        List<CodaImbarco> code = new LinkedList<>();
         if (status == GateStatus.OCCUPATO) {
             status = GateStatus.LIBERO;
             tratta.concludi();
-            t = tratta;
-            code = codeImbarco;
-            codeImbarco.forEach(c -> c.setTempoEffettivo(c.getTempoStimato() + tratta.getRitardo())); // setta il tempo effettivo. da cambiare todo
-
+            codeImbarco.forEach(c -> c.setTempoEffettivo()); // setta il tempo effettivo.
+            code.addAll(codeImbarco);
+            t = new Tratta(tratta);
             tratta = null;
             codeImbarco.clear();
         }
@@ -82,6 +83,7 @@ public class Gate {
             this.codeImbarco = codeImbarco;
             status = GateStatus.OCCUPATO;
             codeImbarco.forEach(c -> c.setCodiceGate(gateCode));
+            codeImbarco.forEach(c -> c.setOraApertura(Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime()));
             setCodeImbarco(codeImbarco);
         }
     }

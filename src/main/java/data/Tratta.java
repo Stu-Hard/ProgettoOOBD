@@ -47,6 +47,19 @@ public class Tratta {
         this.aereoportoArrivo = aereoportoArrivo;
     }
 
+    public Tratta(Tratta tratta) {
+        this.numeroVolo = tratta.getNumeroVolo();
+        this.dataPartenza = tratta.getDataPartenza();
+        this.oraPartenza = tratta.getOraPartenza();
+        this.durataVolo = tratta.getDurataVolo();
+        this.ritardo = tratta.getRitardo();
+        this.conclusa = tratta.isConclusa();
+        this.gate = tratta.getGate();
+        this.compagnia = tratta.getCompagnia();
+        this.aereoportoPartenza = tratta.getAereoportoPartenza();
+        this.aereoportoArrivo = tratta.getAereoportoArrivo();
+    }
+
     @Override
     public String toString() {
         return "(" +

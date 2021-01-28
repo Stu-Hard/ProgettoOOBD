@@ -4,10 +4,8 @@ import data.*;
 import database.PGConnection;
 import enumeration.CodeEnum;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +24,7 @@ public class CodaImbarcoDao {
                 Compagnia compagnia = cDao.getByNome(resultSet.getString("compagnia"));
                 list.add(new CodaImbarco(
                         resultSet.getInt("codiceCoda"),
+                        resultSet.getTimestamp("oraApertura").toLocalDateTime(),
                         resultSet.getString("classe"),
                         resultSet.getInt("tempoStimato"),
                         resultSet.getInt("tempoEffettivo")
@@ -53,8 +52,10 @@ public class CodaImbarcoDao {
             statement.setString(2, tratta);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                Timestamp timestamp = resultSet.getTimestamp("oraApertura");
                 list.add(new CodaImbarco(
                         resultSet.getInt("codiceCoda"),
+                        (timestamp != null)? timestamp.toLocalDateTime(): null,
                         resultSet.getString("classe"),
                         resultSet.getInt("tempoStimato"),
                         resultSet.getInt("tempoEffettivo")
@@ -80,8 +81,10 @@ public class CodaImbarcoDao {
             statement.setString(1, t.getNumeroVolo());
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                Timestamp timestamp = resultSet.getTimestamp("oraApertura");
                 list.add(new CodaImbarco(
                         resultSet.getInt("codiceCoda"),
+                        (timestamp != null)? timestamp.toLocalDateTime(): null,
                         resultSet.getString("classe"),
                         resultSet.getInt("tempoStimato"),
                         resultSet.getInt("tempoEffettivo")
@@ -107,8 +110,10 @@ public class CodaImbarcoDao {
             statement.setInt(1, codice);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
+                Timestamp timestamp = resultSet.getTimestamp("oraApertura");
                 coda = new CodaImbarco(
                         resultSet.getInt("codiceCoda"),
+                        (timestamp != null)? timestamp.toLocalDateTime(): null,
                         resultSet.getString("classe"),
                         resultSet.getInt("tempoStimato"),
                         resultSet.getInt("tempoEffettivo")
@@ -128,7 +133,7 @@ public class CodaImbarcoDao {
         PreparedStatement statement = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement(String.format("insert into codaimbarco(tempoStimato, classe, NumeroVolo) values(0, '%s', ?)", coda.toString()));
+            statement = PGConnection.getConnection().prepareStatement(String.format("insert into codaimbarco(classe, NumeroVolo) values('%s', ?)", coda.toString()));
             statement.setString(1, tratta.getNumeroVolo());
             statement.executeUpdate();
         } catch (SQLException e){
@@ -143,10 +148,11 @@ public class CodaImbarcoDao {
         PreparedStatement statement = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET tempoeffettivo = ?, codicegate = ? WHERE codicecoda = ?");
+            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET tempoeffettivo = ?, codicegate = ?, oraapertura = ? WHERE codicecoda = ?");
             statement.setInt(1, coda.getTempoEffettivo());
             statement.setString(2, coda.getCodiceGate());
-            statement.setInt(3, coda.getCodiceCoda());
+            statement.setTimestamp(3, Timestamp.valueOf(coda.getOraApertura()));
+            statement.setInt(4, coda.getCodiceCoda());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
@@ -167,8 +173,10 @@ public class CodaImbarcoDao {
             statement.setString(1, biglietto.getNumeroVolo());
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
+                Timestamp timestamp = resultSet.getTimestamp("oraApertura");
                 coda = new CodaImbarco(
                         resultSet.getInt("codiceCoda"),
+                        (timestamp != null)? timestamp.toLocalDateTime(): null,
                         resultSet.getString("classe"),
                         resultSet.getInt("tempoStimato"),
                         resultSet.getInt("tempoEffettivo")

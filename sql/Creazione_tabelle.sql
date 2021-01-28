@@ -114,8 +114,9 @@ insert into Tratta values
 
 CREATE TABLE CodaImbarco(
     CodiceCoda SERIAL PRIMARY KEY,
+    OraApertura TIMESTAMP DEFAULT NULL,
     TempoStimato INT NOT NULL DEFAULT 0,
-    TempoEffettivo INT,
+    TempoEffettivo INT DEFAULT NULL,
     Classe EnumCoda  NOT NULL,
     CodiceGate VARCHAR(4),
     NumeroVolo VARCHAR(8) NOT NULL,
@@ -140,11 +141,12 @@ CREATE TABLE Biglietto(
 
 CREATE OR REPLACE FUNCTION aggiornaStima() RETURNS TRIGGER AS $$
 BEGIN
-    UPDATE CodaImbarco set TempoStimato = TempoStimato + 2 WHERE CodiceCoda = NEW.CodiceCoda;
+    UPDATE codaimbarco set TempoStimato = tempostimato + 2 WHERE codicecoda = new.CodiceCoda;
+    return NEW;
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER onCheckIn AFTER UPDATE OF checkIn ON Biglietto EXECUTE PROCEDURE aggiornaStima();
+CREATE TRIGGER onCheckIn AFTER UPDATE OF checkin ON Biglietto FOR EACH ROW EXECUTE PROCEDURE aggiornaStima();
 
 
 CREATE TABLE Dipendente(

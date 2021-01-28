@@ -2,19 +2,26 @@ package data;
 
 import enumeration.CodeEnum;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+
 public class CodaImbarco {
     private int codiceCoda;
+    private LocalDateTime oraApertura;
     private String codiceGate;
     private CodeEnum classe;
     private Integer tempoStimato;
     private Integer tempoEffettivo;
     private int passeggeri;
 
-    public CodaImbarco(int codiceCoda, String classe, int tempoStimato, int tempoEffettivo) {
+    public CodaImbarco(int codiceCoda, LocalDateTime oraApertura, String classe, int tempoStimato, int tempoEffettivo) {
         this.codiceCoda = codiceCoda;
         setClasse(classe);
         this.tempoStimato = tempoStimato;
         this.tempoEffettivo = tempoEffettivo;
+        this.oraApertura = oraApertura;
     }
 
     public CodaImbarco(CodeEnum classe) {
@@ -64,6 +71,9 @@ public class CodaImbarco {
     public void setTempoEffettivo(int tempoEffettivo) {
         this.tempoEffettivo = tempoEffettivo;
     }
+    public void setTempoEffettivo() {
+        this.tempoEffettivo = (int) ChronoUnit.MINUTES.between(oraApertura, Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
+    }
 
     public void setPasseggeri(int passeggeri) {
         this.passeggeri = passeggeri;
@@ -75,5 +85,13 @@ public class CodaImbarco {
 
     public void setCodiceGate(String codiceGate) {
         this.codiceGate = codiceGate;
+    }
+
+    public LocalDateTime getOraApertura() {
+        return oraApertura;
+    }
+
+    public void setOraApertura(LocalDateTime oraApertura) {
+        this.oraApertura = oraApertura;
     }
 }

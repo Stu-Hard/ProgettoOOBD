@@ -131,6 +131,7 @@ public class ControllerGate implements Initializable {
             new GateDao().update(g);
             CodaImbarcoDao cDao = new CodaImbarcoDao();
             for (CodaImbarco c: p.getValue()) {
+                System.out.println(c.getTempoEffettivo());
                 cDao.update(c);
             }
         } catch (SQLException throwables) {
