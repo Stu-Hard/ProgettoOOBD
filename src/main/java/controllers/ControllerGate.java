@@ -11,8 +11,8 @@ import data.Tratta;
 import database.dao.CodaImbarcoDao;
 import database.dao.GateDao;
 import database.dao.TrattaDao;
-import enumeration.*;
-import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,12 +26,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.util.Pair;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ControllerGate implements Initializable {
 
@@ -48,49 +49,35 @@ public class ControllerGate implements Initializable {
     private JFXButton cancelBtn;
     @FXML
     private Label nessunGate;
+    @FXML
+    private JFXSpinner spinner;
+    private List<GateCard> localGate;
 
     // Filtri sullo stato: occupato ecc...
     public void statusFilter(ActionEvent e){
-        //GateStatus status;
-        //JFXCheckBox source = (JFXCheckBox) e.getSource();
-//
-        //if (occupatiCheck.equals(source)) status = GateStatus.OCCUPATO;  //
-        //else if (liberiCheck.equals(source)) status = GateStatus.LIBERO; // Decide qual'è lo stato da filtrare
-        //else status = GateStatus.CHIUSO;                                 //
-//
-        //if (!(source).isSelected())
-        //    flowPane.getChildren().removeIf(n -> ((GateCard) n).getStato() == status); // cancella se lo stato viene deselezionato
-        //else
-        //    gateCardList.forEach(n ->{
-        //        if(n.getStato() == status)
-        //            flowPane.getChildren().add(0, n); // aggiungi in cima se lo stato viene selezionato
-        //    });
-        //search(null); // "integra" il filtro con il testo sulla barra di ricerca
+        refresh();
     }
 
     public void search(KeyEvent k){
-        /*String searchMode = this.searchMode.getValue();
         String text = searchBar.getText();
-        switch (searchMode){
-            case "Codice" -> { // non molto elegante, ma funziona...
-                flowPane.getChildren().removeIf(node -> !((GateCard) node).getGateCode().contains(text)); // rimuovi se la card non contine il testo in searchBar
-                gateCardList.forEach(node -> { //aggiunge i risultati validi che erano stati eliminati precedentemente (è utile quando viene cancellato un carattere)
-                    if(node.getGateCode().contains(text) && !flowPane.getChildren().contains(node))
-                        if ((occupatiCheck.isSelected() && node.getStato() == GateStatus.OCCUPATO) ||   //
-                                (liberiCheck.isSelected() && node.getStato() == GateStatus.LIBERO) ||   // "integrazione" con i filtri sullo stato
-                                (chiusiCheck.isSelected() && node.getStato() == GateStatus.CHIUSO))     //
-                            flowPane.getChildren().add(0, node);
+
+        flowPane.getChildren().clear();
+        flowPane.getChildren().addAll(localGate);
+
+        switch (this.searchMode.getValue()){
+            case "Codice" -> {
+                flowPane.getChildren().removeIf(node -> !((GateCard) node).getGate().getGateCode().toUpperCase().contains(text.toUpperCase())); // rimuovi se la card non contine il testo in searchBar
+            }
+            case "Coda" -> {
+                flowPane.getChildren().removeIf(node ->{
+                    for(CodaImbarco c : ((GateCard) node).getGate().getCodeImbarco()){
+                        if (c.getClasse().toString().contains(text.toUpperCase())) return false;
+                    }
+                    return true;
                 });
             }
-            case "Coda" -> { // da rifletterci su
-            }
         }
-
-        if(flowPane.getChildren().isEmpty()) {
-            nessunGate.setVisible(true);
-        }else{
-            nessunGate.setVisible(false);
-        }*/
+        nessunGate.setVisible(flowPane.getChildren().isEmpty());
     }
 
     private void showImpostaTratta(GateCard gCard, GateCardPopup popup){
@@ -105,7 +92,7 @@ public class ControllerGate implements Initializable {
         }
 
 
-        JFXAlert<Void> alert = new JFXAlert(flowPane.getScene().getWindow());
+        JFXAlert alert = new JFXAlert(flowPane.getScene().getWindow());
         alert.setOverlayClose(true);
         alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
         alert.setContent(l);
@@ -133,7 +120,7 @@ public class ControllerGate implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-            alert.hide();
+        alert.hide();
     }
 
     public void terminaImbarco(GateCard gCard, GateCardPopup popup){
@@ -175,6 +162,45 @@ public class ControllerGate implements Initializable {
         gCard.updateLabels();
     }
 
+    public Task<List<Gate>> refresh() {
+        if (!spinner.isVisible()){
+            flowPane.getChildren().clear();
+            spinner.setVisible(true);
+            nessunGate.setVisible(false);
+            Task<List<Gate>> task = new Task<>() {
+                @Override
+                protected List<Gate> call() {
+                    try {
+                       return new GateDao().getGateWithStatus(occupatiCheck.isSelected(), liberiCheck.isSelected(), chiusiCheck.isSelected());
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            task.setOnSucceeded(t -> {
+                localGate.clear();
+                localGate.addAll(task.getValue().stream().map(g -> {
+                    GateCard gCard = new GateCard(g);
+                    GateCardPopup popup = new GateCardPopup(gCard);
+                    popup.setImpostaTratta(e -> showImpostaTratta(gCard, popup));
+                    popup.setTerminaImbarco(e -> terminaImbarco(gCard, popup));
+                    popup.setChiudiGate(e -> chiudiGate(gCard, popup));
+                    popup.setApriGate(e -> apriGate(gCard, popup));
+                    return gCard;
+                }).collect(Collectors.toList()));
+                search(null);
+                spinner.setVisible(false);
+            });
+
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            th.start();
+            return task;
+        } else return null;
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         searchMode.getItems().addAll("Codice", "Coda");
@@ -182,10 +208,11 @@ public class ControllerGate implements Initializable {
         occupatiCheck.setSelected(true);
         liberiCheck.setSelected(true);
         chiusiCheck.setSelected(true);
+        localGate = new LinkedList<>();
 
         cancelBtn.setOnAction(e ->{ // Cancella il testo e annulla la ricerca
             searchBar.setText("");
-            search(null);
+            refresh();
         });
 
         // crea un pannello e lo inserisce in scroll
@@ -194,24 +221,13 @@ public class ControllerGate implements Initializable {
         flowPane.setVgap(15);
         flowPane.setPadding(new Insets(5, 10, 5, 20));
         flowPane.setStyle("-fx-background-color: transparent");
-
-
-        try {
-            new GateDao().getGateCodes().forEach(g ->{
-                GateCard gCard = new GateCard(g);
-                GateCardPopup popup = new GateCardPopup(gCard);
-                popup.setImpostaTratta(e -> showImpostaTratta(gCard, popup));
-                popup.setTerminaImbarco(e -> terminaImbarco(gCard, popup));
-                popup.setChiudiGate(e -> chiudiGate(gCard, popup));
-                popup.setApriGate(e -> apriGate(gCard, popup));
-                flowPane.getChildren().add(gCard);
-            });
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-
         scroll.setContent(flowPane);
 
-        nessunGate.setVisible(flowPane.getChildren().isEmpty());
+        chiusiCheck.disableProperty().bind(spinner.visibleProperty());
+        occupatiCheck.disableProperty().bind(spinner.visibleProperty());
+        liberiCheck.disableProperty().bind(spinner.visibleProperty());
+        searchBar.disableProperty().bind(spinner.visibleProperty());
+        cancelBtn.disableProperty().bind(spinner.visibleProperty());
+        searchMode.disableProperty().bind(spinner.visibleProperty());
     }
 }

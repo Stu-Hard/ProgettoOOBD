@@ -38,5 +38,6 @@
             <Font name="System Bold" size="28.0" />
          </font>
       </Label>
+        <JFXSpinner fx:id="spinner" layoutX="415.0" layoutY="350.0" visible="false" />
     </children>
 </AnchorPane>

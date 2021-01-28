@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ControllerTratte implements Initializable {
@@ -126,7 +125,6 @@ public class ControllerTratte implements Initializable {
         if (!spinner.isVisible()){
             listView.getItems().clear();
             spinner.setVisible(true);
-            searchBar.setDisable(true);
             Task<List<Tratta>> task = new Task<>() {
                 @Override
                 protected List<Tratta> call() {
@@ -143,7 +141,6 @@ public class ControllerTratte implements Initializable {
                 localTratte.addAll(task.getValue().stream().map(TrattaHbox::new).collect(Collectors.toList()));
                 search(null);
                 spinner.setVisible(false);
-                searchBar.setDisable(false);
             });
             Thread th = new Thread(task);
             th.setDaemon(true);
@@ -157,6 +154,11 @@ public class ControllerTratte implements Initializable {
         searchMode.getItems().addAll("Partenza", "Arrivo", "Compagnia", "NumeroVolo");
         searchMode.getSelectionModel().selectFirst();
         localTratte = new LinkedList<>();
-        cancelBtn.disableProperty().bind(searchBar.disableProperty());
+
+        cancelBtn.disableProperty().bind(spinner.visibleProperty());
+        searchMode.disableProperty().bind(spinner.visibleProperty());
+        searchBar.disableProperty().bind(spinner.visibleProperty());
+        dpk1.disableProperty().bind(spinner.visibleProperty());
+        dpk2.disableProperty().bind(spinner.visibleProperty());
     }
 }

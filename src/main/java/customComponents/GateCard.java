@@ -107,7 +107,7 @@ public class GateCard extends Pane{
                 }
                 case FAMIGLIE -> {
                     stimaFamiglie.setText(c.getTempoStimato() + "''");
-                    stimaFamiglie.setDisable(false);
+                    famiglie.setDisable(false);
                 }
                 case PRIORITY -> {
                     stimaPriority.setText(c.getTempoStimato() + "''");
