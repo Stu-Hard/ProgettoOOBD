@@ -114,7 +114,7 @@ insert into Tratta values
 
 CREATE TABLE CodaImbarco(
     CodiceCoda SERIAL PRIMARY KEY,
-    TempoStimato INT NOT NULL,
+    TempoStimato INT NOT NULL DEFAULT 0,
     TempoEffettivo INT,
     Classe EnumCoda  NOT NULL,
     CodiceGate VARCHAR(4),
@@ -137,6 +137,14 @@ CREATE TABLE Biglietto(
     CONSTRAINT fk_CodiceCoda FOREIGN KEY(CodiceCoda) REFERENCES CodaImbarco(CodiceCoda),
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
+
+CREATE OR REPLACE FUNCTION aggiornaStima() RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE CodaImbarco set TempoStimato = TempoStimato + 2 WHERE CodiceCoda = NEW.CodiceCoda;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER onCheckIn AFTER UPDATE OF checkIn ON Biglietto EXECUTE PROCEDURE aggiornaStima();
 
 
 CREATE TABLE Dipendente(
