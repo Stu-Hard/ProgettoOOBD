@@ -21,19 +21,7 @@ public class BigliettoDao {
             statement = PGConnection.getConnection().prepareStatement("SELECT * FROM biglietto");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                CodeEnum c;
-                String classe = resultSet.getString(("classe"));
-                if(classe.contains("ECONOMY")){
-                    c = CodeEnum.ECONOMY;
-                }else if(classe.contains("PRIORITY")){
-                    c = CodeEnum.PRIORITY;
-                }else if(classe.contains("BUSINESS")){
-                    c = CodeEnum.BUSINESS;
-                }else if(classe.contains("FAMIGLIE")){
-                    c = CodeEnum.FAMIGLIE;
-                }else{
-                    c = CodeEnum.DIVERSAMENTE_ABILI;
-                }
+                CodeEnum c = new CodaImbarcoDao().getByCodice(resultSet.getInt("codicecoda")).getClasse();
 
                 list.add(new Biglietto(
                             resultSet.getInt("codicebiglietto"),
@@ -70,19 +58,7 @@ public class BigliettoDao {
             statement.setInt(1, codice);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                CodeEnum c;
-                String classe = resultSet.getString(("classe"));
-                if(classe.contains("ECONOMY")){
-                    c = CodeEnum.ECONOMY;
-                }else if(classe.contains("PRIORITY")){
-                    c = CodeEnum.PRIORITY;
-                }else if(classe.contains("BUSINESS")){
-                    c = CodeEnum.BUSINESS;
-                }else if(classe.contains("FAMIGLIE")){
-                    c = CodeEnum.FAMIGLIE;
-                }else{
-                    c = CodeEnum.DIVERSAMENTE_ABILI;
-                }
+                CodeEnum c = new CodaImbarcoDao().getByCodice(resultSet.getInt("codicecoda")).getClasse();
 
                 biglietto = new Biglietto(
                         resultSet.getInt("codicebiglietto"),

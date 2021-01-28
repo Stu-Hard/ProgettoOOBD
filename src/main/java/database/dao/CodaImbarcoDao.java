@@ -97,6 +97,33 @@ public class CodaImbarcoDao {
         return list;
     }
 
+    public CodaImbarco getByCodice(int codice) throws SQLException{
+        CodaImbarco coda = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM codaimbarco WHERE codicecoda = ?");
+            statement.setInt(1, codice);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                coda = new CodaImbarco(
+                        resultSet.getInt("codiceCoda"),
+                        resultSet.getString("classe"),
+                        resultSet.getInt("tempoStimato"),
+                        resultSet.getInt("tempoEffettivo")
+                );
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return coda;
+    }
+
     public void addNew(CodeEnum coda, Tratta tratta) throws SQLException {
         PreparedStatement statement = null;
 
@@ -129,7 +156,7 @@ public class CodaImbarcoDao {
         }
     }
 
-    public CodaImbarco getByBiglietto(Biglietto biglietto) throws SQLException {
+        public CodaImbarco getByBiglietto(Biglietto biglietto) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         CodaImbarco coda = null;
@@ -156,6 +183,7 @@ public class CodaImbarcoDao {
         }
         return coda;
     }
+
 
     public void deleteByTratta(Tratta tratta) throws SQLException{
         PreparedStatement statement = null;
