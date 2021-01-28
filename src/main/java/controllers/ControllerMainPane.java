@@ -84,9 +84,9 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             );
             controllerTratte = tratteLoader.getController();
 
-
+            FXMLLoader gateLoader = new FXMLLoader(getClass().getResource("/fxml/Gate.fxml"));
             gatePane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/Gate.fxml"))
+                    gateLoader.load()
             );
             controllerGate = gateLoader.getController();
 

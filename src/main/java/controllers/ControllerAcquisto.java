@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 
+import javafx.stage.Window;
 import utility.Validators;
 import utility.WindowDragger;
 
@@ -39,6 +40,8 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
     JFXComboBox<String> documento;
     @FXML
     JFXButton pagaBtn;
+
+    Window mainWindow;
 
     double prezzo = 19.99;
 
@@ -108,9 +111,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
                 alert.showAndWait();*/
             }
         }
-
-
-
     public String getNome() {
         return nome.getText();
     }
@@ -184,7 +184,9 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         this.documento = documento;
     }
 
-
+    public void setMainWindow(Window mainWindow) {
+        this.mainWindow = mainWindow;
+    }
 
     @Override
     public void setOffset(MouseEvent e) {

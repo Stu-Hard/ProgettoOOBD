@@ -104,15 +104,15 @@ public class ControllerImbarco implements Initializable {
 
     Biglietto biglietto = null;
     //dopo la verifica dei bagagli
-    public void verificaBagagli(ActionEvent actionEvent) throws SQLException {
+    public void verificaBagagli(ActionEvent actionEvent) throws SQLException, IOException {
 
         //todo if codice è corretto allora..
 
 
         BigliettoDao bDao = new BigliettoDao();
 
-        biglietto = bDao.getBigliettoByCodice(codiceTextField.getText());
-        if(biglietto != null){
+        biglietto = bDao.getBigliettoByCodice(Integer.parseInt(codiceTextField.getText()));
+        if (biglietto != null) {
             if (biglietto.isCheckIn() == true) {
                 TrattaDao trattaDao = new TrattaDao();
 
@@ -121,51 +121,49 @@ public class ControllerImbarco implements Initializable {
                 Aeroporto partenza = trattastring.getAereoportoPartenza();
                 Aeroporto arrivo = trattastring.getAereoportoArrivo();
 
-            if (biglietto.isCheckIn() == true && trattastring.getGate() != null) {
+                if (biglietto.isCheckIn() == true && trattastring.getGate() != null) {
 
 
-                codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
-                tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
-                classe.setText(String.valueOf(biglietto.getClasse()));
-                posto.setText(biglietto.getPosto() + "");        // dai il risultato
-                gate.setText(trattastring.getGate());
-                cf.setText(biglietto.getCliente().getCodiceFiscale());
-                documentoNumero.setText(biglietto.getCliente().getDocumento());
-                nome.setText(biglietto.getCliente().getNome().split("-")[0]);
-                cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
+                    codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
+                    tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
+                    classe.setText(String.valueOf(biglietto.getClasse()));
+                    posto.setText(biglietto.getPosto() + "");        // dai il risultato
+                    gate.setText(trattastring.getGate());
+                    cf.setText(biglietto.getCliente().getCodiceFiscale());
+                    documentoNumero.setText(biglietto.getCliente().getDocumento());
+                    nome.setText(biglietto.getCliente().getNome().split("-")[0]);
+                    cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
 
-                hboxCodiciBagagli.setVisible(true);         //dai risultato
-                labelBagagli.setVisible(true);
-                bagagliButton.setVisible(true);
-                spinnerBagagli.setVisible(true);
-                hboxCartaImbarco.setVisible(true);
-            }else{
-                if(biglietto.isCheckIn() == false){
-                    erroreLabel.setText("Errore -> non e' ancora stato fatto il checkIn");
-                }else{
-                    erroreLabel.setText("Errore");
+                    hboxCodiciBagagli.setVisible(true);         //dai risultato
+                    labelBagagli.setVisible(true);
+                    bagagliButton.setVisible(true);
+                    spinnerBagagli.setVisible(true);
+                    hboxCartaImbarco.setVisible(true);
+                } else {
+                    if (biglietto.isCheckIn() == false) {
+                        erroreLabel.setText("Errore -> non e' ancora stato fatto il checkIn");
+                    } else {
+                        erroreLabel.setText("Errore");
+                    }
+                    erroreLabel.setVisible(true);
+
+                    codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
+                    tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
+                    classe.setText(String.valueOf(biglietto.getClasse()));
+                    posto.setText(biglietto.getPosto() + "");        // dai il risultato
+                    gate.setText(trattastring.getGate());
+                    cf.setText(biglietto.getCliente().getCodiceFiscale());
+                    documentoNumero.setText(biglietto.getCliente().getDocumento());
+                    nome.setText(biglietto.getCliente().getNome().split("-")[0]);
+                    cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
+
+                    hboxCartaImbarco.setVisible(true);
                 }
-                erroreLabel.setVisible(true);
-
-                codiceBiglietto.setText(String.valueOf(biglietto.getCodiceBiglietto()));
-                tratta.setText(partenza.getCitta() + " -> " + arrivo.getCitta());
-                classe.setText(String.valueOf(biglietto.getClasse()));
-                posto.setText(biglietto.getPosto() + "");        // dai il risultato
-                gate.setText(trattastring.getGate());
-                cf.setText(biglietto.getCliente().getCodiceFiscale());
-                documentoNumero.setText(biglietto.getCliente().getDocumento());
-                nome.setText(biglietto.getCliente().getNome().split("-")[0]);
-                cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
-
-                hboxCartaImbarco.setVisible(true);
             }
-        }else{
-
         }
-
     }
 
-    public void inviaCodes(ActionEvent actionEvent) throws IOException {
+    public void inviaCodes() throws IOException {
         List<Node> codiciBagagli = new ArrayList<>();
         if(!vboxLabel.getChildren().isEmpty() && !(spinnerBagagli.getValue() == 0)){
             for(int i = 0; i < vboxLabel.getChildren().size(); i++){
