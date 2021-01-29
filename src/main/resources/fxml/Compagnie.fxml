@@ -23,16 +23,20 @@
                             </graphic>
                         </JFXButton>
                         <JFXComboBox fx:id="searchMode" layoutX="545.0" layoutY="76.0" prefHeight="28.0" prefWidth="88.0" />
-                  <Label layoutX="34.0" layoutY="14.0" prefHeight="39.0" prefWidth="173.0" text="Aeroporto di">
-                     <font>
-                        <Font size="27.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="207.0" layoutY="14.0" prefHeight="39.0" prefWidth="173.0" text="Napoli">
-                     <font>
-                        <Font size="27.0" />
-                     </font>
-                  </Label>
+                  <HBox layoutX="34.0" layoutY="14.0" spacing="10.0">
+                     <children>
+                        <Label text="Aeroporto di:">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="aeroportoGestito" text="--">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                     </children>
                 </Pane>
             </top>
@@ -40,5 +44,14 @@
                 <ScrollPane fx:id="scroll" centerShape="false" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" pannable="true" prefHeight="600.0" prefViewportHeight="600.0" prefViewportWidth="870.0" prefWidth="870.0" scaleShape="false" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" BorderPane.alignment="CENTER" />
             </center>
         </BorderPane>
+        <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="803.0" layoutY="626.0" onAction="#add" style="-fx-background-color: linear-gradient(#162643,#2d5a89); -fx-background-radius: 50px;" text="add">
+            <graphic>
+                <FontAwesomeIcon fill="WHITE" iconName="PLUS" />
+            </graphic>
+            <font>
+                <Font size="21.0" />
+            </font>
+        </JFXButton>
+        <JFXSpinner fx:id="spinner" layoutX="415.0" layoutY="350.0" visible="false" />
     </children>
 </AnchorPane>

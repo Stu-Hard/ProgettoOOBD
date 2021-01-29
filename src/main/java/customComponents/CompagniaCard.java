@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 
 
@@ -22,7 +24,7 @@ public class CompagniaCard extends Pane {
             loadComponents();
             setLabels();
             try {
-                Image img = new Image(getClass().getResource("/img/icons/" + compagnia.getNome() + ".png").toString());
+                Image img = new Image(new FileInputStream("src/main/resources/img/icons/" + compagnia.getNome() + ".png"));
                 iconCircle.setFill(new ImagePattern(img));
             }catch (NullPointerException e){
                 e.printStackTrace();

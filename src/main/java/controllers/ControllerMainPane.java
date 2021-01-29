@@ -35,6 +35,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     private ControllerGate controllerGate;
 
     private ControllerDipendenti controllerDipendenti;
+    private ControllerCompagnie controllerCompagnie;
 
     public void close(MouseEvent e){
         Platform.exit();
@@ -62,6 +63,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             imbarcoPane.toFront();
         } else if (compagnieBtn.equals(b)) {
             compagniePane.toFront();
+            controllerCompagnie.refresh();
         } else if (aereiBtn.equals(b)) {
             aereiPane.toFront();
         } else if (dipendentiBtn.equals(b)) {
@@ -96,9 +98,12 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             imbarcoPane.getChildren().add(
                     FXMLLoader.load(getClass().getResource("/fxml/Imbarco.fxml"))
             );
+
+            FXMLLoader compagnieLoader = new FXMLLoader(getClass().getResource("/fxml/Compagnie.fxml"));
             compagniePane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/Compagnie.fxml"))
+                    compagnieLoader.load()
             );
+            controllerCompagnie = compagnieLoader.getController();
 
             FXMLLoader dipendentiLoader = new FXMLLoader(getClass().getResource("/fxml/Dipendenti.fxml"));
             dipendentiPane.getChildren().add(

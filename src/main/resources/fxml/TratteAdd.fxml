@@ -75,7 +75,7 @@
                   </HBox>
                   <Pane>
                      <children>
-                        <JFXTextField fx:id="durata" prefHeight="31.0" prefWidth="87.0" style="-fx-font-size: 15;" styleClass="text-field" stylesheets="@../css/white.css" />
+                        <JFXTextField fx:id="durata" prefHeight="31.0" prefWidth="87.0" style="-fx-font-size: 15; -fx-text-fill: white" styleClass="text-field" stylesheets="@../css/white.css" />
                         <Label layoutX="97.0" layoutY="9.0" text="(min)" textFill="WHITE" />
                      </children>
                   </Pane>

@@ -8,45 +8,30 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="500.0" prefWidth="450.0" styleClass="background" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerAcquisto">
+<AnchorPane onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="390.0" prefWidth="507.0" styleClass="background" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerAcquisto">
    <children>
-      <JFXTextField fx:id="nome" focusColor="#4bb24b" labelFloat="true" layoutX="65.0" layoutY="58.0" prefHeight="44.0" prefWidth="161.0" promptText="Nome*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
+      <JFXTextField fx:id="nome" focusColor="#4bb24b" labelFloat="true" layoutX="65.0" layoutY="69.0" prefHeight="44.0" prefWidth="186.0" promptText="Nome*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
          <font>
             <Font size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="cognome" focusColor="#4bb24b" labelFloat="true" layoutX="243.0" layoutY="58.0" prefHeight="44.0" prefWidth="155.0" promptText="Cognome*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
+      <JFXTextField fx:id="cognome" focusColor="#4bb24b" labelFloat="true" layoutX="270.0" layoutY="69.0" prefHeight="44.0" prefWidth="186.0" promptText="Cognome*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
          <font>
             <Font size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="riconoscimento" focusColor="#4bb24b" labelFloat="true" layoutX="62.0" layoutY="134.0" prefHeight="32.0" prefWidth="144.0" promptText="Riconoscimento*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
+      <JFXTextField fx:id="riconoscimento" focusColor="#4bb24b" labelFloat="true" layoutX="65.0" layoutY="150.0" prefHeight="32.0" prefWidth="144.0" promptText="Riconoscimento*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
          <font>
             <Font size="15.0" />
          </font>
       </JFXTextField>
-      <JFXComboBox fx:id="documento" focusColor="#4bb24b" layoutX="206.0" layoutY="134.0" prefHeight="32.0" prefWidth="176.0" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
-      <JFXTextField fx:id="eta" focusColor="#4bb24b" labelFloat="true" layoutX="71.0" layoutY="195.0" prefHeight="31.0" prefWidth="46.0" promptText="Età*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
+      <JFXComboBox fx:id="documento" focusColor="#4bb24b" layoutX="209.0" layoutY="150.0" prefHeight="32.0" prefWidth="176.0" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
+      <JFXTextField fx:id="cf" focusColor="#4bb24b" labelFloat="true" layoutX="65.0" layoutY="224.0" prefHeight="31.0" prefWidth="186.0" promptText="Codice Fiscale*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
          <font>
             <Font size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="telefono" focusColor="#4bb24b" labelFloat="true" layoutX="243.0" layoutY="275.0" prefHeight="31.0" prefWidth="155.0" promptText="Telefono" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="email" focusColor="#4bb24b" labelFloat="true" layoutX="62.0" layoutY="275.0" promptText="Email" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="cf" focusColor="#4bb24b" labelFloat="true" layoutX="215.0" layoutY="195.0" prefHeight="31.0" prefWidth="186.0" promptText="Codice Fiscale*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </JFXTextField>
-      <HBox layoutX="197.0" layoutY="415.0">
+      <HBox layoutX="260.0" layoutY="299.0">
          <children>
             <JFXButton onAction="#close" opacity="0.49" prefHeight="44.0" prefWidth="92.0" text="Annulla" textFill="RED">
                <font>
@@ -63,6 +48,6 @@
             </JFXButton>
          </children>
       </HBox>
-      <JFXComboBox fx:id="classe" focusColor="#4bb24b" layoutX="64.0" layoutY="339.0" onAction="#computePrezzo" prefHeight="31.0" prefWidth="186.0" promptText="Classe*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
+      <JFXComboBox fx:id="classe" focusColor="#4bb24b" layoutX="270.0" layoutY="224.0" onAction="#computePrezzo" prefHeight="31.0" prefWidth="186.0" promptText="Classe*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
    </children>
 </AnchorPane>
