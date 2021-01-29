@@ -1,5 +1,5 @@
-
-
+DROP SCHEMA PUBLIC CASCADE;
+CREATE SCHEMA PUBLIC;
 
 CREATE TYPE EnumCoda AS ENUM(
     'DIVERSAMENTE_ABILI',
@@ -145,7 +145,42 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER onCheckIn AFTER UPDATE OF checkin ON Biglietto FOR EACH ROW EXECUTE PROCEDURE aggiornaStima();
+CREATE OR REPLACE FUNCTION to_seconds(t text) RETURNS integer AS
+$BODY$
+DECLARE
+    hs INTEGER;
+    ms INTEGER;
+    s INTEGER;
+BEGIN
+    SELECT (EXTRACT(HOUR FROM  t::time) *60*60) INTO hs;
+    SELECT (EXTRACT (MINUTES FROM t::time)*60) INTO ms;
+    SELECT (EXTRACT (SECONDS from t::time)) INTO s;
+    SELECT (hs + ms + s) INTO s;
+    RETURN s;
+END;
+$BODY$
+    LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION chiudiCode() RETURNS TRIGGER AS $$
+DECLARE
+    clientiCheckin int;
+    imbarcati int;
+    secondi int;
+BEGIN
+    select count(*) into clientiCheckin from Biglietto b where b.CodiceCoda = new.codicecoda and b.CheckIn;
+    select count(*) into imbarcati from Biglietto b where b.CodiceCoda = new.codicecoda and b.Imbarcato;
+    IF imbarcati = clientiCheckin THEN
+        SELECT to_seconds(cast((now() at time zone 'CET') as text)) - to_seconds(cast(c.OraApertura as text))
+        into secondi
+        from CodaImbarco c where c.CodiceCoda = new.CodiceCoda;
+        UPDATE CodaImbarco set TempoEffettivo = secondi/60 WHERE codicecoda = new.CodiceCoda;
+    end IF;
+    return NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER onCheckIn AFTER UPDATE OF checkin ON Biglietto FOR EACH ROW WHEN (not OLD.CheckIn and new.CheckIn) EXECUTE PROCEDURE aggiornaStima();
+CREATE TRIGGER onImbarco AFTER UPDATE OF Imbarcato ON Biglietto FOR EACH ROW EXECUTE PROCEDURE chiudiCode();
 
 
 CREATE TABLE Dipendente(

@@ -112,7 +112,7 @@ public class ControllerGate implements Initializable {
             gCard.getGate().setTratta(tratta, codaImbarcoDao.getByTratta(tratta));
             new TrattaDao().update(tratta);
             for(CodaImbarco c : gCard.getGate().getCodeImbarco()){
-                codaImbarcoDao.update(c);
+                codaImbarcoDao.apriCoda(c);
             }
             new GateDao().update(gCard.getGate());
             gCard.updateLabels();
@@ -131,8 +131,7 @@ public class ControllerGate implements Initializable {
             new GateDao().update(g);
             CodaImbarcoDao cDao = new CodaImbarcoDao();
             for (CodaImbarco c: p.getValue()) {
-                System.out.println(c.getTempoEffettivo());
-                cDao.update(c);
+                cDao.chiudiCoda(c);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

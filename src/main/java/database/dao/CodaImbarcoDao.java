@@ -144,15 +144,28 @@ public class CodaImbarcoDao {
         }
     }
 
-    public void update(CodaImbarco coda) throws SQLException {
+    public void apriCoda(CodaImbarco coda) throws SQLException {
         PreparedStatement statement = null;
-
         try {
-            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET tempoeffettivo = ?, codicegate = ?, oraapertura = ? WHERE codicecoda = ?");
+            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET codicegate = ?, oraapertura = ? WHERE codicecoda = ?");
+            statement.setString(1, coda.getCodiceGate());
+            statement.setTimestamp(2, Timestamp.valueOf(coda.getOraApertura()));
+            statement.setInt(3, coda.getCodiceCoda());
+            statement.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+        }
+    }
+    public void chiudiCoda(CodaImbarco coda) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET tempoeffettivo = ?, codicegate = ? WHERE codicecoda = ? AND (tempoeffettivo is NULL OR tempoeffettivo = 0)");
             statement.setInt(1, coda.getTempoEffettivo());
             statement.setString(2, coda.getCodiceGate());
-            statement.setTimestamp(3, Timestamp.valueOf(coda.getOraApertura()));
-            statement.setInt(4, coda.getCodiceCoda());
+            statement.setInt(3, coda.getCodiceCoda());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();

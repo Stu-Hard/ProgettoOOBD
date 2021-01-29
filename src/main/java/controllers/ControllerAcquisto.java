@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
 public class ControllerAcquisto extends WindowDragger implements Initializable {
     private Tratta tratta;
     @FXML
-    JFXTextField nome, cognome, riconoscimento, eta, cf, email, telefono;
+    JFXTextField nome, cognome, riconoscimento, cf;
     @FXML
     JFXComboBox<CodeEnum> classe;
     @FXML
@@ -61,16 +61,14 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
     public void buy(ActionEvent e) throws  IOException {
 
 
-        email.validate();
         riconoscimento.validate();
-        eta.validate();
         nome.validate();
         cognome.validate();
         cf.validate();
-        if (cf.validate() && riconoscimento.validate() && eta.validate() && nome.validate() && cognome.validate() && classe.getValue() != null) {
+        if (cf.validate() && riconoscimento.validate() && nome.validate() && cognome.validate() && classe.getValue() != null) {
             Cliente cliente = new Cliente(getCf(), getNome() + "-" + getCognome(), getRiconoscimento());
 
-            //todo fila e posto -> trigger
+            //todo posto -> trigger
             Biglietto biglietto = new Biglietto(prezzo, 1, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente);
             BigliettoDao bDao = new BigliettoDao();
             try {
@@ -135,14 +133,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         this.riconoscimento.setText(riconoscimento);
     }
 
-    public int getEta() {
-        Integer i = Integer.parseInt(eta.getText());
-        return i;
-    }
-
-    public void setEta(String eta) {
-        this.eta.setText(eta);
-    }
 
     public String getCf() {
         return cf.getText();
@@ -150,22 +140,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
     public void setCf(String cf) {
         this.cf.setText(cf);
-    }
-
-    public String getEmail() {
-        return email.getText();
-    }
-
-    public void setEmail(JFXTextField email) {
-        this.email = email;
-    }
-
-    public JFXTextField getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono.setText(telefono);
     }
 
     public JFXComboBox getClasse() {
@@ -200,8 +174,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cf.getValidators().add(new Validators().createRequiredValidator("Non puo' essere vuota"));
-        eta.getValidators().add(new Validators().createRequiredValidator(""));
-        email.setValidators(new Validators().createEmailValidator("Email invalida"));
         nome.getValidators().add(new Validators().createRequiredValidator("Inserire nome"));
         cognome.getValidators().add(new Validators().createRequiredValidator("Inserire cognome"));
         riconoscimento.getValidators().add(new Validators().createRequiredValidator("Inserire n. documento"));
@@ -218,17 +190,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         documento.getSelectionModel().selectFirst();
 
         computePrezzo(null);
-        eta.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                eta.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
-        telefono.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                telefono.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
-
     }
 
     public void computePrezzo(ActionEvent event) {
