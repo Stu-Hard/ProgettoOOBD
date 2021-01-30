@@ -40,7 +40,8 @@ public class TrattaDao {
                     resultSet.getString("CodiceGate"),
                     comp,
                     partenza,
-                    arrivo
+                    arrivo,
+                    resultSet.getInt("posti")
                 );
                 list.add(tratta);
             }
@@ -88,7 +89,8 @@ public class TrattaDao {
                         resultSet.getString("CodiceGate"),
                         comp,
                         partenza,
-                        arrivo
+                        arrivo,
+                        resultSet.getInt("posti")
                 );
                 list.add(tratta);
             }
@@ -144,7 +146,8 @@ public class TrattaDao {
                         resultSet.getString("CodiceGate"),
                         comp,
                         partenza,
-                        arrivo
+                        arrivo,
+                        resultSet.getInt("posti")
                 );
             }
         } catch (SQLException e){
@@ -201,7 +204,8 @@ public class TrattaDao {
                         resultSet.getString("CodiceGate"),
                         comp,
                         partenza,
-                        arrivo
+                        arrivo,
+                        resultSet.getInt("posti")
                 );
                 list.add(tratta);
             }

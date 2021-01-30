@@ -17,6 +17,7 @@ public class Tratta {
     private String gate = null; // come sopra da cambiare con Gate gate;
     private Aeroporto aereoportoPartenza;
     private Aeroporto aereoportoArrivo;
+    private int posti;
 
     public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
     public DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -34,7 +35,7 @@ public class Tratta {
         this.aereoportoArrivo = getAereoportoArrivo;
     }
 
-    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, String gate, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo) {
+    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, String gate, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo, int posti) {
         this.numeroVolo = numeroVolo;
         this.dataPartenza = dataPartenza;
         this.oraPartenza = oraPartenza;
@@ -45,6 +46,7 @@ public class Tratta {
         this.compagnia = compagnia;
         this.aereoportoPartenza = aereoportoPartenza;
         this.aereoportoArrivo = aereoportoArrivo;
+        this.posti = posti;
     }
 
     public Tratta(Tratta tratta) {
@@ -73,6 +75,7 @@ public class Tratta {
                 ", '" + compagnia.getNome() + '\'' +
                 ", '" + aereoportoPartenza.getCodiceICAO() + '\'' +
                 ", '" + aereoportoArrivo.getCodiceICAO() + '\'' +
+                ", " + posti +
                 ')';
     }
 
@@ -161,6 +164,14 @@ public class Tratta {
 
     public int dateDistance(){
         return (int) ChronoUnit.MINUTES.between(LocalDateTime.of(dataPartenza, oraPartenza), Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
+    }
+
+    public int getPosti() {
+        return posti;
+    }
+
+    public void setPosti(int posti) {
+        this.posti = posti;
     }
 
     public void concludi() {

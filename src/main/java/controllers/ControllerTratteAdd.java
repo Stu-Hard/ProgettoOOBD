@@ -47,7 +47,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     @FXML
     JFXTimePicker ora;
     @FXML
-    JFXTextField durata;
+    JFXTextField durata, posti;
 
     @FXML
     JFXButton conferma;
@@ -81,7 +81,8 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                 (conclusa.isSelected())? gate.getValue().getGateCode(): null,
                 compagnia.getValue(),
                 partenza.getValue(),
-                arrivo.getValue()
+                arrivo.getValue(),
+                Integer.parseInt(posti.getText())
         );
         try {
             new TrattaDao().add(tratta);
@@ -142,7 +143,13 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                         arrivo.valueProperty(),
                         durata.textProperty(),
                         gate.valueProperty(),
-                        conclusa.selectedProperty());
+                        conclusa.selectedProperty(),
+                        posti.textProperty(),
+                        diversamenteAbili.selectedProperty(),
+                        famiglie.selectedProperty(),
+                        economy.selectedProperty(),
+                        business.selectedProperty(),
+                        priorty.selectedProperty());
             }
             @Override
             protected boolean computeValue() {
@@ -153,13 +160,26 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                         ora.getValue() == null ||
                         arrivo.getValue() == null ||
                         durata.getText().isEmpty() ||
-                        (conclusa.isSelected() && gate.getValue() == null);
+                        (conclusa.isSelected() && gate.getValue() == null) ||
+                        posti.getText().isEmpty() ||
+                        !(
+                                diversamenteAbili.isSelected() ||
+                                famiglie.isSelected() ||
+                                priorty.isSelected() ||
+                                business.isSelected() ||
+                                economy.isSelected()
+                        );
             }
         });
 
         durata.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 durata.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        posti.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                posti.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
 

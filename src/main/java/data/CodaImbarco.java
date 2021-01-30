@@ -72,7 +72,8 @@ public class CodaImbarco {
         this.tempoEffettivo = tempoEffettivo;
     }
     public void setTempoEffettivo() {
-        this.tempoEffettivo = (int) ChronoUnit.MINUTES.between(oraApertura, Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
+        if(oraApertura != null)
+            this.tempoEffettivo = (int) ChronoUnit.MINUTES.between(oraApertura, Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
     }
 
     public void setPasseggeri(int passeggeri) {

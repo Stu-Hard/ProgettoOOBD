@@ -3,16 +3,20 @@ package controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import data.Biglietto;
+import data.CodaImbarco;
 import data.Tratta;
 import database.dao.BigliettoDao;
+import database.dao.CodaImbarcoDao;
 import database.dao.TrattaDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -20,7 +24,11 @@ import javafx.stage.Window;
 import utility.WindowDragger;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class ControllerTratteInfo extends WindowDragger {
@@ -28,12 +36,16 @@ public class ControllerTratteInfo extends WindowDragger {
 
     @FXML
     private Label partenza, arrivo, compagnia, dataPartenza, durata,
-    ritardo, gate, numeroVolo, passeggeri;
+    ritardo, gate, numeroVolo, passeggeri, posti;
     @FXML
     private JFXCheckBox completata;
     @FXML
     private JFXButton closeBtn;
     private Window mainWindow;
+    @FXML
+    private JFXButton acquistaBtn;
+    @FXML
+    private AnchorPane codePane;
 
     @FXML
     private void close(ActionEvent e){
@@ -42,7 +54,6 @@ public class ControllerTratteInfo extends WindowDragger {
 
     public void setTratta(Tratta tratta) {
         this.tratta = tratta;
-        setLabels();
     }
 
     @FXML
@@ -84,6 +95,22 @@ public class ControllerTratteInfo extends WindowDragger {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        posti.setText(tratta.getPosti() + "");
+
+        try {
+            List<CodaImbarco> l = new CodaImbarcoDao().getByTratta(tratta);
+            l.forEach(c -> {
+                Label lbl1 = (Label) codePane.lookup("#" + c.getClasse() + "1");
+                Label lbl11 = (Label) codePane.lookup("#" + c.getClasse() + "11");
+                Label lbl111 = (Label) codePane.lookup("#" + c.getClasse() + "111");
+                if (c.getOraApertura() != null)
+                    lbl1.setText(c.getOraApertura().format(DateTimeFormatter.ofPattern("HH:mm")));
+                lbl11.setText(c.getTempoStimato() + "");
+                lbl111.setText(((c.getTempoEffettivo() != null)?c.getTempoEffettivo():"-") + "");
+            });
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
@@ -98,5 +125,11 @@ public class ControllerTratteInfo extends WindowDragger {
 
     public void setMainWindow(Window window) {
         this.mainWindow = window;
+    }
+
+    public void initialize(Tratta t) {
+        setTratta(t);
+        setLabels();
+        acquistaBtn.setDisable(completata.isSelected() || Integer.parseInt(passeggeri.getText()) >= tratta.getPosti());
     }
 }

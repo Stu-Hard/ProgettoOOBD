@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -29,7 +28,7 @@
             </Label>
          </children>
       </HBox>
-      <HBox layoutX="14.0" layoutY="99.0" spacing="25.0">
+      <HBox layoutX="14.0" layoutY="72.0" spacing="25.0">
          <children>
             <VBox spacing="15.0">
                <children>
@@ -54,7 +53,7 @@
                         <Font size="24.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIcon iconName="LONG_ARROW_UP" />
+                        <FontAwesomeIcon iconName="CALENDAR_ALT" />
                      </graphic>
                   </Label>
                   <Label text="Durata" textFill="WHITE">
@@ -62,7 +61,7 @@
                         <Font size="24.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIcon iconName="LONG_ARROW_DOWN" />
+                        <FontAwesomeIcon iconName="CLOCK_ALT" />
                      </graphic>
                   </Label>
                   <Label text="Ritardo" textFill="WHITE">
@@ -81,7 +80,15 @@
                         <FontAwesomeIcon iconName="TH_LARGE" />
                      </graphic>
                   </Label>
-                  <Label text="Passeggeri" textFill="WHITE">
+                  <Label text="Posti" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon iconName="LINUX" />
+                     </graphic>
+                  </Label>
+                  <Label text="Prenotati" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -128,6 +135,11 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
+                  <Label fx:id="posti" text="-" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                   <Label fx:id="passeggeri" text="0" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
@@ -137,14 +149,6 @@
             </VBox>
          </children>
       </HBox>
-      <LineChart layoutX="332.0" layoutY="71.0" prefHeight="394.0" prefWidth="550.0">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </LineChart>
       <HBox layoutX="648.0" layoutY="486.0">
          <children>
             <JFXButton fx:id="closeBtn" onAction="#close" opacity="0.47" prefHeight="45.0" prefWidth="99.0" style="-fx-background-radius: 0;" text="Chiudi" textFill="RED">
@@ -165,5 +169,175 @@
             </JFXButton>
          </children>
       </HBox>
+      <AnchorPane fx:id="codePane" layoutX="350.0" layoutY="144.0">
+         <children>
+            <HBox layoutX="28.0" layoutY="43.0" spacing="20.0">
+               <children>
+                  <VBox fx:id="code" prefHeight="100.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="DIVERSAMENTE_ABILI" prefHeight="20.0" text="Diversamente Abili: " textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon iconName="WHEELCHAIR" />
+                           </graphic>
+                        </Label>
+                        <Label fx:id="FAMIGLIE" prefHeight="20.0" text="Famiglie: " textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon iconName="CHILD" />
+                           </graphic>
+                        </Label>
+                        <Label fx:id="BUSINESS" prefHeight="20.0" text="Business: " textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon iconName="BRIEFCASE" />
+                           </graphic>
+                        </Label>
+                        <Label fx:id="PRIORITY" prefHeight="20.0" text="Priority: " textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon iconName="MONEY" />
+                           </graphic>
+                        </Label>
+                        <Label fx:id="ECONOMY" prefHeight="20.0" text="Economy: " textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon iconName="DOLLAR" />
+                           </graphic>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <HBox>
+                     <children>
+                        <VBox fx:id="code1" prefHeight="100.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="DIVERSAMENTE_ABILI1" alignment="CENTER" prefHeight="35.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="FAMIGLIE1" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="BUSINESS1" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="PRIORITY1" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="ECONOMY1" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="code11" prefHeight="100.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="DIVERSAMENTE_ABILI11" alignment="CENTER" prefHeight="35.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="FAMIGLIE11" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="BUSINESS11" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="PRIORITY11" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="ECONOMY11" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="code111" prefHeight="100.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="DIVERSAMENTE_ABILI111" alignment="CENTER" prefHeight="35.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="FAMIGLIE111" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="BUSINESS111" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="PRIORITY111" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="ECONOMY111" alignment="CENTER" prefHeight="20.0" prefWidth="80.0" text="-" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <Label text="Code di Imbarco" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon iconName="COLUMNS" />
+               </graphic>
+            </Label>
+            <HBox layoutX="283.0" layoutY="4.0" spacing="20.0">
+               <children>
+                  <Label text="Apertura" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Stima" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Tempo Eff." textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

@@ -97,6 +97,7 @@ CREATE TABLE Tratta(
     Compagnia VARCHAR(30) NOT NULL,
     AeroportoPartenza VARCHAR(4) NOT NULL, 
     AeroportoArrivo VARCHAR(4) NOT NULL,
+    Posti INT NOT NULL,
     CONSTRAINT fk_Gate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
     CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
     CONSTRAINT fk_AeroportoA FOREIGN KEY(AeroportoArrivo) REFERENCES Aeroporto(Codice),
@@ -106,9 +107,9 @@ CREATE TABLE Tratta(
 ALTER TABLE Gate ADD CONSTRAINT fk_Tratta FOREIGN KEY(Tratta) REFERENCES Tratta(NumeroVolo);
 
 insert into Tratta values
-                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, NULL, 'Vueling', 'LIRN', 'LEBL' ),
-                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, TRUE, 'A0', 'Ryanair', 'EGLC', 'LIRN'),
-                          ('VLGUAZ84', '2021-01-05', '21:18:00', 111, 0, false, NULL, 'Vueling', 'LIRN', 'LEBL');
+                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, NULL, 'Vueling', 'LIRN', 'LEBL', 10),
+                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, false, NULL, 'Ryanair', 'EGLC', 'LIRN', 30),
+                          ('VLGUAZ84', '2021-01-05', '21:18:00', 111, 0, false, NULL, 'Vueling', 'LIRN', 'LEBL', 2);
 
 
 CREATE TABLE CodaImbarco(
@@ -140,7 +141,7 @@ CREATE TABLE Biglietto(
 
 CREATE OR REPLACE FUNCTION aggiornaStima() RETURNS TRIGGER AS $$
 BEGIN
-    UPDATE codaimbarco set TempoStimato = tempostimato + 2 WHERE codicecoda = new.CodiceCoda;
+    UPDATE codaimbarco c set TempoStimato = c.tempostimato + 2 WHERE c.codicecoda = new.CodiceCoda;
     return NEW;
 END;
 $$ language 'plpgsql';
@@ -161,7 +162,7 @@ END;
 $BODY$
     LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE FUNCTION chiudiCode() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION chiudiOApriCode() RETURNS TRIGGER AS $$
 DECLARE
     clientiCheckin int;
     imbarcati int;
@@ -169,6 +170,9 @@ DECLARE
 BEGIN
     select count(*) into clientiCheckin from Biglietto b where b.CodiceCoda = new.codicecoda and b.CheckIn;
     select count(*) into imbarcati from Biglietto b where b.CodiceCoda = new.codicecoda and b.Imbarcato;
+    IF imbarcati = 1 THEN
+        UPDATE CodaImbarco set OraApertura = (now() at time zone 'CET') WHERE codicecoda = new.CodiceCoda;
+    end if;
     IF imbarcati = clientiCheckin THEN
         SELECT to_seconds(cast((now() at time zone 'CET') as text)) - to_seconds(cast(c.OraApertura as text))
         into secondi
@@ -180,7 +184,29 @@ END;
 $$ language 'plpgsql';
 
 CREATE TRIGGER onCheckIn AFTER UPDATE OF checkin ON Biglietto FOR EACH ROW WHEN (not OLD.CheckIn and new.CheckIn) EXECUTE PROCEDURE aggiornaStima();
-CREATE TRIGGER onImbarco AFTER UPDATE OF Imbarcato ON Biglietto FOR EACH ROW EXECUTE PROCEDURE chiudiCode();
+CREATE TRIGGER onImbarco AFTER UPDATE OF Imbarcato ON Biglietto FOR EACH ROW WHEN (not OLD.Imbarcato and new.Imbarcato) EXECUTE PROCEDURE chiudiOApriCode();
+
+CREATE OR REPLACE FUNCTION assegnaPosto() RETURNS TRIGGER AS $$
+DECLARE
+    mx int;
+    posti int;
+BEGIN
+    select max(posto) into mx from Biglietto where numerovolo = new.Numerovolo;
+    select t.posti into posti from tratta t where t.NumeroVolo = NEW.numeroVolo;
+
+    IF mx IS NULL THEN
+        NEW.Posto := 1;
+    ELSEIF mx < posti THEN
+        NEW.posto := mx + 1;
+    ELSE
+        RAISE EXCEPTION 'I posti sulla tratta sono terminati. Max posti: %', posti;
+    END IF;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER newBiglietto BEFORE INSERT ON Biglietto FOR EACH ROW EXECUTE PROCEDURE assegnaPosto();
+
 
 
 CREATE TABLE Dipendente(

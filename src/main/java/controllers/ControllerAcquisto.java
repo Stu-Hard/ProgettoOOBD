@@ -9,6 +9,7 @@ import data.Tratta;
 
 import database.dao.BigliettoDao;
 
+import database.dao.CodaImbarcoDao;
 import enumeration.CodeEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,8 +27,10 @@ import utility.WindowDragger;
 
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerAcquisto extends WindowDragger implements Initializable {
@@ -47,6 +50,13 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
     public void setTratta(Tratta tratta) {
         this.tratta = tratta;
+        try {
+            new CodaImbarcoDao().getByTratta(tratta).forEach(c -> classe.getItems().add(c.getClasse()));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        if(!classe.getItems().isEmpty())
+            classe.getSelectionModel().selectFirst();
     }
 
     public Tratta getTratta(){
@@ -68,8 +78,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         if (cf.validate() && riconoscimento.validate() && nome.validate() && cognome.validate() && classe.getValue() != null) {
             Cliente cliente = new Cliente(getCf(), getNome() + "-" + getCognome(), getRiconoscimento());
 
-            //todo posto -> trigger
-            Biglietto biglietto = new Biglietto(prezzo, 1, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente);
+            Biglietto biglietto = new Biglietto(prezzo, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente);
             BigliettoDao bDao = new BigliettoDao();
             try {
                 bDao.insert(biglietto);
@@ -178,12 +187,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         cognome.getValidators().add(new Validators().createRequiredValidator("Inserire cognome"));
         riconoscimento.getValidators().add(new Validators().createRequiredValidator("Inserire n. documento"));
 
-        classe.getItems().add(CodeEnum.ECONOMY);
-        classe.getItems().add(CodeEnum.BUSINESS);
-        classe.getItems().add(CodeEnum.FAMIGLIE);
-        classe.getItems().add(CodeEnum.PRIORITY);
-        classe.getItems().add(CodeEnum.DIVERSAMENTE_ABILI);
-        classe.getSelectionModel().selectFirst();
         documento.getItems().add("Patente");
         documento.getItems().add("Carta d'Identita'");
         documento.getItems().add("Passaporto");
@@ -194,13 +197,14 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
     public void computePrezzo(ActionEvent event) {
         prezzo = 19.99;
-        switch (classe.getValue()){
-            case ECONOMY -> prezzo -= 5;
-            case BUSINESS -> prezzo *= 1.5;
-            case FAMIGLIE -> prezzo -= 1;
-            case PRIORITY -> prezzo = prezzo*2 +1.99;
-            case DIVERSAMENTE_ABILI -> prezzo /= 2;
-        }
+        if (!classe.getItems().isEmpty())
+            switch (classe.getValue()){
+                case ECONOMY -> prezzo -= 5;
+                case BUSINESS -> prezzo *= 1.5;
+                case FAMIGLIE -> prezzo -= 1;
+                case PRIORITY -> prezzo = prezzo*2 +1.99;
+                case DIVERSAMENTE_ABILI -> prezzo /= 2;
+            }
         pagaBtn.setText(String.format("%.2f$", prezzo));
     }
 }

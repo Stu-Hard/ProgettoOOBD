@@ -83,7 +83,7 @@ public class Gate {
             this.codeImbarco = codeImbarco;
             status = GateStatus.OCCUPATO;
             codeImbarco.forEach(c -> c.setCodiceGate(gateCode));
-            codeImbarco.forEach(c -> c.setOraApertura(Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime()));
+            //codeImbarco.forEach(c -> c.setOraApertura(Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime()));
             setCodeImbarco(codeImbarco);
         }
     }

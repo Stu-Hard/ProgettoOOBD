@@ -11,9 +11,6 @@ public class Biglietto {
     private boolean checkIn, imbarcato;
     private String numeroVolo;
 
-    public Biglietto() {
-    }
-
     public Biglietto(Integer codiceBiglietto, double prezzo, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, Cliente cliente) {
         this.codiceBiglietto = codiceBiglietto;
         this.prezzo = prezzo;
@@ -25,7 +22,7 @@ public class Biglietto {
         this.cliente = cliente;
     }
 
-    public Biglietto(double prezzo, int posto, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, Cliente cliente) {
+    public Biglietto(double prezzo, CodeEnum classe, boolean checkIn, boolean imbarcato, String numeroVolo, Cliente cliente) {
         this.prezzo = prezzo;
         this.posto = posto;
         this.classe = classe;
