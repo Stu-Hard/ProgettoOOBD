@@ -16,7 +16,7 @@
 
 <AnchorPane onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="465.0" prefWidth="739.0" styleClass="background" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratteAdd">
     <children>
-        <HBox layoutX="27.0" layoutY="47.0" spacing="50.0">
+        <HBox layoutX="24.0" layoutY="76.0" spacing="50.0">
             <children>
                 <VBox spacing="20.0">
                     <children>
@@ -60,14 +60,6 @@
                                 <FontAwesomeIcon iconName="CLOCK_ALT" />
                             </graphic>
                         </Label>
-                  <Label fx:id="gateLbl" disable="true" text="Gate" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIcon iconName="TH_LARGE" />
-                     </graphic>
-                  </Label>
                   <Label text="Posti" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
@@ -95,16 +87,7 @@
                         <Label layoutX="97.0" layoutY="9.0" text="(min)" textFill="WHITE" />
                      </children>
                   </Pane>
-                  <HBox alignment="CENTER_LEFT">
-                     <children>
-                        <JFXComboBox fx:id="gate" disable="true" prefHeight="31.0" prefWidth="98.0" style="-fx-font-size: 15;" stylesheets="@../css/white.css" />
-                        <JFXCheckBox fx:id="conclusa" checkedColor="TEAL" onAction="#disableGate" text="Conclusa" textFill="WHITE" unCheckedColor="BLACK">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </JFXCheckBox>
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER_LEFT" />
                   <JFXTextField fx:id="posti" prefHeight="31.0" prefWidth="87.0" style="-fx-font-size: 15; -fx-text-fill: white" styleClass="text-field" stylesheets="@../css/white.css" />
                </children>
                 </VBox>
@@ -153,5 +136,10 @@
             </JFXCheckBox>
          </children>
       </VBox>
+      <JFXCheckBox fx:id="conclusa" checkedColor="TEAL" layoutX="24.0" layoutY="406.0" onAction="#disableCode" text="Conclusa" textFill="WHITE" unCheckedColor="BLACK">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </JFXCheckBox>
     </children>
 </AnchorPane>

@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import utility.IdFactory;
 import utility.WindowDragger;
@@ -18,41 +17,36 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 public class ControllerTratteAdd extends WindowDragger implements Initializable {
     @FXML
-    public JFXCheckBox diversamenteAbili;
-    @FXML
-    public JFXCheckBox famiglie;
-    @FXML
-    public JFXCheckBox business;
-    @FXML
-    public JFXCheckBox priorty;
-    @FXML
-    public JFXCheckBox economy;
+    public JFXCheckBox
+            diversamenteAbili,
+            famiglie,
+            business,
+            priorty,
+            economy;
+
     @FXML
     JFXComboBox<Compagnia> compagnia;
     @FXML
     JFXComboBox<Aeroporto> partenza, arrivo;
-
-    @FXML
-    JFXComboBox<Gate> gate;
-    @FXML
-    JFXCheckBox conclusa;
-    @FXML
-    Label gateLbl;
     @FXML
     JFXDatePicker data;
     @FXML
     JFXTimePicker ora;
     @FXML
     JFXTextField durata, posti;
+    @FXML
+    JFXCheckBox conclusa;
 
     @FXML
     JFXButton conferma;
 
     Aeroporto aeroportoGestito;
+    List<Aeroporto> aeroporti;
 
     @FXML
     public void compagniaAction(ActionEvent e){
@@ -60,12 +54,19 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     }
 
     @FXML
-    public void disableGate(ActionEvent e){
-        gate.setDisable(!conclusa.isSelected());
-        gateLbl.setDisable(gate.isDisable());
-        if (gate.isDisable()){
-            gate.getSelectionModel().clearSelection();
-
+    public void disableCode(ActionEvent e){
+        if (conclusa.isSelected()) {
+            diversamenteAbili.setSelected(false);
+            famiglie.setSelected(false);
+            business.setSelected(false);
+            priorty.setSelected(false);
+            economy.setSelected(false);
+        } else {
+            diversamenteAbili.setSelected(true);
+            famiglie.setSelected(true);
+            business.setSelected(true);
+            priorty.setSelected(true);
+            economy.setSelected(true);
         }
     }
 
@@ -77,8 +78,8 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                 ora.getValue(),
                 Integer.parseInt(durata.getText()),
                 0,
-                conclusa.isSelected(),
-                (conclusa.isSelected())? gate.getValue().getGateCode(): null,
+                false,
+                null,
                 compagnia.getValue(),
                 partenza.getValue(),
                 arrivo.getValue(),
@@ -103,19 +104,26 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     }
 
     public void controlloAeroporto(ActionEvent e){
-        if (e.getSource().equals(partenza)){
-            if (!partenza.getValue().equals(aeroportoGestito)){
-                arrivo.getSelectionModel().select(aeroportoGestito);
-                conclusa.setSelected(true);
-                conclusa.setDisable(true);
-                gateLbl.setDisable(true);
-                gate.setDisable(true);
+        /*if (e.getSource().equals(partenza)){
+            if (partenza.getValue() != null){
+                arrivo.getItems().addAll(aeroporti.stream().filter(a -> arrivo.getItems().contains(a)).collect(Collectors.toList()));
+                arrivo.getItems().remove(partenza.getValue());
             }
-        } else {
-            if (!arrivo.getValue().equals(aeroportoGestito)){
-                partenza.getSelectionModel().select(aeroportoGestito);
-                conclusa.setSelected(false);
-                conclusa.setDisable(false);
+        } else{
+            if (arrivo.getValue() != null){
+                partenza.getItems().addAll(aeroporti.stream().filter(a -> partenza.getItems().contains(a)).collect(Collectors.toList()));
+                partenza.getItems().remove(arrivo.getValue());
+            }
+        }*/
+        if (partenza.getValue() != null && arrivo.getValue() != null){
+            if (!partenza.getValue().equals(aeroportoGestito) && !arrivo.getValue().equals(aeroportoGestito)){
+                if (((Node) e.getSource()).getId().equals(partenza.getId())) arrivo.getSelectionModel().select(aeroportoGestito);
+                else partenza.getSelectionModel().select(aeroportoGestito);
+            }else if (partenza.getValue().equals(arrivo.getValue())){
+                if (((Node) e.getSource()).getId().equals(partenza.getId())) {
+                    arrivo.getSelectionModel().clearSelection();
+                }
+                else partenza.getSelectionModel().clearSelection();
             }
         }
     }
@@ -142,13 +150,12 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                         data.valueProperty(),
                         arrivo.valueProperty(),
                         durata.textProperty(),
-                        gate.valueProperty(),
-                        conclusa.selectedProperty(),
                         posti.textProperty(),
                         diversamenteAbili.selectedProperty(),
                         famiglie.selectedProperty(),
                         economy.selectedProperty(),
                         business.selectedProperty(),
+                        conclusa.selectedProperty(),
                         priorty.selectedProperty());
             }
             @Override
@@ -160,17 +167,24 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                         ora.getValue() == null ||
                         arrivo.getValue() == null ||
                         durata.getText().isEmpty() ||
-                        (conclusa.isSelected() && gate.getValue() == null) ||
                         posti.getText().isEmpty() ||
+                        (!conclusa.isSelected() &&
                         !(
-                                diversamenteAbili.isSelected() ||
+                                (diversamenteAbili.isSelected() ||
                                 famiglie.isSelected() ||
                                 priorty.isSelected() ||
                                 business.isSelected() ||
-                                economy.isSelected()
-                        );
+                                economy.isSelected())
+                        ));
             }
         });
+
+        diversamenteAbili.disableProperty().bind(conclusa.selectedProperty());
+        famiglie.disableProperty().bind(conclusa.selectedProperty());
+        business.disableProperty().bind(conclusa.selectedProperty());
+        priorty.disableProperty().bind(conclusa.selectedProperty());
+        economy.disableProperty().bind(conclusa.selectedProperty());
+
 
         durata.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -186,12 +200,12 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
         try {
             aeroportoGestito = new AeroportoDao().getAeroportoGestito();
             compagnia.getItems().addAll(new CompagniaDao().getCompagnie());
-            List<Aeroporto> a = new AeroportoDao().getAeroporti();
-            partenza.getItems().addAll(a);
-            arrivo.getItems().addAll(a);
-            gate.getItems().addAll(new GateDao().getGateCodes());
+            aeroporti = new AeroportoDao().getAeroporti();
+            partenza.getItems().addAll(aeroporti);
+            arrivo.getItems().addAll(aeroporti);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
     }
 }

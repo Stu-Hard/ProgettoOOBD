@@ -16,6 +16,10 @@ public class Aeroporto {
         return citta + "-" + nome;
     }
 
+    public boolean equals(Aeroporto o) {
+        return codiceICAO.equals(o.getCodiceICAO());
+    }
+
     public String getCodiceICAO() {
         return codiceICAO;
     }
