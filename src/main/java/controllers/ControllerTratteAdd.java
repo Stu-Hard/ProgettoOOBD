@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import utility.IdFactory;
 import utility.WindowDragger;
 
+import java.awt.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -44,6 +45,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
 
     @FXML
     JFXButton conferma;
+
 
     Aeroporto aeroportoGestito;
     List<Aeroporto> aeroporti;

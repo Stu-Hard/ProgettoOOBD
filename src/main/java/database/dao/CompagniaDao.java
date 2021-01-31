@@ -72,8 +72,8 @@ public class CompagniaDao {
             statement.setString(1, compagnia.getNome());
             statement.setString(2, compagnia.getSigla());
             statement.setString(3, compagnia.getNazione());
-            statement.setFloat(4, compagnia.getPesoMassimo());
-            statement.setFloat(5, compagnia.getPrezzoBagagli());
+            statement.setFloat(4, compagnia.getPrezzoBagagli());
+            statement.setFloat(5, compagnia.getPesoMassimo());
 
             statement.executeUpdate();
         } catch (SQLException e){

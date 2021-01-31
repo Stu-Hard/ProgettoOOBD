@@ -23,9 +23,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ControllerTabellone implements Initializable , Refreshable<Tratta> {
@@ -121,8 +118,8 @@ public class ControllerTabellone implements Initializable , Refreshable<Tratta> 
             partenza.setStyle("-fx-text-fill: white; -fx-font-size: 18");
             partenzaBox.getChildren().add(partenza);
 
+            Label stato = new Label();
             if (isPartenza) {
-                Label stato = new Label();
                 if (t.getGate() != null && !t.isConclusa()) {
                     stato.setText("Imbarco in " + t.getGate());
                     stato.setStyle("-fx-text-fill: YELLOW;");
@@ -133,11 +130,20 @@ public class ControllerTabellone implements Initializable , Refreshable<Tratta> 
                     stato.setText("In Attesa");
                     stato.setStyle("-fx-text-fill: white;");
                 }
-                stato.setPrefSize(210, 30);
-                stato.setAlignment(Pos.CENTER);
-                stato.setStyle(stato.getStyle() + "-fx-font-size: 18");
-                statoBox.getChildren().add(stato);
+
+            } else {
+                if (t.isConclusa()){
+                    stato.setText("Conclusa");
+                    stato.setStyle("-fx-text-fill: green;");
+                } else{
+                    stato.setText("In Attesa");
+                    stato.setStyle("-fx-text-fill: yellow;");
+                }
             }
+            stato.setPrefSize(210, 30);
+            stato.setAlignment(Pos.CENTER);
+            stato.setStyle(stato.getStyle() + "-fx-font-size: 18");
+            statoBox.getChildren().add(stato);
         });
     }
 
