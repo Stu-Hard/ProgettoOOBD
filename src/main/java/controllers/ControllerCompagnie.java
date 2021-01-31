@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utility.CardRippler;
+import utility.Refreshable;
 
 
 import java.awt.event.KeyEvent;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ControllerCompagnie implements Initializable {
+public class ControllerCompagnie implements Initializable, Refreshable<Compagnia> {
 
     @FXML
     private ScrollPane scroll;
@@ -63,8 +64,12 @@ public class ControllerCompagnie implements Initializable {
         }
     }
 
+    public boolean isRefreshing(){
+        return spinner.isVisible();
+    }
+
     public Task<List<Compagnia>> refresh() {
-        if (!spinner.isVisible()){
+        if (!isRefreshing()){
             flowPane.getChildren().clear();
             spinner.setVisible(true);
             Task<List<Compagnia>> task = new Task<>() {

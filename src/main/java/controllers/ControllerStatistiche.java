@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
+import utility.Refreshable;
 
 
 import java.awt.*;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class ControllerStatistiche implements Initializable {
+public class ControllerStatistiche implements Initializable, Refreshable<Void> {
 
     @FXML
     CategoryAxis x;
@@ -56,12 +57,13 @@ public class ControllerStatistiche implements Initializable {
     int minutiMeseEffettivo;
     int minutiMeseStimato;
 
-    public Task<List<?>> refresh() {
+    // ?????
+    public Task<List<Void>> refresh() {
         if (!spinner.isVisible()){
             spinner.setVisible(true);
-            Task<List<?>> task = new Task<>() {
+            Task<List<Void>> task = new Task<>() {
                 @Override
-                protected List<Tratta> call() {
+                protected List<Void> call() {
                   /*  try {
 
                     } catch (SQLException throwables) {
@@ -80,6 +82,13 @@ public class ControllerStatistiche implements Initializable {
             return task;
         } else return null;
     }
+
+    // ???????
+    @Override
+    public boolean isRefreshing() {
+        return false;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

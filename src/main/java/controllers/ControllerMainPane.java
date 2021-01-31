@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import utility.WindowDragger;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -37,6 +38,17 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     private ControllerCompagnie controllerCompagnie;
 
     private ControllerStatistiche controllerStatistiche;
+    private ControllerTabellone controllerTabellone;
+
+    public boolean canRefresh(){
+        return !(
+                    controllerTratte.isRefreshing() ||
+                    controllerGate.isRefreshing() ||
+                    controllerDipendenti.isRefreshing() ||
+                    controllerCompagnie.isRefreshing() ||
+                    controllerTabellone.isRefreshing()
+                );
+    }
 
 
     public void close(MouseEvent e){
@@ -45,13 +57,14 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     public void closeButton(ActionEvent e){ Platform.exit(); }
 
     public void setFrame(MouseEvent e){
-        for(Node i : lpBox.getChildren()){
-            i.setStyle(i.getStyle().replace("-fx-background-color: #18283f;",
-                    ""));
-        }
+        if (canRefresh()) {
+            for(Node i : lpBox.getChildren()){
+                i.setStyle(i.getStyle().replace("-fx-background-color: #18283f;",
+                        ""));
+            }
 
-        JFXButton b = (JFXButton) e.getSource();
-        b.setStyle(b.getStyle() + "-fx-background-color: #18283f;");
+            JFXButton b = (JFXButton) e.getSource();
+            b.setStyle(b.getStyle() + "-fx-background-color: #18283f;");
 
         if (tratteBtn.equals(b)) {
             trattePane.toFront();
@@ -76,6 +89,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             controllerStatistiche.refresh();
         } else if (tabelloneBtn.equals(b)) {
             tabellonePane.toFront();
+            controllerTabellone.refresh();
         }
 
     }
@@ -124,9 +138,12 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             );
             controllerStatistiche = statisticheLoader.getController();
 
+            FXMLLoader tabelloneLoader = new FXMLLoader(getClass().getResource("/fxml/Tabellone.fxml"));
             tabellonePane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/Tabellone.fxml"))
+                    tabelloneLoader.load()
             );
+            controllerTabellone = tabelloneLoader.getController();
+            controllerTabellone.refresh();
         } catch (Exception e) {
             e.printStackTrace();
         }

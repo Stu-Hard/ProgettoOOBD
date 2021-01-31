@@ -46,17 +46,27 @@ public class TrattaHbox extends HBox {
             ritardo = (Label) lookup("#ritardo");
             gate = (Label) lookup("#gate");
             compagnia = (Label) lookup("#compagnia");
-
-            partenza.setText(tratta.getAereoportoPartenza().getCitta());
-            arrivo.setText(tratta.getAereoportoArrivo().getCitta());
-            numeroVolo.setText(tratta.getNumeroVolo());
-            dataPartenza.setText(tratta.getDataPartenzaFormatted());
-            oraPartenza.setText(tratta.getOraPartenzaFormatted());
-            ritardo.setText(tratta.getRitardo() + "''");
-            gate.setText(tratta.getGate());
-            compagnia.setText(tratta.getCompagnia().getNome());
+            setLabels();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setLabels(){
+        partenza.setText(tratta.getAereoportoPartenza().getCitta());
+        arrivo.setText(tratta.getAereoportoArrivo().getCitta());
+        numeroVolo.setText(tratta.getNumeroVolo());
+        dataPartenza.setText(tratta.getDataPartenzaFormatted());
+        oraPartenza.setText(tratta.getOraPartenzaFormatted());
+        ritardo.setText(tratta.getRitardo() + "''");
+        gate.setText(tratta.getGate());
+        compagnia.setText(tratta.getCompagnia().getNome());
+
+        if(tratta.isConclusa()){
+            numeroVolo.setStyle("-fx-background-radius: 25px; -fx-background-color: lightgreen");
+        }
+        if (tratta.getRitardo() > 0){
+            ritardo.setStyle("-fx-background-radius: 25px; -fx-background-color: #DC143C");
         }
     }
 }

@@ -21,20 +21,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.util.Pair;
+import utility.Refreshable;
+
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ControllerGate implements Initializable {
+public class ControllerGate implements Initializable, Refreshable<Gate> {
 
     @FXML
     private ScrollPane scroll;
@@ -52,6 +51,7 @@ public class ControllerGate implements Initializable {
     @FXML
     private JFXSpinner spinner;
     private List<GateCard> localGate;
+
 
     // Filtri sullo stato: occupato ecc...
     public void statusFilter(ActionEvent e){
@@ -162,8 +162,12 @@ public class ControllerGate implements Initializable {
         gCard.updateLabels();
     }
 
+    public boolean isRefreshing(){
+        return spinner.isVisible();
+    }
+
     public Task<List<Gate>> refresh() {
-        if (!spinner.isVisible()){
+        if (!isRefreshing()){
             flowPane.getChildren().clear();
             spinner.setVisible(true);
             nessunGate.setVisible(false);
