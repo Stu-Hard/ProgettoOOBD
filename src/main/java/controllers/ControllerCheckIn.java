@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import data.*;
+import database.dao.BagaglioDao;
 import database.dao.BigliettoDao;
 import database.dao.TrattaDao;
 import javafx.beans.binding.BooleanBinding;
@@ -21,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import org.w3c.dom.Text;
+import utility.IdFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -184,6 +186,14 @@ public class ControllerCheckIn implements Initializable{
         alert.initModality(Modality.NONE);
         alert.showAndWait();
 
+        for(int i = 0; i < spinnerBagagli.getValue(); i++){
+            BagaglioDao bgDao = new BagaglioDao();
+            try {
+                bgDao.insert(new Bagaglio(new IdFactory().randomString(8), Float.parseFloat(tfList.get(i).getText()), new BigliettoDao().getCompagnia(biglietto).getPrezzoBagagli()*Float.parseFloat(tfList.get(i).getText()),biglietto));
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
 
         bigliettoTextField.setText("");
         erroreLabel.setVisible(false);
@@ -195,15 +205,16 @@ public class ControllerCheckIn implements Initializable{
         numeroBagagliButton.setVisible(false);
     }
 
+    List<TextField> tfList = new LinkedList();
+
     public void imbarcaBagagli(ActionEvent event) {
         Integer bagagli = spinnerBagagli.getValue();
         if(!(nBagagli.getChildren().isEmpty() && nPeso.getChildren().isEmpty())){
             nBagagli.getChildren().remove(0, nBagagli.getChildren().size());
             nPeso.getChildren().remove(0, nPeso.getChildren().size());
         }
-        List<TextField> tfList = new LinkedList();
+        tfList.clear();
         for(int i = 1; i <= bagagli; i++){
-
             nBagagli.getChildren().add(new Label(i + " bagaglio"));
             TextField tf = new TextField();
             tf.textProperty().addListener((observable, oldValue, newValue) -> {

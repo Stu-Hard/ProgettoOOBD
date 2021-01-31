@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import utility.WindowDragger;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -28,7 +27,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             dipendentiBtn, statisticheBtn, tabelloneBtn;
     @FXML
     private Pane trattePane, gatePane, checkInPane,
-            imbarcoPane, compagniePane,  aereiPane,
+            imbarcoPane, compagniePane, bagagliPane,
             dipendentiPane, statistichePane, tabellonePane;
 
     private ControllerTratte controllerTratte;
@@ -68,7 +67,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             compagniePane.toFront();
             controllerCompagnie.refresh();
         } else if (aereiBtn.equals(b)) {
-            aereiPane.toFront();
+            bagagliPane.toFront();
         } else if (dipendentiBtn.equals(b)) {
             dipendentiPane.toFront();
             controllerDipendenti.refresh();
@@ -115,7 +114,10 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             );
             controllerDipendenti = dipendentiLoader.getController();
 
-            //aereiPane = FXMLLoader.load(getClass().getResource("fxml/Aerei.fxml"));
+            FXMLLoader bagagliLoader = new FXMLLoader(getClass().getResource("/fxml/Bagagli.fxml"));
+            bagagliPane.getChildren().add(
+                    bagagliLoader.load()
+            );
             FXMLLoader statisticheLoader = new FXMLLoader(getClass().getResource("/fxml/Statistiche.fxml"));
             statistichePane.getChildren().add(
                     statisticheLoader.load()

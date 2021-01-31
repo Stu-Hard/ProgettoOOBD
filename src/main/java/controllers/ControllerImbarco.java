@@ -2,10 +2,8 @@ package controllers;
 
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
-import data.Aeroporto;
-import data.Biglietto;
-import data.Cliente;
-import data.Tratta;
+import data.*;
+import database.dao.BagaglioDao;
 import database.dao.BigliettoDao;
 import database.dao.TrattaDao;
 import javafx.beans.binding.BooleanBinding;
@@ -22,6 +20,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import utility.IdFactory;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -62,17 +62,21 @@ public class ControllerImbarco implements Initializable {
     String spinnerClass =  Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL;
 
     //funzione per creare un codice del bagaglio in base a quanti sono
-    int bagagli;
+
+    List<String> codiciBagagli = new ArrayList<>();
     public void createBagaglioCode(ActionEvent actionEvent) {
 
-        bagagli = spinnerBagagli.getValue();
-        if(!vboxLabel.getChildren().isEmpty()) {
-          vboxLabel.getChildren().remove(0, vboxLabel.getChildren().size());
+        vboxLabel.getChildren().clear();
+        codiciBagagli.clear();
+
+        for(int i = 0; i < spinnerBagagli.getValue(); i++){
+                String codiceBagaglio = new IdFactory().randomString(8);
+                codiciBagagli.add(codiceBagaglio);
         }
-        if(!(bagagli == 0)){
-            for (int i = 0; i < bagagli; i++) {
-                String randomString = generateRandomString(7, asciiChars);
-                Label c = new Label(randomString);
+
+        if(!(codiciBagagli.isEmpty())){
+            for (int i = 0; i < codiciBagagli.size(); i++) {
+                Label c = new Label(codiciBagagli.get(i));
                 vboxLabel.getChildren().add(c);
             }
         }else{
@@ -198,14 +202,7 @@ public class ControllerImbarco implements Initializable {
 
 
     public void inviaCodes() throws IOException {
-        List<Node> codiciBagagli = new ArrayList<>();
-        if(!vboxLabel.getChildren().isEmpty() && !(spinnerBagagli.getValue() == 0)){
-            for(int i = 0; i < vboxLabel.getChildren().size(); i++){
-                codiciBagagli.add(vboxLabel.getChildren().get(i));
-                System.out.println(codiciBagagli.get(i));
-                //todo qui dovrebbe mandarli al Database
-            }
-        }
+
 
         /*message dialog controller*/
 
@@ -235,7 +232,14 @@ public class ControllerImbarco implements Initializable {
         alert.showAndWait();
         //stage.setScene(scene);
         //stage.show();
-
+        BagaglioDao bgDao = new BagaglioDao();
+        for(int i = 0;  i < codiciBagagli.size(); i++) {
+            try {
+                bgDao.insert(new Bagaglio(codiciBagagli.get(i), 0, 0, biglietto));
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
         /*message dialog controller*/
 
         //rende invisibili ogni volta gli elementi della finestra

@@ -140,6 +140,27 @@ public class BigliettoDao {
         }
     }
 
+
+    public Compagnia getCompagnia(Biglietto biglietto) throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Compagnia compagnia = null;
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT  nome, sigla, nazione, pesomassimo, prezzobagagli FROM tratta  JOIN compagnia c on tratta.compagnia = c.nome WHERE tratta.numerovolo = ?");
+            statement.setString(1,biglietto.getNumeroVolo());
+            resultSet = statement.executeQuery();
+            if (resultSet.next())
+                compagnia = new Compagnia(resultSet.getString("nome"), resultSet.getString("sigla"),resultSet.getString("nazione"), resultSet.getFloat("pesomassimo"), resultSet.getFloat("prezzobagagli"));
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return compagnia;
+    }
+
     /*public Integer getCodiceByBiglietto(Biglietto biglietto) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
