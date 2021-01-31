@@ -41,7 +41,7 @@ public class ControllerCheckIn implements Initializable{
     HBox bagagliHbox, cartaImbarcoHbox;
     @FXML
     Label erroreLabel, nome, cognome, bagagliLabel, codiceBiglietto,
-            tratta, classe, posto, gate, cf, documentoNumero;
+            tratta, classe, posto, gate, cf, documentoNumero, numeroVolo;
     @FXML
     JFXTextField bigliettoTextField;
     @FXML
@@ -77,20 +77,27 @@ public class ControllerCheckIn implements Initializable{
                         documentoNumero.setText(biglietto.getCliente().getDocumento());
                         nome.setText(biglietto.getCliente().getNome().split("-")[0]);
                         cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
+                        numeroVolo.setText(biglietto.getNumeroVolo());
 
-                        if(!biglietto.isCheckIn()) {
-                            cartaImbarcoHbox.setVisible(true);
-                            spinnerBagagli.setVisible(true);
-                            bagagliLabel.setVisible(true);                                 // rendi visibile
-                            numeroBagagliButton.setVisible(true);
-                            erroreLabel.setVisible(false);
-                        }else{
-                            erroreLabel.setText("Errore -> gia' fatto checkIn");
+                        if(trattastring.isConclusa()){
+                            erroreLabel.setText("Errore -> tratta conclusa.");
                             erroreLabel.setVisible(true);
 
                             cartaImbarcoHbox.setVisible(true);
-                        }
+                        }else {
+                            if (!biglietto.isCheckIn()) {
+                                cartaImbarcoHbox.setVisible(true);
+                                spinnerBagagli.setVisible(true);
+                                bagagliLabel.setVisible(true);                                 // rendi visibile
+                                numeroBagagliButton.setVisible(true);
+                                erroreLabel.setVisible(false);
+                            } else {
+                                erroreLabel.setText("Errore -> gia' fatto checkIn");
+                                erroreLabel.setVisible(true);
 
+                                cartaImbarcoHbox.setVisible(true);
+                            }
+                        }
                 } else {
                     erroreLabel.setText("Errore -> biglietto non trovato");
                     erroreLabel.setVisible(true);           // dai errore
