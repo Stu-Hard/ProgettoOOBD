@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utility.Refreshable;
 
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ControllerTratte implements Initializable {
+public class ControllerTratte implements Initializable, Refreshable<Tratta> {
 
     @FXML
     private JFXComboBox<String> searchMode;
@@ -43,6 +44,10 @@ public class ControllerTratte implements Initializable {
     @FXML
     private JFXListView<TrattaHbox> listView;
     private List<TrattaHbox> localTratte;
+
+    public boolean isRefreshing(){
+        return spinner.isVisible();
+    }
 
     public void search(KeyEvent k){
         String searchMode = this.searchMode.getValue();
@@ -123,7 +128,7 @@ public class ControllerTratte implements Initializable {
     }
 
     public Task<List<Tratta>> refresh() {
-        if (!spinner.isVisible()){
+        if (!isRefreshing()){
             listView.getItems().clear();
             spinner.setVisible(true);
             Task<List<Tratta>> task = new Task<>() {

@@ -22,6 +22,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utility.Refreshable;
 
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ControllerDipendenti implements Initializable {
+public class ControllerDipendenti implements Initializable, Refreshable<Dipendente> {
 
     @FXML
     private TextField searchBar;
@@ -137,8 +138,8 @@ public class ControllerDipendenti implements Initializable {
     }
 
 
-    public void refresh() {
-        if (!spinner.isVisible()){
+    public Task<List<Dipendente>> refresh() {
+        if (!isRefreshing()){
             flowPane.getChildren().clear();
             spinner.setVisible(true);
             Task<List<Dipendente>> task = new Task<>() {
@@ -156,14 +157,18 @@ public class ControllerDipendenti implements Initializable {
                 DipendentiList.clear();
                 task.getValue().stream().distinct().forEach(d -> DipendentiList.add(new DipendentiCard(d)));
                 search(null);
-                //con questo non funziona, chissa (?)
-                //flowPane.getChildren().addAll(task.getValue().stream().map(DipendentiCard::new).toArray(DipendentiCard[]::new));
                 spinner.setVisible(false);
             });
 
             Thread th = new Thread(task);
             th.setDaemon(true);
             th.start();
-        }
+            return task;
+        } else return null;
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return spinner.isVisible();
     }
 }

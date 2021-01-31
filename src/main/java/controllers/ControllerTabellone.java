@@ -1,11 +1,12 @@
 package controllers;
 
-import com.jfoenix.controls.JFXDatePicker;
+import customComponents.TrattaHbox;
 import data.Aeroporto;
 import data.Tratta;
 import database.dao.AeroportoDao;
 import database.dao.TrattaDao;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import utility.Refreshable;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -21,9 +23,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ControllerTabellone implements Initializable {
+public class ControllerTabellone implements Initializable , Refreshable<Tratta> {
 
     @FXML
     private VBox voloBox;
@@ -40,10 +45,15 @@ public class ControllerTabellone implements Initializable {
     private Label destinazioneLbl;
     private List<Tratta> localTratte;
     private Aeroporto aeroportoGestito;
+    private boolean refreshing = false;
+    private Runnable selectedFunction;
 
     @FXML
     public void partenze(ActionEvent e){
+        selectedFunction = this::partenze;
         refresh();
+    }
+    public void partenze(){
         destinazioneLbl.setText("Destinazione");
         setLabels(localTratte.stream().filter(t -> t.getAereoportoPartenza().equals(aeroportoGestito)), true);
         partenzeBtn.setStyle(
@@ -62,8 +72,11 @@ public class ControllerTabellone implements Initializable {
 
     @FXML
     public void arrivi(ActionEvent e){
-        destinazioneLbl.setText("Provenienza");
+        selectedFunction = this::arrivi;
         refresh();
+    }
+    public void arrivi(){
+        destinazioneLbl.setText("Provenienza");
         setLabels(localTratte.stream().filter(t -> !t.getAereoportoPartenza().equals(aeroportoGestito)), false);
 
         arriviBtn.setStyle(
@@ -128,13 +141,35 @@ public class ControllerTabellone implements Initializable {
         });
     }
 
-    void refresh(){
-        try {
-            localTratte = new TrattaDao().getTratteWithDate(LocalDate.now(ZoneId.systemDefault()), LocalDate.now(ZoneId.systemDefault()));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    public Task<List<Tratta>> refresh(){
+        if (!isRefreshing()){
+            refreshing = true;
+            Task<List<Tratta>> task = new Task<>() {
+                @Override
+                protected List<Tratta> call() {
+                    try {
+                        return new TrattaDao().getTratteWithDate(LocalDate.now(ZoneId.systemDefault()), LocalDate.now(ZoneId.systemDefault()));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            task.setOnSucceeded(e -> {
+                localTratte = task.getValue();
+                selectedFunction.run();
+                refreshing = false;
+            });
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            th.start();
+            return task;
+        } else return null;
+    }
 
+    @Override
+    public boolean isRefreshing() {
+        return refreshing;
     }
 
     @Override
@@ -144,7 +179,7 @@ public class ControllerTabellone implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        partenze(null);
+        selectedFunction = this::partenze;
     }
 
 }

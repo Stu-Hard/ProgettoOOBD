@@ -33,11 +33,20 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
 
     private ControllerTratte controllerTratte;
     private ControllerGate controllerGate;
-
     private ControllerDipendenti controllerDipendenti;
     private ControllerCompagnie controllerCompagnie;
-
     private ControllerStatistiche controllerStatistiche;
+    private ControllerTabellone controllerTabellone;
+
+    public boolean canRefresh(){
+        return !(
+                    controllerTratte.isRefreshing() ||
+                    controllerGate.isRefreshing() ||
+                    controllerDipendenti.isRefreshing() ||
+                    controllerCompagnie.isRefreshing() ||
+                    controllerTabellone.isRefreshing()
+                );
+    }
 
 
     public void close(MouseEvent e){
@@ -46,37 +55,40 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     public void closeButton(ActionEvent e){ Platform.exit(); }
 
     public void setFrame(MouseEvent e){
-        for(Node i : lpBox.getChildren()){
-            i.setStyle(i.getStyle().replace("-fx-background-color: #18283f;",
-                    ""));
-        }
+        if (canRefresh()) {
+            for(Node i : lpBox.getChildren()){
+                i.setStyle(i.getStyle().replace("-fx-background-color: #18283f;",
+                        ""));
+            }
 
-        JFXButton b = (JFXButton) e.getSource();
-        b.setStyle(b.getStyle() + "-fx-background-color: #18283f;");
+            JFXButton b = (JFXButton) e.getSource();
+            b.setStyle(b.getStyle() + "-fx-background-color: #18283f;");
 
-        if (tratteBtn.equals(b)) {
-            trattePane.toFront();
-            controllerTratte.refresh();
-        } else if (gateBtn.equals(b)) {
-            gatePane.toFront();
-            controllerGate.refresh();
-        } else if (checkInBtn.equals(b)) {
-            checkInPane.toFront();
-        } else if (imbarcoBtn.equals(b)) {
-            imbarcoPane.toFront();
-        } else if (compagnieBtn.equals(b)) {
-            compagniePane.toFront();
-            controllerCompagnie.refresh();
-        } else if (aereiBtn.equals(b)) {
-            aereiPane.toFront();
-        } else if (dipendentiBtn.equals(b)) {
-            dipendentiPane.toFront();
-            controllerDipendenti.refresh();
-        } else if (statisticheBtn.equals(b)) {
-            statistichePane.toFront();
-            controllerStatistiche.refresh();
-        } else if (tabelloneBtn.equals(b)) {
-            tabellonePane.toFront();
+            if (tratteBtn.equals(b)) {
+                trattePane.toFront();
+                controllerTratte.refresh();
+            } else if (gateBtn.equals(b)) {
+                gatePane.toFront();
+                controllerGate.refresh();
+            } else if (checkInBtn.equals(b)) {
+                checkInPane.toFront();
+            } else if (imbarcoBtn.equals(b)) {
+                imbarcoPane.toFront();
+            } else if (compagnieBtn.equals(b)) {
+                compagniePane.toFront();
+                controllerCompagnie.refresh();
+            } else if (aereiBtn.equals(b)) {
+                aereiPane.toFront();
+            } else if (dipendentiBtn.equals(b)) {
+                dipendentiPane.toFront();
+                controllerDipendenti.refresh();
+            } else if (statisticheBtn.equals(b)) {
+                statistichePane.toFront();
+                controllerStatistiche.refresh();
+            } else if (tabelloneBtn.equals(b)) {
+                tabellonePane.toFront();
+                controllerTabellone.refresh();
+            }
         }
 
     }
@@ -122,9 +134,12 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             );
             controllerStatistiche = statisticheLoader.getController();
 
+            FXMLLoader tabelloneLoader = new FXMLLoader(getClass().getResource("/fxml/Tabellone.fxml"));
             tabellonePane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/Tabellone.fxml"))
+                    tabelloneLoader.load()
             );
+            controllerTabellone = tabelloneLoader.getController();
+            controllerTabellone.refresh();
         } catch (Exception e) {
             e.printStackTrace();
         }
