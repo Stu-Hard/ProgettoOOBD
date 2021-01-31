@@ -16,7 +16,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </FontAwesomeIcon>
-                <FontAwesomeIcon fill="#1dc351" iconName="CIRCLE" onMouseClicked="#max">
+                <FontAwesomeIcon disable="true" fill="#1dc351" iconName="CIRCLE" opacity="0.51">
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>

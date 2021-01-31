@@ -37,6 +37,9 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     private ControllerDipendenti controllerDipendenti;
     private ControllerCompagnie controllerCompagnie;
 
+    private ControllerStatistiche controllerStatistiche;
+
+
     public void close(MouseEvent e){
         Platform.exit();
     }
@@ -71,6 +74,7 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             controllerDipendenti.refresh();
         } else if (statisticheBtn.equals(b)) {
             statistichePane.toFront();
+            controllerStatistiche.refresh();
         } else if (tabelloneBtn.equals(b)) {
             tabellonePane.toFront();
         }
@@ -112,7 +116,12 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             controllerDipendenti = dipendentiLoader.getController();
 
             //aereiPane = FXMLLoader.load(getClass().getResource("fxml/Aerei.fxml"));
-            //statistichePane = FXMLLoader.load(getClass().getResource("fxml/Tratta.fxml"));
+            FXMLLoader statisticheLoader = new FXMLLoader(getClass().getResource("/fxml/Statistiche.fxml"));
+            statistichePane.getChildren().add(
+                    statisticheLoader.load()
+            );
+            controllerStatistiche = statisticheLoader.getController();
+
             tabellonePane.getChildren().add(
                     FXMLLoader.load(getClass().getResource("/fxml/Tabellone.fxml"))
             );

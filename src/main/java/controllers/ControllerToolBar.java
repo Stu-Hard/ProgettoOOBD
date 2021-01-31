@@ -43,17 +43,6 @@ public class ControllerToolBar extends WindowDragger implements Initializable {
         stage.setIconified(true);
     }
 
-    public void max(MouseEvent mouseEvent) {
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        stage.setFullScreenExitHint("");
-        if(stage.isFullScreen()){
-            stage.setFullScreen(false);
-        }else{
-            stage.setFullScreen(true);
-        }
-
-    }
-
     public void close(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         stage.close();

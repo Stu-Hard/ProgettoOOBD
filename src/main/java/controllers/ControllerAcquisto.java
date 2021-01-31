@@ -27,7 +27,6 @@ import utility.WindowDragger;
 
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -57,6 +56,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         }
         if(!classe.getItems().isEmpty())
             classe.getSelectionModel().selectFirst();
+        computePrezzo(null);
     }
 
     public Tratta getTratta(){
@@ -72,10 +72,13 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
 
         riconoscimento.validate();
+
+
+        riconoscimento.validate();
         nome.validate();
         cognome.validate();
         cf.validate();
-        if (cf.validate() && riconoscimento.validate() && nome.validate() && cognome.validate() && classe.getValue() != null) {
+        if (cf.validate() && riconoscimento.validate()  && nome.validate() && cognome.validate() && classe.getValue() != null) {
             Cliente cliente = new Cliente(getCf(), getNome() + "-" + getCognome(), getRiconoscimento());
 
             Biglietto biglietto = new Biglietto(prezzo, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente);
@@ -142,7 +145,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         this.riconoscimento.setText(riconoscimento);
     }
 
-
     public String getCf() {
         return cf.getText();
     }
@@ -150,6 +152,9 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
     public void setCf(String cf) {
         this.cf.setText(cf);
     }
+
+
+
 
     public JFXComboBox getClasse() {
         return classe;
@@ -193,6 +198,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         documento.getSelectionModel().selectFirst();
 
         computePrezzo(null);
+
     }
 
     public void computePrezzo(ActionEvent event) {
