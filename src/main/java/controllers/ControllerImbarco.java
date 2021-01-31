@@ -48,7 +48,7 @@ public class ControllerImbarco implements Initializable {
     JFXTextField codiceTextField;
     @FXML
     Label nome, cognome, imbarcoCheckLabel, codiceBiglietto, tratta,
-            classe, posto, gate, cf, documentoNumero;
+            classe, posto, gate, cf, documentoNumero, numeroVolo;
 
 
     /*
@@ -130,11 +130,17 @@ public class ControllerImbarco implements Initializable {
             documentoNumero.setText(biglietto.getCliente().getDocumento());
             nome.setText(biglietto.getCliente().getNome().split("-")[0]);
             cognome.setText(biglietto.getCliente().getNome().split("-")[1]);
+            numeroVolo.setText(biglietto.getNumeroVolo());
 
-            hboxCartaImbarco.setVisible(true);
             erroreLabel.setVisible(false);
 
-                if (biglietto.isCheckIn() == true && trattastring.getGate() != null && !biglietto.isImbarcato()) {
+            if(trattastring.isConclusa()){
+                erroreLabel.setText("Errore -> tratta conclusa.");
+                erroreLabel.setVisible(true);
+
+                hboxCartaImbarco.setVisible(true);
+            }else {
+                    if (biglietto.isCheckIn() == true && trattastring.getGate() != null && !biglietto.isImbarcato()) {
 
                         hboxCodiciBagagli.setVisible(true);         //mostra risultato
                         labelBagagli.setVisible(true);
@@ -142,7 +148,7 @@ public class ControllerImbarco implements Initializable {
                         spinnerBagagli.setVisible(true);
                         hboxCartaImbarco.setVisible(true);
 
-                    } else if(biglietto.isCheckIn() == false){
+                    } else if (biglietto.isCheckIn() == false) {
                         erroreLabel.setText("Non e' ancora stato fatto il CheckIn !");
                         erroreLabel.setVisible(true);
 
@@ -154,28 +160,28 @@ public class ControllerImbarco implements Initializable {
 
                         hboxCartaImbarco.setVisible(true);
 
-                    }else if(biglietto.isImbarcato()) {
+                    } else if (biglietto.isImbarcato()) {
                         erroreLabel.setVisible(true);
                         erroreLabel.setText("Biglietto gia' imbarcato!");
 
-                    hboxCodiciBagagli.setVisible(false);
-                    labelBagagli.setVisible(false);
-                    bagagliButton.setVisible(false);
-                    spinnerBagagli.setVisible(false);
+                        hboxCodiciBagagli.setVisible(false);
+                        labelBagagli.setVisible(false);
+                        bagagliButton.setVisible(false);
+                        spinnerBagagli.setVisible(false);
 
-                    hboxCartaImbarco.setVisible(true);
-                    }else{
-                erroreLabel.setText("Gate non ancora assegnato");
-                erroreLabel.setVisible(true);
+                        hboxCartaImbarco.setVisible(true);
+                    } else {
+                        erroreLabel.setText("Gate non ancora assegnato");
+                        erroreLabel.setVisible(true);
 
-                hboxCodiciBagagli.setVisible(false);
-                labelBagagli.setVisible(false);
-                bagagliButton.setVisible(false);
-                spinnerBagagli.setVisible(false);
+                        hboxCodiciBagagli.setVisible(false);
+                        labelBagagli.setVisible(false);
+                        bagagliButton.setVisible(false);
+                        spinnerBagagli.setVisible(false);
 
-                hboxCartaImbarco.setVisible(true);
-            }
-
+                        hboxCartaImbarco.setVisible(true);
+                    }
+                }
             }else{
                 erroreLabel.setText("Biglietto non trovato");
                 erroreLabel.setVisible(true);
