@@ -111,9 +111,9 @@ public class ControllerGate implements Initializable {
             CodaImbarcoDao codaImbarcoDao = new CodaImbarcoDao();
             gCard.getGate().setTratta(tratta, codaImbarcoDao.getByTratta(tratta));
             new TrattaDao().update(tratta);
-            //for(CodaImbarco c : gCard.getGate().getCodeImbarco()){
-            //    codaImbarcoDao.apriCoda(c);
-            //}
+            for(CodaImbarco c : gCard.getGate().getCodeImbarco()){
+                codaImbarcoDao.apriCoda(c);
+            }
             new GateDao().update(gCard.getGate());
             gCard.updateLabels();
             popup.setOccupato();
