@@ -148,10 +148,9 @@ public class CodaImbarcoDao {
     public void apriCoda(CodaImbarco coda) throws SQLException {
         PreparedStatement statement = null;
         try {
-            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET codicegate = ?, oraapertura = ? WHERE codicecoda = ?");
+            statement = PGConnection.getConnection().prepareStatement("UPDATE codaimbarco SET codicegate = ? WHERE codicecoda = ?");
             statement.setString(1, coda.getCodiceGate());
-            statement.setTimestamp(2, Timestamp.valueOf(coda.getOraApertura()));
-            statement.setInt(3, coda.getCodiceCoda());
+            statement.setInt(2, coda.getCodiceCoda());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
