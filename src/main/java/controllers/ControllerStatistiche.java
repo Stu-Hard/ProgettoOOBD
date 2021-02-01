@@ -82,7 +82,6 @@ public class ControllerStatistiche implements Initializable, Refreshable<Void> {
             return task;
         } else return null;
     }
-
     // ???????
     @Override
     public boolean isRefreshing() {

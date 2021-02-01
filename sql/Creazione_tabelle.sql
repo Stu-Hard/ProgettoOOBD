@@ -138,6 +138,13 @@ CREATE TABLE Biglietto(
     CONSTRAINT fk_CodiceCoda FOREIGN KEY(CodiceCoda) REFERENCES CodaImbarco(CodiceCoda),
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
+CREATE TABLE Bagaglio(
+    CodiceBagaglio VARCHAR(8) PRIMARY KEY,
+    Peso REAL,
+    Prezzo REAL,
+    CodiceBiglietto INT NOT NULL,
+    CONSTRAINT fk_Biglietto FOREIGN KEY(CodiceBiglietto) REFERENCES Biglietto(CodiceBiglietto)
+);
 
 CREATE OR REPLACE FUNCTION aggiornaStima() RETURNS TRIGGER AS $$
 DECLARE

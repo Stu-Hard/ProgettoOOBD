@@ -42,7 +42,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
             dipendentiBtn, statisticheBtn, tabelloneBtn;
     @FXML
     private Pane trattePane, gatePane, checkInPane,
-            imbarcoPane, compagniePane,  aereiPane,
+            imbarcoPane, compagniePane, bagagliPane,
             dipendentiPane, statistichePane, tabellonePane;
 
     private Dipendente loggedUser;
@@ -97,6 +97,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
             exception.printStackTrace();
         }
     }
+    public void closeButton(ActionEvent e){ Platform.exit(); }
 
     public void setFrame(MouseEvent e){
         if (canRefresh()) {
@@ -122,7 +123,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
                 compagniePane.toFront();
                 controllerCompagnie.refresh();
             } else if (aereiBtn.equals(b)) {
-                aereiPane.toFront();
+                bagagliPane.toFront();
             } else if (dipendentiBtn.equals(b)) {
                 dipendentiPane.toFront();
                 controllerDipendenti.refresh();
@@ -190,6 +191,11 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
                 dipendentiBtn.setDisable(true);
             }
 
+            FXMLLoader bagagliLoader = new FXMLLoader(getClass().getResource("/fxml/Bagagli.fxml"));
+            bagagliPane.getChildren().add(
+                    bagagliLoader.load()
+            );
+
             FXMLLoader statisticheLoader = new FXMLLoader(getClass().getResource("/fxml/Statistiche.fxml"));
             statistichePane.getChildren().add(
                     statisticheLoader.load()
@@ -206,6 +212,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     @Override

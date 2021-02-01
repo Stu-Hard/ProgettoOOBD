@@ -16,7 +16,7 @@
    <children>
       <Pane prefHeight="700.0" prefWidth="230.0" style="-fx-background-color: linear-gradient(#162643,#2d5a89);" stylesheets="@../css/classes.css">
          <children>
-            <Hyperlink layoutX="14.0" layoutY="663.0" onAction="#logout" text="LogOut" textFill="RED" />
+            <Hyperlink layoutX="14.0" layoutY="663.0" onAction="#closeButton" text="LogOut" textFill="RED" />
             <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="11.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/nome+logo_W.png" />
@@ -24,7 +24,7 @@
             </ImageView>
             <VBox fx:id="lpBox" layoutY="109.0" prefHeight="483.0" prefWidth="230.0">
                <children>
-                  <JFXButton fx:id="tratteBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Tratte" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="tratteBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Tratte" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -39,7 +39,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="gateBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Gate" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="gateBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Gate" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -54,7 +54,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="checkInBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="CheckIn" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="checkInBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="CheckIn" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -69,7 +69,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="imbarcoBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Imbarco" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="imbarcoBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Imbarco" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -84,7 +84,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="compagnieBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Compagnie" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="compagnieBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Compagnie" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -99,12 +99,12 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="aereiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Aerei" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="aereiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Bagagli" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIcon fill="WHITE" iconName="PLANE">
+                        <FontAwesomeIcon fill="WHITE" iconName="BRIEFCASE">
                            <font>
                               <Font name="Calibri" size="21.0" />
                            </font>
@@ -114,7 +114,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="dipendentiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Dipendenti" textFill="WHITE">
+                  <JFXButton fx:id="dipendentiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Dipendenti" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -129,7 +129,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="statisticheBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Statistiche" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="statisticheBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Statistiche" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -144,7 +144,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="tabelloneBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" stylesheets="@../css/stile.css" text="Tabellone" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="tabelloneBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Tabellone" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>

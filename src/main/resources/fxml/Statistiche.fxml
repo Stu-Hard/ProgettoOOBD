@@ -16,7 +16,7 @@
 <AnchorPane prefHeight="700.0" prefWidth="870.0" style=" -fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerStatistiche">
    <children>
       <JFXSpinner fx:id="spinner" layoutX="421.0" layoutY="308.0" visible="false" />
-      <ScrollPane focusTraversable="false" hbarPolicy="NEVER" layoutY="59.0" prefHeight="642.0" prefWidth="870.0" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" vbarPolicy="ALWAYS">
+      <ScrollPane focusTraversable="false" hbarPolicy="NEVER" layoutY="59.0" prefHeight="642.0" prefWidth="870.0" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" vbarPolicy="ALWAYS" vvalue="1.0">
         <content>
           <AnchorPane cacheShape="false" centerShape="false" minHeight="0.0" minWidth="0.0" prefHeight="805.0" prefWidth="873.0" scaleShape="false">
                <children>
@@ -36,7 +36,7 @@
                         <NumberAxis fx:id="y1" label="Ore Utilizzo" side="LEFT" />
                      </yAxis>
                   </BarChart>
-                  <BarChart fx:id="barChart3" layoutX="46.0" layoutY="481.0" prefHeight="257.0" prefWidth="381.0">
+                  <BarChart fx:id="barChart3" layoutX="42.0" layoutY="409.0" prefHeight="257.0" prefWidth="381.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -44,8 +44,8 @@
                       <NumberAxis label="Ore Utilizzo" side="LEFT" />
                     </yAxis>
                   </BarChart>
-                  <JFXDatePicker fx:id="dpkGiorno" editable="false" layoutX="154.0" layoutY="428.0" onAction="#datePickGiorno" prefHeight="28.0" prefWidth="112.0" />
-                  <Label layoutX="78.0" layoutY="428.0" prefHeight="32.0" prefWidth="76.0" text="Giorno:">
+                  <JFXDatePicker fx:id="dpkGiorno" editable="false" layoutX="294.0" layoutY="666.0" onAction="#datePickGiorno" prefHeight="28.0" prefWidth="112.0" />
+                  <Label layoutX="218.0" layoutY="666.0" prefHeight="32.0" prefWidth="76.0" text="Giorno:">
                      <font>
                         <Font size="22.0" />
                      </font>
@@ -56,9 +56,8 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="gateComboBox" layoutX="658.0" layoutY="448.0" onAction="#setGate" prefHeight="25.0" prefWidth="75.0" />
-                  <JFXComboBox fx:id="meseComboBox" layoutX="65.0" layoutY="325.0" onAction="#datePickMese" prefHeight="25.0" prefWidth="102.0" />
-                  <JFXComboBox fx:id="annoComboBox" layoutX="301.0" layoutY="325.0" onAction="#datePickMese" prefHeight="25.0" prefWidth="100.0" />
+                  <JFXComboBox fx:id="meseComboBox" layoutX="201.0" layoutY="325.0" onAction="#datePickMese" prefHeight="25.0" prefWidth="102.0" />
+                  <JFXComboBox fx:id="annoComboBox" layoutX="312.0" layoutY="325.0" onAction="#datePickMese" prefHeight="25.0" prefWidth="100.0" />
                </children>
             </AnchorPane>
         </content>
@@ -73,6 +72,7 @@
                   <FontAwesomeIcon iconName="BAR_CHART_O" />
                </graphic>
             </Label>
+            <JFXComboBox fx:id="gateComboBox" layoutX="769.0" layoutY="18.0" onAction="#setGate" prefHeight="25.0" prefWidth="75.0" />
          </children>
       </Pane>
    </children>

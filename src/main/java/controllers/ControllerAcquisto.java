@@ -69,11 +69,6 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
     @FXML
     public void buy(ActionEvent e) {
-        riconoscimento.validate();
-        riconoscimento.validate();
-        nome.validate();
-        cognome.validate();
-        cf.validate();
         if (cf.validate() && riconoscimento.validate()  && nome.validate() && cognome.validate() && classe.getValue() != null) {
             Cliente cliente = new Cliente(getCf(), getNome() + "-" + getCognome(), getRiconoscimento());
 
