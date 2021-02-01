@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="pannello" onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerMainPane">
    <children>
@@ -20,7 +23,7 @@
             </ImageView>
             <VBox fx:id="lpBox" layoutY="109.0" prefHeight="483.0" prefWidth="230.0">
                <children>
-                  <JFXButton fx:id="tratteBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels"  text="Tratte" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="tratteBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Tratte" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -35,7 +38,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="gateBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels"  text="Gate" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="gateBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Gate" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -50,7 +53,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="checkInBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels"  text="CheckIn" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="checkInBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="CheckIn" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
@@ -95,12 +98,12 @@
                         <Insets left="5.0" />
                      </padding>
                   </JFXButton>
-                  <JFXButton fx:id="aereiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Aerei" textAlignment="CENTER" textFill="WHITE">
+                  <JFXButton fx:id="aereiBtn" alignment="BASELINE_LEFT" onMouseClicked="#setFrame" prefHeight="50.0" prefWidth="230.0" ripplerFill="BLACK" styleClass="sLabels" text="Bagagli" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="21.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIcon fill="WHITE" iconName="PLANE">
+                        <FontAwesomeIcon fill="WHITE" iconName="BRIEFCASE">
                            <font>
                               <Font name="Calibri" size="21.0" />
                            </font>

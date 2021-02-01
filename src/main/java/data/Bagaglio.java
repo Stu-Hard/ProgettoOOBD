@@ -15,12 +15,9 @@ public class Bagaglio {
 
     @Override
     public String toString() {
-        return "Bagaglio{" +
-                "codiceBagaglio='" + codiceBagaglio + '\'' +
-                ", peso=" + peso +
-                ", prezzo=" + prezzo +
-                ", biglietto=" + biglietto +
-                '}';
+
+        return "Bagaglio n. " + codiceBagaglio + ", peso = " +peso+ ", prezzo = "+ prezzo +".";
+
     }
 
     public String getCodiceBagaglio() {

@@ -183,7 +183,6 @@ public class CodaImbarcoDao {
 
         try {
             statement = PGConnection.getConnection().prepareStatement("SELECT * FROM codaimbarco WHERE numerovolo = ? AND classe = '" + biglietto.getClasse() + "'");
-            System.out.println(biglietto.getClasse());
             statement.setString(1, biglietto.getNumeroVolo());
             resultSet = statement.executeQuery();
             if (resultSet.next()) {

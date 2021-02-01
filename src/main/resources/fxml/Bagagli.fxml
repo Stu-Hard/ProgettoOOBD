@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerBagagli">
    <children>
-      <TextField fx:id="searchBar" layoutX="73.0" layoutY="47.0" prefHeight="41.0" prefWidth="282.0" promptText="🔍Search..." style="-fx-background-color: #dcdcdc; -fx-background-radius: 25px;">
+      <TextField fx:id="searchBar" layoutX="73.0" layoutY="47.0" prefHeight="41.0" prefWidth="282.0" promptText="🔍Codice Biglietto..." style="-fx-background-color: #dcdcdc; -fx-background-radius: 25px;">
          <font>
             <Font size="18.0" />
          </font>
@@ -70,9 +70,9 @@
       </HBox>
       <AnchorPane layoutY="185.0" prefHeight="515.0" prefWidth="870.0" style="-fx-background-color: white;">
          <children>
-            <HBox fx:id="hboxDati" prefHeight="74.0" prefWidth="870.0" visible="false">
+            <HBox fx:id="hboxDati" prefHeight="74.0" prefWidth="870.0" style="-fx-border-color: blue;">
                <children>
-                  <Label fx:id="nBiglietto" prefHeight="71.0" prefWidth="172.0" text="N. Biglietto" textFill="#a41212">
+                  <Label fx:id="nBiglietto" alignment="CENTER" contentDisplay="RIGHT" prefHeight="71.0" prefWidth="172.0" text="N. Biglietto" textFill="#a41212">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -80,7 +80,7 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="nVolo" prefHeight="71.0" prefWidth="185.0" text="Numero Volo">
+                  <Label fx:id="nVolo" alignment="CENTER" prefHeight="71.0" prefWidth="185.0" text="Numero Volo">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -88,7 +88,15 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="nome" prefHeight="71.0" prefWidth="186.0" text="Nome Cliente">
+                  <Label fx:id="nome" alignment="CENTER" prefHeight="71.0" prefWidth="246.0" text="Nome Cliente">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="documento" alignment="CENTER" prefHeight="71.0" prefWidth="163.0" text="Documento">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -96,17 +104,9 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="documento" prefHeight="71.0" prefWidth="163.0" text="Documento">
+                  <Label fx:id="codiceFiscale" alignment="CENTER" prefHeight="72.0" prefWidth="226.0" text="Codice Fiscale">
                      <font>
-                        <Font size="21.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </Label>
-                  <Label prefHeight="74.0" prefWidth="212.0" text="Codice Fiscale">
-                     <font>
-                        <Font size="21.0" />
+                        <Font size="17.0" />
                      </font>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -114,7 +114,7 @@
                   </Label>
                </children>
             </HBox>
-            <Label fx:id="nessunBiglietto" disable="true" layoutX="197.0" layoutY="157.0" prefHeight="85.0" prefWidth="446.0" text="Nessun biglietto trovato corrispondente" textAlignment="CENTER" visible="false" wrapText="true">
+            <Label fx:id="nessunBiglietto" alignment="CENTER" disable="true" layoutX="219.0" layoutY="158.0" prefHeight="85.0" prefWidth="446.0" text="Nessun biglietto trovato corrispondente" textAlignment="CENTER" visible="false" wrapText="true">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>

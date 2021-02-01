@@ -56,9 +56,9 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     }
     public void closeButton(ActionEvent e){ Platform.exit(); }
 
-    public void setFrame(MouseEvent e){
+    public void setFrame(MouseEvent e) {
         if (canRefresh()) {
-            for(Node i : lpBox.getChildren()){
+            for (Node i : lpBox.getChildren()) {
                 i.setStyle(i.getStyle().replace("-fx-background-color: #18283f;",
                         ""));
             }
@@ -66,32 +66,33 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             JFXButton b = (JFXButton) e.getSource();
             b.setStyle(b.getStyle() + "-fx-background-color: #18283f;");
 
-        if (tratteBtn.equals(b)) {
-            trattePane.toFront();
-            controllerTratte.refresh();
-        } else if (gateBtn.equals(b)) {
-            gatePane.toFront();
-            controllerGate.refresh();
-        } else if (checkInBtn.equals(b)) {
-            checkInPane.toFront();
-        } else if (imbarcoBtn.equals(b)) {
-            imbarcoPane.toFront();
-        } else if (compagnieBtn.equals(b)) {
-            compagniePane.toFront();
-            controllerCompagnie.refresh();
-        } else if (aereiBtn.equals(b)) {
-            bagagliPane.toFront();
-        } else if (dipendentiBtn.equals(b)) {
-            dipendentiPane.toFront();
-            controllerDipendenti.refresh();
-        } else if (statisticheBtn.equals(b)) {
-            statistichePane.toFront();
-            controllerStatistiche.refresh();
-        } else if (tabelloneBtn.equals(b)) {
-            tabellonePane.toFront();
-            controllerTabellone.refresh();
-        }
+            if (tratteBtn.equals(b)) {
+                trattePane.toFront();
+                controllerTratte.refresh();
+            } else if (gateBtn.equals(b)) {
+                gatePane.toFront();
+                controllerGate.refresh();
+            } else if (checkInBtn.equals(b)) {
+                checkInPane.toFront();
+            } else if (imbarcoBtn.equals(b)) {
+                imbarcoPane.toFront();
+            } else if (compagnieBtn.equals(b)) {
+                compagniePane.toFront();
+                controllerCompagnie.refresh();
+            } else if (aereiBtn.equals(b)) {
+                bagagliPane.toFront();
+            } else if (dipendentiBtn.equals(b)) {
+                dipendentiPane.toFront();
+                controllerDipendenti.refresh();
+            } else if (statisticheBtn.equals(b)) {
+                statistichePane.toFront();
+                controllerStatistiche.refresh();
+            } else if (tabelloneBtn.equals(b)) {
+                tabellonePane.toFront();
+                controllerTabellone.refresh();
+            }
 
+        }
     }
 
     @Override

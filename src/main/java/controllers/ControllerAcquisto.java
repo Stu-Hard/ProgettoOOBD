@@ -25,11 +25,9 @@ import javafx.stage.Window;
 import utility.Validators;
 import utility.WindowDragger;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerAcquisto extends WindowDragger implements Initializable {
@@ -96,7 +94,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoConfirm.fxml"));
                 Parent root = fxmlLoader.load();
 
-                JFXAlert<Void> alert = new JFXAlert(nome.getScene().getWindow());
+                JFXAlert<Void> alert = new JFXAlert(mainWindow);
                 JFXDialogLayout layout = new JFXDialogLayout();
                 layout.setHeading();
                 alert.setOverlayClose(true);
