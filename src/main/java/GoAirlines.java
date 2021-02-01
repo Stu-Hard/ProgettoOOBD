@@ -14,7 +14,7 @@ public class GoAirlines extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/ToolBar.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         Scene scene = new Scene(root);
 
         Image icone = new Image(getClass().getResourceAsStream("/img/logoWhite.png"));
@@ -24,8 +24,6 @@ public class GoAirlines extends Application {
         primaryStage.setResizable(false);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
-
-
         primaryStage.show();
     }
 

@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.JFXButton;
+import data.Compagnia;
 import data.Dipendente;
 import database.dao.DipendentiDao;
 import javafx.event.ActionEvent;
@@ -30,8 +31,8 @@ public class ControllerDipendentiDati extends WindowDragger implements Initializ
         return compagnia.toString();
     }
 
-    public void setCompagnia(String compagnia) {
-        this.compagnia.setText(compagnia);
+    public void setCompagnia(Compagnia compagnia) {
+        this.compagnia.setText(compagnia.getNome());
     }
 
     private Dipendente myDipendente;

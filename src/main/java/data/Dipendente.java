@@ -9,10 +9,10 @@ public class Dipendente {
     private String email;
     private String password;
     private DipendentiEnum ruolo;
-    private String compagnia;
+    private Compagnia compagnia;
 
     //costruttore con codiceImpiegato
-    public Dipendente(String codiceImpiegato, String nome, String cognome, String email, String password, DipendentiEnum ruolo, String compagnia) {
+    public Dipendente(String codiceImpiegato, String nome, String cognome, String email, String password, DipendentiEnum ruolo, Compagnia compagnia) {
         this.codiceImpiegato = codiceImpiegato;
         this.nome = nome;
         this.cognome = cognome;
@@ -22,7 +22,7 @@ public class Dipendente {
         this.compagnia = compagnia;
     }
     //costruttore senza codiceImpiegato
-    public Dipendente( String nome, String cognome, String email, String password, DipendentiEnum ruolo, String compagnia) {
+    public Dipendente( String nome, String cognome, String email, String password, DipendentiEnum ruolo, Compagnia compagnia) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -81,11 +81,11 @@ public class Dipendente {
         this.ruolo = ruolo;
     }
 
-    public String getCompagnia() {
+    public Compagnia getCompagnia() {
         return compagnia;
     }
 
-    public void setCompagnia(String compagnia) {
+    public void setCompagnia(Compagnia compagnia) {
         this.compagnia = compagnia;
     }
 }

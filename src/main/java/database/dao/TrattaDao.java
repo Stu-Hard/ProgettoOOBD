@@ -105,18 +105,14 @@ public class TrattaDao {
         return list;
     }
 
-    public void add(Tratta tratta) throws SQLException {
+    public void insert(Tratta tratta) throws SQLException {
         PreparedStatement statement = null;
 
-        try {
-            statement = PGConnection.getConnection().prepareStatement("insert into tratta values " + tratta.toString());
-            statement.executeUpdate();
-        } catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
-            if (statement != null) statement.close();
-        }
+        statement = PGConnection.getConnection().prepareStatement("insert into tratta values " + tratta.toString());
+        statement.executeUpdate();
+
+        if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+        if (statement != null) statement.close();
     }
 
     public Tratta getByNumeroVolo(String numeroVolo) throws SQLException {

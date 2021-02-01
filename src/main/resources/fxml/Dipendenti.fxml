@@ -40,15 +40,18 @@
                         <Insets left="20.0" right="10.0" top="5.0" />
                      </padding>
                   </ScrollPane>
-                  <JFXButton fx:id="addBtn" contentDisplay="GRAPHIC_ONLY" layoutX="811.0" layoutY="536.0" onAction="#addDipendente" style="-fx-background-radius: 50;" styleClass="background2" stylesheets="@../css/white.css" text="Button" translateZ="-100.0">
-                     <graphic>
-                        <FontAwesomeIcon fill="WHITE" iconName="PLUS" size="2.8em" />
-                     </graphic>
-                  </JFXButton>
                   <JFXSpinner fx:id="spinner" layoutX="415.0" layoutY="250.0" visible="false" />
                </children>
             </AnchorPane>
          </center>
       </BorderPane>
+      <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="803.0" layoutY="626.0" onAction="#addDipendente" style="-fx-background-color: linear-gradient(#162643,#2d5a89); -fx-background-radius: 50px;" text="add">
+         <graphic>
+            <FontAwesomeIcon fill="WHITE" iconName="PLUS" />
+         </graphic>
+         <font>
+            <Font size="21.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

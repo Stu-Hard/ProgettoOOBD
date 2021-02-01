@@ -2,8 +2,10 @@ package controllers;
 
 import com.jfoenix.controls.*;
 import customComponents.TrattaHbox;
+import data.Dipendente;
 import data.Tratta;
 import database.dao.TrattaDao;
+import enumeration.DipendentiEnum;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,11 +20,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import utility.Refreshable;
+import utility.UserRestricted;
 
 
 import java.io.IOException;
@@ -31,7 +37,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ControllerTratte implements Initializable, Refreshable<Tratta> {
+public class ControllerTratte implements Initializable, Refreshable<Tratta>, UserRestricted {
 
     @FXML
     private JFXComboBox<String> searchMode;
@@ -43,10 +49,15 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta> {
     private JFXSpinner spinner;
     @FXML
     private JFXButton cancelBtn;
+    @FXML
+    private AnchorPane mainPane;
+    @FXML
+    private JFXButton addBtn;
 
     @FXML
     private JFXListView<TrattaHbox> listView;
     private List<TrattaHbox> localTratte;
+    private Dipendente loggedUser;
 
     public boolean isRefreshing(){
         return spinner.isVisible();
@@ -86,7 +97,7 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta> {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TratteInfo.fxml"));
                 Parent parent = fxmlLoader.load();
                 ControllerTratteInfo controller = fxmlLoader.getController();
-                controller.initialize(tratta);
+                controller.initialize(tratta, loggedUser);
                 controller.setMainWindow(cancelBtn.getScene().getWindow());
 
                 Scene scene = new Scene(parent);
@@ -119,12 +130,15 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta> {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TratteAdd.fxml"));
             Parent parent = fxmlLoader.load();
+            ControllerTratteAdd controller = fxmlLoader.getController();
+            controller.setMainPane(mainPane);
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.initStyle(StageStyle.TRANSPARENT);
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
             stage.showAndWait();
+            refresh();
         }catch (IOException ex){
             ex.printStackTrace();
         }
@@ -169,5 +183,15 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta> {
         searchBar.disableProperty().bind(spinner.visibleProperty());
         dpk1.disableProperty().bind(spinner.visibleProperty());
         dpk2.disableProperty().bind(spinner.visibleProperty());
+    }
+
+    @Override
+    public void setLoggedUser(Dipendente loggedUser) {
+        this.loggedUser = loggedUser;
+        if (loggedUser.getRuolo() == DipendentiEnum.Amministratore || loggedUser.getRuolo() == DipendentiEnum.ResponsabileVoli){
+            addBtn.setVisible(true);
+        } else {
+            addBtn.setVisible(false);
+        }
     }
 }

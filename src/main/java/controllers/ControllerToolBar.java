@@ -16,6 +16,7 @@ public class ControllerToolBar extends WindowDragger implements Initializable {
 
     @FXML
     AnchorPane panel, container;
+    private ControllerMainPane mainPaneController;
 
     @Override
     public void setOffset(MouseEvent e) {
@@ -31,7 +32,9 @@ public class ControllerToolBar extends WindowDragger implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         AnchorPane mainPane = null;
         try {
-            mainPane = FXMLLoader.load(getClass().getResource("/fxml/MainPane.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainPane.fxml"));
+            mainPane = loader.load();
+            mainPaneController = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,5 +49,9 @@ public class ControllerToolBar extends WindowDragger implements Initializable {
     public void close(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    public ControllerMainPane getMainPaneController() {
+        return mainPaneController;
     }
 }

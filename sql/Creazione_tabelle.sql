@@ -140,8 +140,34 @@ CREATE TABLE Biglietto(
 );
 
 CREATE OR REPLACE FUNCTION aggiornaStima() RETURNS TRIGGER AS $$
+DECLARE
+    media int;
+    cl EnumCoda;
+    tr tratta%rowtype;
+    passeggeri int;
 BEGIN
-    UPDATE codaimbarco c set TempoStimato = c.tempostimato + 2 WHERE c.codicecoda = new.CodiceCoda;
+    SELECT c.Classe INTO cl FROM codaimbarco c WHERE c.codicecoda = new.CodiceCoda;
+    select * into tr from tratta t where t.numerovolo = new.Numerovolo;
+    select count(*) into passeggeri from biglietto b where b.codicecoda = new.CodiceCoda;
+
+    WITH tempiEffettivi AS (
+        SELECT c.CodiceCoda, c.TempoEffettivo/COUNT(*) as tPerPasseggero
+        FROM CodaImbarco c
+        JOIN Biglietto B on c.CodiceCoda = B.CodiceCoda
+        JOIN Tratta t on c.NumeroVolo = t.NumeroVolo
+        WHERE c.classe = cl
+          AND t.aeroportoarrivo = tr.AeroportoArrivo
+          AND t.compagnia = tr.Compagnia
+          AND c.tempoeffettivo <> 0
+        GROUP BY c.codicecoda
+    )
+    SELECT AVG(tmp.tPerPasseggero) into media FROM tempiEffettivi tmp;
+
+    IF media IS NULL THEN
+        media = 2;
+    END IF;
+
+    UPDATE codaimbarco c set TempoStimato = media*passeggeri  WHERE c.codicecoda = new.CodiceCoda;
     return NEW;
 END;
 $$ language 'plpgsql';
@@ -183,7 +209,7 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER onCheckIn AFTER UPDATE OF checkin ON Biglietto FOR EACH ROW WHEN (not OLD.CheckIn and new.CheckIn) EXECUTE PROCEDURE aggiornaStima();
+CREATE TRIGGER onNewBiglietto AFTER INSERT ON Biglietto FOR EACH ROW EXECUTE PROCEDURE aggiornaStima();
 CREATE TRIGGER onImbarco AFTER UPDATE OF Imbarcato ON Biglietto FOR EACH ROW WHEN (not OLD.Imbarcato and new.Imbarcato) EXECUTE PROCEDURE chiudiOApriCode();
 
 CREATE OR REPLACE FUNCTION assegnaPosto() RETURNS TRIGGER AS $$
@@ -257,9 +283,3 @@ CREATE OR REPLACE VIEW PasseggeriImbarcati(NumeroVolo, PasseggeriImbarcati) AS
     WHERE b.imbarcato
     GROUP BY t.NumeroVolo;
 */
-
-CREATE OR REPLACE VIEW TempoStimatoImbarco AS
-    SELECT CI.CodiceGate, T.AeroportoPartenza, T.AeroportoArrivo, AVG(CI.TempoEffettivo)
-    FROM Tratta T
-    JOIN CodaImbarco CI ON T.CodiceGate = CI.CodiceGate
-    GROUP BY CI.CodiceGate, T.AeroportoPartenza, T.AeroportoArrivo;

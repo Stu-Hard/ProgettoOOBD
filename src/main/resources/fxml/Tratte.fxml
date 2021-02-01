@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXSpinner?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratte">
+<AnchorPane fx:id="mainPane" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerTratte">
    <children>
       <TextField fx:id="searchBar" layoutX="87.0" layoutY="54.0" onKeyTyped="#search" prefHeight="41.0" prefWidth="282.0" promptText="🔍Search..." style="-fx-background-color: #dcdcdc; -fx-background-radius: 25px;">
          <font>
@@ -73,7 +67,7 @@
       </JFXButton>
       <JFXComboBox fx:id="searchMode" layoutX="380.0" layoutY="63.0" prefHeight="28.0" prefWidth="103.0" />
       <JFXListView fx:id="listView" layoutY="169.0" onMouseClicked="#mouseClick" prefHeight="530.0" prefWidth="870.0" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" />
-      <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="803.0" layoutY="626.0" onAction="#add" style="-fx-background-color: linear-gradient(#162643,#2d5a89); -fx-background-radius: 50px;" text="add">
+      <JFXButton fx:id="addBtn" contentDisplay="GRAPHIC_ONLY" layoutX="803.0" layoutY="626.0" onAction="#add" style="-fx-background-color: linear-gradient(#162643,#2d5a89); -fx-background-radius: 50px;" text="add">
          <graphic>
             <FontAwesomeIcon fill="WHITE" iconName="PLUS" />
          </graphic>

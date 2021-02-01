@@ -106,24 +106,19 @@ public class BigliettoDao {
     public void insert(Biglietto biglietto) throws SQLException{
         PreparedStatement statement = null;
         int codiceCoda = new CodaImbarcoDao().getByBiglietto(biglietto).getCodiceCoda();
-        try {
-            statement = PGConnection.getConnection().prepareStatement("INSERT INTO biglietto(prezzo, posto, checkin, imbarcato, numerovolo, nomecliente, documento, codicecoda, cf) values (?,?,?,?,?,?,?,?,?)");
-            statement.setDouble(1, biglietto.getPrezzo());
-            statement.setInt(2, biglietto.getPosto());
-            statement.setBoolean(3, biglietto.isCheckIn());
-            statement.setBoolean(4, biglietto.isImbarcato());
-            statement.setString(5, biglietto.getNumeroVolo());
-            statement.setString(6, biglietto.getCliente().getNome());
-            statement.setString(7, biglietto.getCliente().getDocumento());
-            statement.setInt(8, codiceCoda);
-            statement.setString(9, biglietto.getCliente().getCodiceFiscale());
-            statement.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
-            if (statement != null) statement.close();
-        }
+        statement = PGConnection.getConnection().prepareStatement("INSERT INTO biglietto(prezzo, posto, checkin, imbarcato, numerovolo, nomecliente, documento, codicecoda, cf) values (?,?,?,?,?,?,?,?,?)");
+        statement.setDouble(1, biglietto.getPrezzo());
+        statement.setInt(2, biglietto.getPosto());
+        statement.setBoolean(3, biglietto.isCheckIn());
+        statement.setBoolean(4, biglietto.isImbarcato());
+        statement.setString(5, biglietto.getNumeroVolo());
+        statement.setString(6, biglietto.getCliente().getNome());
+        statement.setString(7, biglietto.getCliente().getDocumento());
+        statement.setInt(8, codiceCoda);
+        statement.setString(9, biglietto.getCliente().getCodiceFiscale());
+        statement.executeUpdate();
+        if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+        if (statement != null) statement.close();
     }
 
     public void deleteByTratta(Tratta tratta) throws SQLException{

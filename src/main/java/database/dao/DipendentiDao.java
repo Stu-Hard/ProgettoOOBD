@@ -42,7 +42,7 @@ public class DipendentiDao {
                         resultSet.getString("email"),
                         resultSet.getString("password"),
                         c,
-                        resultSet.getString("compagnia")
+                        new CompagniaDao().getByNome(resultSet.getString("compagnia"))
                 ));
 
             }
@@ -66,7 +66,7 @@ public class DipendentiDao {
             statement.setString(2, dipendente.getCognome());
             statement.setString(3, dipendente.getEmail());
             statement.setString(4, dipendente.getPassword());
-            statement.setString(5, dipendente.getCompagnia());
+            statement.setString(5, dipendente.getCompagnia().getNome());
             statement.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -88,5 +88,51 @@ public class DipendentiDao {
             if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
             if (statement != null) statement.close();
         }
+    }
+
+    public Dipendente login(String email, String password) throws SQLException{
+        Dipendente dipendente = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente WHERE email = ?");
+            statement.setString(1, email);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                if (resultSet.getString("password").equals(password)) {
+                    DipendentiEnum c;
+                    String ruolo = resultSet.getString(("ruolo"));
+                    if (ruolo.contains("Amministratore")) {
+                        c = DipendentiEnum.Amministratore;
+                    } else if (ruolo.contains("Check")) {
+                        c = DipendentiEnum.AddettoCheckIn;
+                    } else if (ruolo.contains("Imbarco")) {
+                        c = DipendentiEnum.AddettoImbarco;
+                    } else if (ruolo.contains("Ticket")) {
+                        c = DipendentiEnum.TicketAgent;
+                    } else {
+                        c = DipendentiEnum.ResponsabileVoli;
+                    }
+
+                    dipendente = new Dipendente(
+                            resultSet.getString("codiceImpiegato"),
+                            resultSet.getString("nome"),
+                            resultSet.getString("cognome"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password"),
+                            c,
+                            new CompagniaDao().getByNome(resultSet.getString("compagnia"))
+                    );
+                }
+            }
+        } catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return dipendente;
     }
 }

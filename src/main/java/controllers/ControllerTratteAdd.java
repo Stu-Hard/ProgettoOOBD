@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.*;
+import customComponents.Toast;
 import data.*;
 import database.dao.*;
 import enumeration.CodeEnum;
@@ -10,20 +11,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import utility.IdFactory;
 import utility.WindowDragger;
 
-import java.awt.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 
 public class ControllerTratteAdd extends WindowDragger implements Initializable {
     @FXML
-    public JFXCheckBox
+    private JFXCheckBox
             diversamenteAbili,
             famiglie,
             business,
@@ -31,24 +31,30 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
             economy;
 
     @FXML
-    JFXComboBox<Compagnia> compagnia;
+    private JFXComboBox<Compagnia> compagnia;
     @FXML
-    JFXComboBox<Aeroporto> partenza, arrivo;
+    private JFXComboBox<Aeroporto> partenza, arrivo;
     @FXML
-    JFXDatePicker data;
+    private JFXDatePicker data;
     @FXML
-    JFXTimePicker ora;
+    private JFXTimePicker ora;
     @FXML
-    JFXTextField durata, posti;
+    private JFXTextField durata, posti;
     @FXML
-    JFXCheckBox conclusa;
+    private JFXCheckBox conclusa;
 
     @FXML
-    JFXButton conferma;
+    private JFXButton conferma;
 
 
-    Aeroporto aeroportoGestito;
-    List<Aeroporto> aeroporti;
+    private Aeroporto aeroportoGestito;
+    private List<Aeroporto> aeroporti;
+
+    private Pane mainPane;
+
+    public void setMainPane(Pane mainPane) {
+        this.mainPane = mainPane;
+    }
 
     @FXML
     public void compagniaAction(ActionEvent e){
@@ -87,16 +93,20 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
                 arrivo.getValue(),
                 Integer.parseInt(posti.getText())
         );
+        Toast toast = new Toast(mainPane);
         try {
-            new TrattaDao().add(tratta);
+            new TrattaDao().insert(tratta);
             CodaImbarcoDao cDao = new CodaImbarcoDao();
             if (diversamenteAbili.isSelected()) cDao.addNew(CodeEnum.DIVERSAMENTE_ABILI, tratta);
             if (famiglie.isSelected()) cDao.addNew(CodeEnum.FAMIGLIE, tratta);
             if (business.isSelected()) cDao.addNew(CodeEnum.BUSINESS, tratta);
             if (priorty.isSelected()) cDao.addNew(CodeEnum.PRIORITY, tratta);
             if (economy.isSelected()) cDao.addNew(CodeEnum.ECONOMY, tratta);
+
+            toast.show("Tratta aggiunta con successo");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            toast.show("Errore tratta non aggiunta");
         }
         ((Node) e.getSource()).getScene().getWindow().hide();
     }
@@ -106,17 +116,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
     }
 
     public void controlloAeroporto(ActionEvent e){
-        /*if (e.getSource().equals(partenza)){
-            if (partenza.getValue() != null){
-                arrivo.getItems().addAll(aeroporti.stream().filter(a -> arrivo.getItems().contains(a)).collect(Collectors.toList()));
-                arrivo.getItems().remove(partenza.getValue());
-            }
-        } else{
-            if (arrivo.getValue() != null){
-                partenza.getItems().addAll(aeroporti.stream().filter(a -> partenza.getItems().contains(a)).collect(Collectors.toList()));
-                partenza.getItems().remove(arrivo.getValue());
-            }
-        }*/
         if (partenza.getValue() != null && arrivo.getValue() != null){
             if (!partenza.getValue().equals(aeroportoGestito) && !arrivo.getValue().equals(aeroportoGestito)){
                 if (((Node) e.getSource()).getId().equals(partenza.getId())) arrivo.getSelectionModel().select(aeroportoGestito);

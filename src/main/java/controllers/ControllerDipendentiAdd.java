@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import data.Dipendente;
+import database.dao.CompagniaDao;
 import database.dao.DipendentiDao;
 import enumeration.DipendentiEnum;
 import javafx.beans.binding.BooleanBinding;
@@ -51,7 +52,7 @@ public class ControllerDipendentiAdd extends WindowDragger implements Initializa
         if(email.validate()){
             //qui si può allora aggiungere il Dipendente
             try {
-                new DipendentiDao().insert(new Dipendente(null, nome.getText(), cognome.getText(), email.getText(), password.getText(), ruolo.getValue(), compagnia.getValue()));
+                new DipendentiDao().insert(new Dipendente(null, nome.getText(), cognome.getText(), email.getText(), password.getText(), ruolo.getValue(), new CompagniaDao().getByNome(compagnia.getValue())));
                 //aggiungere un messaggio di conferma(?)
                 close(event);
             } catch (SQLException sqlException) {
@@ -70,11 +71,12 @@ public class ControllerDipendentiAdd extends WindowDragger implements Initializa
         ruolo.getItems().add(DipendentiEnum.AddettoCheckIn);
         ruolo.getSelectionModel().selectFirst();
 
-        compagnia.getItems().add("Alitalia");
-        compagnia.getItems().add("Ryanair");
-        compagnia.getItems().add("Easyjet");
-        compagnia.getItems().add("Vueling");
-        compagnia.getSelectionModel().selectFirst();
+        // todo da cambiare
+        compagnia.getItems().add("Alitalia");//
+        compagnia.getItems().add("Ryanair");//
+        compagnia.getItems().add("Easyjet");//
+        compagnia.getItems().add("Vueling");//
+        compagnia.getSelectionModel().selectFirst();//
 
         addDipendente.disableProperty().bind(new BooleanBinding() {
             {
@@ -95,6 +97,5 @@ public class ControllerDipendentiAdd extends WindowDragger implements Initializa
         });
 
         email.setValidators(new Validators().createEmailValidator("Email Invalida"));
-
     }
 }

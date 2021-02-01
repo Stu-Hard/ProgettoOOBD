@@ -1,26 +1,40 @@
 package controllers;
 
 import com.jfoenix.controls.JFXButton;
+import data.Dipendente;
+import enumeration.DipendentiEnum;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
+import utility.Refreshable;
+import utility.UserRestricted;
 import utility.WindowDragger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class ControllerMainPane extends WindowDragger implements Initializable {
+public class ControllerMainPane extends WindowDragger implements UserRestricted {
     @FXML
     private VBox lpBox;
     @FXML
-    private Pane contentPane;
+    private Label dipendenteLbl;
 
     @FXML
     private JFXButton tratteBtn, gateBtn, checkInBtn,
@@ -31,6 +45,8 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
             imbarcoPane, compagniePane,  aereiPane,
             dipendentiPane, statistichePane, tabellonePane;
 
+    private Dipendente loggedUser;
+
     private ControllerTratte controllerTratte;
     private ControllerGate controllerGate;
     private ControllerDipendenti controllerDipendenti;
@@ -38,21 +54,49 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     private ControllerStatistiche controllerStatistiche;
     private ControllerTabellone controllerTabellone;
 
+    private List<Refreshable> refreshableList = new ArrayList<>();
+    private Window loginWindow;
+
+    public Dipendente getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(Dipendente loggedUser) {
+        this.loggedUser = loggedUser;
+        dipendenteLbl.setText(loggedUser.getNome() + "-"
+                + loggedUser.getCognome() + "@"
+                + ((loggedUser.getCompagnia() != null)?loggedUser.getCompagnia().getNome(): "Aeroporto") + "."
+                + loggedUser.getCodiceImpiegato() + ":"
+                + loggedUser.getRuolo());
+    }
+
+
     public boolean canRefresh(){
-        return !(
-                    controllerTratte.isRefreshing() ||
-                    controllerGate.isRefreshing() ||
-                    controllerDipendenti.isRefreshing() ||
-                    controllerCompagnie.isRefreshing() ||
-                    controllerTabellone.isRefreshing()
-                );
+        return !refreshableList.stream()
+                .map(Refreshable::isRefreshing)
+                .reduce(false, (a, b) -> a || b);
     }
 
 
-    public void close(MouseEvent e){
-        Platform.exit();
+    public void logout(ActionEvent e){
+        try {
+            Stage login = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+            Scene scene = new Scene(root);
+
+            Image icone = new Image(getClass().getResourceAsStream("/img/logoWhite.png"));
+            login.getIcons().add(icone);
+
+            login.setScene(scene);
+            login.setResizable(false);
+            login.initStyle(StageStyle.TRANSPARENT);
+            scene.setFill(Color.TRANSPARENT);
+            ((Node) e.getSource()).getScene().getWindow().hide();
+            login.show();
+        }catch (IOException exception){
+            exception.printStackTrace();
+        }
     }
-    public void closeButton(ActionEvent e){ Platform.exit(); }
 
     public void setFrame(MouseEvent e){
         if (canRefresh()) {
@@ -93,41 +137,59 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(Dipendente loggedUser) {
+        setLoggedUser(loggedUser);
         try {
             FXMLLoader tratteLoader = new FXMLLoader(getClass().getResource("/fxml/Tratte.fxml"));
             trattePane.getChildren().add(
                     tratteLoader.load()
             );
             controllerTratte = tratteLoader.getController();
+            controllerTratte.setLoggedUser(loggedUser);
+            refreshableList.add(controllerTratte);
 
             FXMLLoader gateLoader = new FXMLLoader(getClass().getResource("/fxml/Gate.fxml"));
             gatePane.getChildren().add(
                     gateLoader.load()
             );
             controllerGate = gateLoader.getController();
+            refreshableList.add(controllerGate);
 
-            checkInPane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/CheckIn.fxml"))
-            );
-            imbarcoPane.getChildren().add(
-                    FXMLLoader.load(getClass().getResource("/fxml/Imbarco.fxml"))
-            );
+            if (loggedUser.getRuolo() == DipendentiEnum.AddettoCheckIn || loggedUser.getRuolo() == DipendentiEnum.Amministratore) {
+                checkInPane.getChildren().add(
+                        FXMLLoader.load(getClass().getResource("/fxml/CheckIn.fxml"))
+                );
+            } else{
+                checkInBtn.setDisable(true);
+            }
+            if (loggedUser.getRuolo() == DipendentiEnum.AddettoImbarco || loggedUser.getRuolo() == DipendentiEnum.Amministratore) {
+                imbarcoPane.getChildren().add(
+                        FXMLLoader.load(getClass().getResource("/fxml/Imbarco.fxml"))
+                );
+            }else{
+                imbarcoBtn.setDisable(true);
+            }
 
             FXMLLoader compagnieLoader = new FXMLLoader(getClass().getResource("/fxml/Compagnie.fxml"));
             compagniePane.getChildren().add(
                     compagnieLoader.load()
             );
             controllerCompagnie = compagnieLoader.getController();
+            controllerCompagnie.setLoggedUser(loggedUser);
+            refreshableList.add(controllerCompagnie);
 
-            FXMLLoader dipendentiLoader = new FXMLLoader(getClass().getResource("/fxml/Dipendenti.fxml"));
-            dipendentiPane.getChildren().add(
-                    dipendentiLoader.load()
-            );
-            controllerDipendenti = dipendentiLoader.getController();
 
-            //aereiPane = FXMLLoader.load(getClass().getResource("fxml/Aerei.fxml"));
+            if (loggedUser.getRuolo() == DipendentiEnum.Amministratore) {
+                FXMLLoader dipendentiLoader = new FXMLLoader(getClass().getResource("/fxml/Dipendenti.fxml"));
+                dipendentiPane.getChildren().add(
+                        dipendentiLoader.load()
+                );
+                controllerDipendenti = dipendentiLoader.getController();
+                refreshableList.add(controllerDipendenti);
+            } else{
+                dipendentiBtn.setDisable(true);
+            }
+
             FXMLLoader statisticheLoader = new FXMLLoader(getClass().getResource("/fxml/Statistiche.fxml"));
             statistichePane.getChildren().add(
                     statisticheLoader.load()
@@ -139,11 +201,11 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
                     tabelloneLoader.load()
             );
             controllerTabellone = tabelloneLoader.getController();
+            refreshableList.add(controllerTabellone);
             controllerTabellone.refresh();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -155,4 +217,5 @@ public class ControllerMainPane extends WindowDragger implements Initializable {
     public void moveWindow(MouseEvent e) {
         super.moveWindow(e);
     }
+
 }

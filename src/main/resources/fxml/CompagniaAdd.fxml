@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="508.0" prefWidth="629.0" styleClass="background" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerCompagnieAdd">
     <children>
@@ -26,7 +30,7 @@
                         <Font size="24.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIcon iconName="LONG_ARROW_UP" />
+                        <FontAwesomeIcon iconName="TAG" />
                      </graphic>
                   </Label>
                   <Label text="Nazione" textFill="WHITE">
@@ -34,7 +38,7 @@
                         <Font size="24.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIcon iconName="LONG_ARROW_DOWN" />
+                        <FontAwesomeIcon iconName="FLAG" />
                      </graphic>
                   </Label>
                         <Label text="Peso Massimo" textFill="WHITE">
@@ -42,7 +46,7 @@
                                 <Font size="24.0" />
                             </font>
                             <graphic>
-                                <FontAwesomeIcon iconName="CALENDAR_ALT" />
+                                <FontAwesomeIcon iconName="CUBES" />
                             </graphic>
                         </Label>
                         <Label text="Prezzo Bagagli" textFill="WHITE">
@@ -50,7 +54,7 @@
                                 <Font size="24.0" />
                             </font>
                             <graphic>
-                                <FontAwesomeIcon iconName="CLOCK_ALT" />
+                                <FontAwesomeIcon iconName="DOLLAR" />
                             </graphic>
                         </Label>
                     </children>

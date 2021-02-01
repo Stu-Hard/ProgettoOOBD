@@ -38,6 +38,10 @@ public class CompagniaCard extends Pane {
         }
     }
 
+    public Compagnia getCompagnia() {
+        return compagnia;
+    }
+
     public void setLabels(){
         nome.setText(compagnia.getNome());
         sigla.setText("(" + compagnia.getSigla() + ")");

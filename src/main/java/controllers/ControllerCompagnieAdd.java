@@ -2,12 +2,9 @@ package controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import customComponents.Toast;
 import data.Compagnia;
-import data.Tratta;
-import database.dao.CodaImbarcoDao;
 import database.dao.CompagniaDao;
-import database.dao.TrattaDao;
-import enumeration.CodeEnum;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,13 +12,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import utility.IdFactory;
 import utility.WindowDragger;
 
 import java.io.File;
@@ -29,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -50,19 +45,29 @@ public class ControllerCompagnieAdd extends WindowDragger implements Initializab
     @FXML
     private Label trascinaLbl;
 
+    private Pane mainPane;
+
+    public void setMainPane(Pane mainPane) {
+        this.mainPane = mainPane;
+    }
+
     @FXML
     public void conferma(ActionEvent e){
-        Compagnia compagnia = new Compagnia(
-                nome.getText(),
-                sigla.getText(),
-                nazione.getText(),
-                Float.parseFloat(prezzoBagagli.getText()),
-                Float.parseFloat(pesoMassimo.getText())
-        );
+
+        Toast toast = new Toast(mainPane);
         try {
-            new CompagniaDao().add(compagnia);
-        } catch (SQLException throwables) {
+            Compagnia compagnia = new Compagnia(
+                    nome.getText(),
+                    sigla.getText(),
+                    nazione.getText(),
+                    Float.parseFloat(prezzoBagagli.getText()),
+                    Float.parseFloat(pesoMassimo.getText())
+            );
+            new CompagniaDao().insert(compagnia);
+            toast.show("Compagnia aggiunta con successo");
+        } catch (SQLException | NumberFormatException throwables) {
             throwables.printStackTrace();
+            toast.show("Errore compagnia non aggiunta");
         }
 
         if (imageFile != null){

@@ -64,23 +64,18 @@ public class CompagniaDao {
         return comp;
     }
 
-    public void add(Compagnia compagnia) throws SQLException{
+    public void insert(Compagnia compagnia) throws SQLException{
         PreparedStatement statement = null;
+        statement = PGConnection.getConnection().prepareStatement("insert into compagnia values(?, ?, ?, ?, ?)");
+        statement.setString(1, compagnia.getNome());
+        statement.setString(2, compagnia.getSigla());
+        statement.setString(3, compagnia.getNazione());
+        statement.setFloat(4, compagnia.getPrezzoBagagli());
+        statement.setFloat(5, compagnia.getPesoMassimo());
 
-        try {
-            statement = PGConnection.getConnection().prepareStatement("insert into compagnia values(?, ?, ?, ?, ?)");
-            statement.setString(1, compagnia.getNome());
-            statement.setString(2, compagnia.getSigla());
-            statement.setString(3, compagnia.getNazione());
-            statement.setFloat(4, compagnia.getPrezzoBagagli());
-            statement.setFloat(5, compagnia.getPesoMassimo());
+        statement.executeUpdate();
 
-            statement.executeUpdate();
-        } catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
-            if (statement != null) statement.close();
-        }
+        if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+        if (statement != null) statement.close();
     }
 }

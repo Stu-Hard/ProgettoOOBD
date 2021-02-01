@@ -4,10 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import data.Aeroporto;
 import data.CodaImbarco;
+import data.Dipendente;
 import data.Tratta;
 import database.dao.AeroportoDao;
 import database.dao.CodaImbarcoDao;
 import database.dao.TrattaDao;
+import enumeration.DipendentiEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import utility.UserRestricted;
 import utility.WindowDragger;
 
 import java.io.IOException;
@@ -28,7 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-public class ControllerTratteInfo extends WindowDragger {
+public class ControllerTratteInfo extends WindowDragger implements UserRestricted {
     private Tratta tratta;
 
     @FXML
@@ -47,6 +50,7 @@ public class ControllerTratteInfo extends WindowDragger {
     private Label nonGestitaLbl;
     private Aeroporto aeroportoGestito;
     private int passeggeriCount = 0;
+    private Dipendente loggedUser;
 
     @FXML
     private void close(ActionEvent e){
@@ -132,8 +136,9 @@ public class ControllerTratteInfo extends WindowDragger {
         this.mainWindow = window;
     }
 
-    public void initialize(Tratta t) {
+    public void initialize(Tratta t, Dipendente loggedUser) {
         setTratta(t);
+        setLoggedUser(loggedUser);
         try {
             aeroportoGestito = new AeroportoDao().getAeroportoGestito();
         } catch (SQLException throwables) {
@@ -144,7 +149,21 @@ public class ControllerTratteInfo extends WindowDragger {
                 !tratta.getAereoportoPartenza().equals(aeroportoGestito) ||
                 completata.isSelected() ||
                 passeggeriCount >= tratta.getPosti()
+
         );
+        if (loggedUser.getRuolo() != DipendentiEnum.TicketAgent && loggedUser.getRuolo() != DipendentiEnum.Amministratore){
+                acquistaBtn.setDisable(true);
+        }
+        if(loggedUser.getCompagnia() != null){
+            if(!loggedUser.getCompagnia().getNome().equals(tratta.getCompagnia().getNome())){
+                acquistaBtn.setDisable(true);
+            }
+        }
         codePane.visibleProperty().bind(nonGestitaLbl.visibleProperty().not());
+    }
+
+    @Override
+    public void setLoggedUser(Dipendente loggedUser) {
+        this.loggedUser = loggedUser;
     }
 }

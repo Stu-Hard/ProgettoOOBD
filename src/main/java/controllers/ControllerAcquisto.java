@@ -68,12 +68,8 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
     }
 
     @FXML
-    public void buy(ActionEvent e) throws  IOException {
-
-
+    public void buy(ActionEvent e) {
         riconoscimento.validate();
-
-
         riconoscimento.validate();
         nome.validate();
         cognome.validate();
@@ -83,20 +79,19 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
             Biglietto biglietto = new Biglietto(prezzo, classe.getValue(), false, false, tratta.getNumeroVolo(), cliente);
             BigliettoDao bDao = new BigliettoDao();
+
+            FXMLLoader fxmlLoader;
             try {
                 bDao.insert(biglietto);
+                fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoConfirm.fxml"));
+
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
+                fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoError.fxml"));
             }
-            close(e);
-
-
-
-                //messaggio di conferma
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoConfirm.fxml"));
+            try {
                 Parent root = fxmlLoader.load();
-
-                JFXAlert<Void> alert = new JFXAlert(nome.getScene().getWindow());
+                JFXAlert alert = new JFXAlert(mainWindow);
                 JFXDialogLayout layout = new JFXDialogLayout();
                 layout.setHeading();
                 alert.setOverlayClose(true);
@@ -104,21 +99,10 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
                 alert.setContent(root);
                 alert.initModality(Modality.NONE);
                 alert.showAndWait();
-                //messaggio di conferma
-
-
-               /* MESSAGGIO DI ERRORE, NON VA
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AcquistoBigliettoError.fxml"));
-                Parent root = fxmlLoader.load();
-
-                JFXAlert<Void> alert = new JFXAlert(nome.getScene().getWindow());
-                JFXDialogLayout layout = new JFXDialogLayout();
-                layout.setHeading();
-                alert.setOverlayClose(true);
-                alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-                alert.setContent(root);
-                alert.initModality(Modality.NONE);
-                alert.showAndWait();*/
+            } catch (IOException ioException){
+                ioException.printStackTrace();
+            }
+                close(e);
             }
         }
     public String getNome() {
