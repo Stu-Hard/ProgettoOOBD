@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utility.Refreshable;
+import utility.UserRestricted;
 
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ControllerDipendenti implements Initializable, Refreshable<Dipendente> {
+public class ControllerDipendenti implements Initializable, Refreshable<Dipendente>, UserRestricted {
 
     @FXML
     private TextField searchBar;
@@ -47,9 +48,8 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
     private List<DipendentiCard> DipendentiList;
     private FlowPane flowPane;
     @FXML
-    JFXButton addBtn;
-
-
+    private JFXButton addBtn;
+    private Dipendente loggedUser;
 
 
     @Override
@@ -73,7 +73,6 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
         DipendentiList = new ArrayList<>();
 
         scrollPane.setContent(flowPane);
-
     }
 
 
@@ -102,8 +101,6 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
                 flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.AddettoCheckIn));
                 break;
             case("Ticket Agent"):
-
-
                 flowPane.getChildren().removeIf(node -> !(((DipendentiCard) node).getGerarchia() == DipendentiEnum.TicketAgent));
                 break;
             case("Addetti all'Imbarco"):
@@ -129,6 +126,8 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
         //crea scheda per inserire utente
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DipendentiAdd.fxml"));
         Parent root = loader.load();
+        ControllerDipendentiAdd c = loader.getController();
+        c.setLoggedUser(loggedUser);
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -146,7 +145,7 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
                 @Override
                 protected List<Dipendente> call() {
                     try {
-                        return new DipendentiDao().getDipendenti();
+                        return new DipendentiDao().getDipendentyByCompagnia(loggedUser.getCompagnia());
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -170,5 +169,11 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
     @Override
     public boolean isRefreshing() {
         return spinner.isVisible();
+    }
+
+    @Override
+    public void setLoggedUser(Dipendente loggedUser) {
+        this.loggedUser = loggedUser;
+        addBtn.setVisible(loggedUser.getRuolo() == DipendentiEnum.Amministratore);
     }
 }

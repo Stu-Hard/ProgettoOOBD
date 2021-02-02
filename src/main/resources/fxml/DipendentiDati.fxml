@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#moveWindow" onMousePressed="#setOffset" prefHeight="417.0" prefWidth="600.0" stylesheets="@../css/white.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerDipendentiDati">
    <children>
-      <Label fx:id="nomeCognome" alignment="CENTER" layoutX="-1.0" layoutY="89.0" prefHeight="51.0" prefWidth="600.0" text="Nome e Cognome">
+      <Label fx:id="nomeCognome" alignment="CENTER" layoutX="158.0" layoutY="64.0" text="Nome e Cognome">
          <font>
             <Font size="35.0" />
          </font>
@@ -140,11 +140,6 @@
             </HBox>
          </children>
       </VBox>
-      <ImageView fitHeight="53.0" fitWidth="285.0" layoutX="141.0" layoutY="21.0" pickOnBounds="true">
-         <image>
-            <Image url="@../img/nome+logo_B.png" />
-         </image>
-      </ImageView>
       <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="571.0" onAction="#close" style="-fx-background-color: #d9dade;">
          <graphic>
             <FontAwesomeIcon fill="#b23333" iconName="CLOSE" size="1.5em" />
@@ -157,5 +152,10 @@
          <font>
             <Font size="16.0" />
          </font></JFXButton>
+      <ImageView fitHeight="111.0" fitWidth="108.0" layoutX="32.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/logoBlue.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

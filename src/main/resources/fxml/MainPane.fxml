@@ -12,7 +12,7 @@
    <children>
       <Pane prefHeight="700.0" prefWidth="230.0" style="-fx-background-color: linear-gradient(#162643,#2d5a89);" stylesheets="@../css/classes.css">
          <children>
-            <Hyperlink layoutX="14.0" layoutY="663.0" onAction="#closeButton" text="LogOut" textFill="RED" />
+            <Hyperlink layoutX="14.0" layoutY="663.0" onAction="#logout" text="LogOut" textFill="RED" />
             <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="11.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/nome+logo_W.png" />
@@ -157,7 +157,7 @@
                   </JFXButton>
                </children>
             </VBox>
-            <Label fx:id="dipendenteLbl" layoutX="14.0" layoutY="646.0" />
+            <Label fx:id="dipendenteLbl" layoutX="19.0" layoutY="622.0" />
          </children>
       </Pane>
       <AnchorPane layoutX="230.0" prefHeight="700.0" prefWidth="870.0">

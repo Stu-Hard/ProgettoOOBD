@@ -1,5 +1,6 @@
 package database.dao;
 
+import data.Compagnia;
 import data.Dipendente;
 import database.PGConnection;
 import enumeration.DipendentiEnum;
@@ -135,4 +136,55 @@ public class DipendentiDao {
         }
         return dipendente;
     }
+
+    public List<Dipendente> getDipendentyByCompagnia(Compagnia compagia) throws SQLException {
+        List<Dipendente> list = new ArrayList();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            if (compagia != null) {
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente WHERE compagnia = ?");
+                statement.setString(1, compagia.getNome());
+            }else {
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente");
+            }
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                DipendentiEnum c;
+                String ruolo = resultSet.getString(("ruolo"));
+                if(ruolo.contains("Amministratore")){
+                    c = DipendentiEnum.Amministratore;
+                }else if(ruolo.contains("Check")){
+                    c = DipendentiEnum.AddettoCheckIn;
+                }else if(ruolo.contains("Imbarco")){
+                    c = DipendentiEnum.AddettoImbarco;
+                }else if(ruolo.contains("Ticket")){
+                    c = DipendentiEnum.TicketAgent;
+                }else{
+                    c = DipendentiEnum.ResponsabileVoli;
+                }
+
+                list.add(new Dipendente(
+                        resultSet.getString("codiceImpiegato"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("cognome"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        c,
+                        compagia
+                ));
+
+            }
+        } catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        } finally {
+            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
+            if (statement != null) statement.close();
+            if (resultSet != null) resultSet.close();
+        }
+        return list;
+    }
+
 }

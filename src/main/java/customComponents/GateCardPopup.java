@@ -91,4 +91,20 @@ public class GateCardPopup extends JFXPopup {
     public void setApriGate(EventHandler<ActionEvent> e) {
         apri.setOnAction(e);
     }
+
+    public JFXButton getChiudi() {
+        return chiudi;
+    }
+
+    public JFXButton getApri() {
+        return apri;
+    }
+
+    public JFXButton getImpostaTratta() {
+        return impostaTratta;
+    }
+
+    public JFXButton getTerminaImbarco() {
+        return terminaImbarco;
+    }
 }

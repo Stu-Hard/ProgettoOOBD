@@ -110,18 +110,22 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta>, Use
                 ioException.printStackTrace();
             }
         } else if(e.getButton() == MouseButton.SECONDARY){
-            JFXButton elimina = new JFXButton("Elimina");
-            elimina.setStyle("-fx-background-radius: 0; -fx-font-size: 18; -fx-background-color: red; -fx-text-fill: white");
-            elimina.setOnAction(a -> {
-                try {
-                    new TrattaDao().deleteTratta(tratta);
-                    refresh();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+            if(loggedUser.getRuolo() == DipendentiEnum.Amministratore || loggedUser.getRuolo() == DipendentiEnum.ResponsabileVoli){
+                if (loggedUser.getCompagnia() == null || loggedUser.getCompagnia().equals(tratta.getCompagnia())) {
+                    JFXButton elimina = new JFXButton("Elimina");
+                    elimina.setStyle("-fx-background-radius: 0; -fx-font-size: 18; -fx-background-color: red; -fx-text-fill: white");
+                    elimina.setOnAction(a -> {
+                        try {
+                            new TrattaDao().deleteTratta(tratta);
+                            refresh();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    });
+                    JFXPopup popup = new JFXPopup(elimina);
+                    popup.show(listView.getScene().getWindow(), e.getSceneX(), e.getSceneY(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 0, 0);
                 }
-            });
-            JFXPopup popup = new JFXPopup(elimina);
-            popup.show(listView.getScene().getWindow(), e.getSceneX(), e.getSceneY(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 0, 0);
+            }
         }
     }
 

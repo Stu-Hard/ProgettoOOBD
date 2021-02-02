@@ -6,11 +6,13 @@ import customComponents.GateCard;
 import customComponents.GateCardPopup;
 import customComponents.TrattaHbox;
 import data.CodaImbarco;
+import data.Dipendente;
 import data.Gate;
 import data.Tratta;
 import database.dao.CodaImbarcoDao;
 import database.dao.GateDao;
 import database.dao.TrattaDao;
+import enumeration.DipendentiEnum;
 import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -25,6 +27,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.util.Pair;
 import utility.Refreshable;
+import utility.UserRestricted;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -33,7 +36,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ControllerGate implements Initializable, Refreshable<Gate> {
+public class ControllerGate implements Initializable, Refreshable<Gate>, UserRestricted {
 
     @FXML
     private ScrollPane scroll;
@@ -51,6 +54,7 @@ public class ControllerGate implements Initializable, Refreshable<Gate> {
     @FXML
     private JFXSpinner spinner;
     private List<GateCard> localGate;
+    private Dipendente loggedUser;
 
 
     // Filtri sullo stato: occupato ecc...
@@ -84,7 +88,9 @@ public class ControllerGate implements Initializable, Refreshable<Gate> {
         JFXListView<TrattaHbox> l = new JFXListView<>();
         l.setPrefSize(820, 300);
         try {
-            new TrattaDao().getTratteAperte().stream().filter(t -> t.dateDistance() >= 0).forEach(t -> {
+            new TrattaDao().getTratteAperte(loggedUser.getCompagnia()).stream()
+                    .filter(t -> t.dateDistance() >= 0)
+                    .forEach(t -> {
                 l.getItems().add(new TrattaHbox(t));
             });
         } catch (SQLException throwables) {
@@ -187,10 +193,24 @@ public class ControllerGate implements Initializable, Refreshable<Gate> {
                 localGate.addAll(task.getValue().stream().map(g -> {
                     GateCard gCard = new GateCard(g);
                     GateCardPopup popup = new GateCardPopup(gCard);
+                    if (loggedUser.getRuolo() != DipendentiEnum.Amministratore
+                            && loggedUser.getRuolo() != DipendentiEnum.AddettoImbarco
+                            && loggedUser.getRuolo() != DipendentiEnum.ResponsabileVoli) {
+
+                        popup.getVBox().setDisable(true);
+                    } else {
+                        if (gCard.getGate().getTratta() != null){
+                            if (loggedUser.getCompagnia() == null || gCard.getGate().getTratta().getCompagnia().equals(loggedUser.getCompagnia())) {
+                                popup.getVBox().setDisable(false);
+                            }
+                        }
+                    }
+
                     popup.setImpostaTratta(e -> showImpostaTratta(gCard, popup));
                     popup.setTerminaImbarco(e -> terminaImbarco(gCard, popup));
                     popup.setChiudiGate(e -> chiudiGate(gCard, popup));
                     popup.setApriGate(e -> apriGate(gCard, popup));
+
                     return gCard;
                 }).collect(Collectors.toList()));
                 search(null);
@@ -233,5 +253,10 @@ public class ControllerGate implements Initializable, Refreshable<Gate> {
         searchBar.disableProperty().bind(spinner.visibleProperty());
         cancelBtn.disableProperty().bind(spinner.visibleProperty());
         searchMode.disableProperty().bind(spinner.visibleProperty());
+    }
+
+    @Override
+    public void setLoggedUser(Dipendente loggedUser) {
+        this.loggedUser = loggedUser;
     }
 }

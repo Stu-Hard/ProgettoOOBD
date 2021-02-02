@@ -174,13 +174,18 @@ public class TrattaDao {
         }
     }
 
-    public List<Tratta> getTratteAperte() throws SQLException {
+    public List<Tratta> getTratteAperte(Compagnia compagnia) throws SQLException {
         List<Tratta> list = new ArrayList();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL");
+            if (compagnia == null)
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL");
+            else {
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL AND compagnia = ?");
+                statement.setString(1, compagnia.getNome());
+            }
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();

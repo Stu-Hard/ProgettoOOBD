@@ -64,10 +64,10 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
     public void setLoggedUser(Dipendente loggedUser) {
         this.loggedUser = loggedUser;
         dipendenteLbl.setText(loggedUser.getNome() + "-"
-                + loggedUser.getCognome() + "@"
-                + ((loggedUser.getCompagnia() != null)?loggedUser.getCompagnia().getNome(): "Aeroporto") + "."
-                + loggedUser.getCodiceImpiegato() + ":"
-                + loggedUser.getRuolo());
+                + loggedUser.getCognome() + " \n"
+                + ((loggedUser.getCompagnia() != null)?loggedUser.getCompagnia().getNome(): "Aeroporto") + ":"
+                + loggedUser.getRuolo() + "#"
+                + loggedUser.getCodiceImpiegato());
     }
 
 
@@ -154,6 +154,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
                     gateLoader.load()
             );
             controllerGate = gateLoader.getController();
+            controllerGate.setLoggedUser(loggedUser);
             refreshableList.add(controllerGate);
 
             if (loggedUser.getRuolo() == DipendentiEnum.AddettoCheckIn || loggedUser.getRuolo() == DipendentiEnum.Amministratore) {
@@ -186,6 +187,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
                         dipendentiLoader.load()
                 );
                 controllerDipendenti = dipendentiLoader.getController();
+                controllerDipendenti.setLoggedUser(loggedUser);
                 refreshableList.add(controllerDipendenti);
             } else{
                 dipendentiBtn.setDisable(true);

@@ -45,7 +45,7 @@
             </AnchorPane>
          </center>
       </BorderPane>
-      <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="803.0" layoutY="626.0" onAction="#addDipendente" style="-fx-background-color: linear-gradient(#162643,#2d5a89); -fx-background-radius: 50px;" text="add">
+      <JFXButton fx:id="addBtn" contentDisplay="GRAPHIC_ONLY" layoutX="803.0" layoutY="626.0" onAction="#addDipendente" style="-fx-background-color: linear-gradient(#162643,#2d5a89); -fx-background-radius: 50px;" text="add">
          <graphic>
             <FontAwesomeIcon fill="WHITE" iconName="PLUS" />
          </graphic>

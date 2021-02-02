@@ -15,12 +15,12 @@
             <Font size="14.0" />
          </font>
       </Hyperlink>
-      <JFXTextField fx:id="email" focusColor="#47b78d" labelFloat="true" layoutX="71.0" layoutY="175.0" prefHeight="36.0" prefWidth="235.0" promptText="username/email" styleClass="white" stylesheets="@../css/white.css" unFocusColor="WHITE">
+      <JFXTextField fx:id="email" focusColor="#47b78d" labelFloat="true" layoutX="71.0" layoutY="175.0" prefHeight="36.0" prefWidth="235.0" promptText="email" styleClass="white" stylesheets="@../css/white.css" unFocusColor="WHITE">
          <font>
             <Font size="18.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="password" focusColor="#47b78d" layoutX="71.0" layoutY="252.0" prefHeight="24.0" prefWidth="235.0" promptText="password" styleClass="white" stylesheets="@../css/white.css" unFocusColor="WHITE">
+      <JFXPasswordField fx:id="password" focusColor="#47b78d" labelFloat="true" layoutX="71.0" layoutY="252.0" prefHeight="24.0" prefWidth="235.0" promptText="password" styleClass="white" stylesheets="@../css/white.css" unFocusColor="WHITE">
          <font>
             <Font size="19.0" />
          </font>

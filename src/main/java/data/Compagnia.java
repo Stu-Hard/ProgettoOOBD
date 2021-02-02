@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Objects;
+
 public class Compagnia {
     private String nome;
     private String sigla;
@@ -14,6 +16,19 @@ public class Compagnia {
         this.nazione = nazione;
         this.prezzoBagagli = prezzoBagagli;
         this.pesoMassimo = pesoMassimo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Compagnia compagnia = (Compagnia) o;
+        return Objects.equals(nome, compagnia.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, sigla, nazione, prezzoBagagli, pesoMassimo, numeroTratte);
     }
 
     @Override
