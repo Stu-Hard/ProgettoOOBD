@@ -19,7 +19,7 @@ public class DipendentiDao {
         ResultSet resultSet = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente ORDER BY compagnia, ruolo, nome");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 DipendentiEnum c;
@@ -144,10 +144,10 @@ public class DipendentiDao {
 
         try {
             if (compagia != null) {
-                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente WHERE compagnia = ?");
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente WHERE compagnia = ? ORDER BY compagnia, ruolo, nome");
                 statement.setString(1, compagia.getNome());
             }else {
-                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente");
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM dipendente ORDER BY compagnia, ruolo, nome");
             }
 
             resultSet = statement.executeQuery();

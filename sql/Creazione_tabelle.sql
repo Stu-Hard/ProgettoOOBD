@@ -32,6 +32,7 @@ CREATE TYPE EnumCitta AS ENUM(
     'Berlino',
     'Edimburgo',
     'Nizza'
+    /*...*/
 );
 
 CREATE TYPE EnumImpiegati AS ENUM(
@@ -53,7 +54,10 @@ insert into Aeroporto values
                              ('LEBL', 'El Prat', 'Barcellona'),
                              ('EGLC', 'City', 'Londra'),
                              ('LIML', 'Linate', 'Milano'),
-                             ('UUDD', 'Domodedovo', 'Mosca');
+                             ('UUDD', 'Domodedovo', 'Mosca'),
+                             ('EHAM', 'Schiphol', 'Amsterdam'),
+                             ('EDDB', 'Brandeburgo', 'Berlino'),
+                             ('LIRQ', 'Peretola', 'Firenze');
 
 CREATE TABLE Gate(
     CodiceGate VARCHAR(4) PRIMARY KEY CHECK (UPPER(CodiceGate) = CodiceGate), /*tra lettere e numeri sono 36^4 gate possibili... Pattern standard: A1, B3, C20...*/
@@ -74,17 +78,16 @@ CREATE TABLE Compagnia(
     PrezzoBagagli REAL NOT NULL CHECK (PrezzoBagagli > 0)
 );
 insert into Compagnia values
-                             ('Vueling', 'VLG', 'Spagna', 32.0, 12.0),
-                             ('Alitalia', 'AZA', 'Italia', 32.0, 12.0),
-                             ('Easyjet', 'EZS', 'Svizzera', 32.0, 12.0),
-                             ('Ryanair', 'RYR', 'Irlanda', 32.0, 12.0);
+                             ('Vueling', 'VLG', 'Spagna', 25.0, 1.0),
+                             ('Alitalia', 'AZA', 'Italia', 35.0, 2.0),
+                             ('Easyjet', 'EZS', 'Svizzera', 21.0, 0.7),
+                             ('Ryanair', 'RYR', 'Irlanda', 26.0, 1.5),
+                             ('LinuxFly', 'LXY', 'Finlandia', 32.0, 5.10),
+                             ('AppleFly', 'OSX', 'Cupertino', 16.0, 20.0),
+                             ('WindowsFly', 'WIN', 'Redmond', 64.0, 10.0),
+                             ('JavaAirlines', 'JDK', 'Texas', 32.0, 15.0),
+                             ('Lufthansa', 'DLH', 'Germania', 27.0, 1.5);
 
-CREATE TABLE Risiede( /* si potrebbe anche eliminare e dare per scontato che tutte le compagnie possano organizzare tratte per tutti gli aeroporti...*/
-    Compagnia VARCHAR(30) NOT NULL, 
-    CodiceAeroporto VARCHAR(4) NOT NULL,
-    CONSTRAINT fk_Compagnia FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome),
-    CONSTRAINT fk_Aeroporto FOREIGN KEY(CodiceAeroporto) REFERENCES Aeroporto(Codice)
-);
 
 CREATE TABLE Tratta(
     NumeroVolo VARCHAR(8) PRIMARY KEY CHECK (UPPER(NumeroVolo) = NumeroVolo),
@@ -107,9 +110,27 @@ CREATE TABLE Tratta(
 ALTER TABLE Gate ADD CONSTRAINT fk_Tratta FOREIGN KEY(Tratta) REFERENCES Tratta(NumeroVolo);
 
 insert into Tratta values
-                          ('VLG87937', '2021-10-11', '6:30:00', 150, 5, FALSE, NULL, 'Vueling', 'LIRN', 'LEBL', 10),
-                          ('RYRVU948', '2020-05-23', '18:00:00', 120, 10, false, NULL, 'Ryanair', 'EGLC', 'LIRN', 30),
-                          ('VLGUAZ84', '2021-01-05', '21:18:00', 111, 0, false, NULL, 'Vueling', 'LIRN', 'LEBL', 2);
+                          ('VLG87937', current_timestamp::DATE, '6:30:00', 150, 0, FALSE, NULL, 'Vueling', 'LIRN', 'LEBL', 100),
+                          ('RYRVU948', current_timestamp::DATE, '7:30:00', 120, 0, false, NULL, 'Ryanair', 'EGLC', 'LIRN', 55),
+
+                          ('JDKKROAN', current_timestamp::DATE, '8:18:00', 120, 0, false, NULL, 'JavaAirlines', 'LIRN', 'LEBL', 20),
+                          ('JDKBYVWT', current_timestamp::DATE, '9:18:00', 120, 0, false, NULL, 'JavaAirlines', 'LIRN', 'EDDB', 3),
+                          ('JDKAECMN', current_timestamp::DATE, '10:18:00', 120, 0, false, NULL, 'JavaAirlines', 'LIRN', 'UUDD', 100),
+
+                          ('OSXHZ069', current_timestamp::DATE, '11:16:00', 120, 0, false, NULL, 'AppleFly', 'UUDD', 'LIRN', 50),
+                          ('OSXXN1FX', current_timestamp::DATE, '12:44:00', 120, 0, false, NULL, 'AppleFly', 'EHAM', 'LIRN', 50),
+                          ('OSX34Z7C', current_timestamp::DATE, '13:22:00', 120, 0, false, NULL, 'AppleFly', 'EGLC', 'LIRN', 50),
+
+                          ('AZAS35V2', current_timestamp::DATE, '14:15:00', 120, 0, false, NULL, 'Alitalia', 'LIRN', 'LIML', 100),
+                          ('AZAINPEF', current_timestamp::DATE, '15:40:00', 120, 0, false, NULL, 'Alitalia', 'LIRN', 'LIRQ', 100),
+                          ('AZAB7TIX', current_timestamp::DATE, '16:00:00', 120, 0, false, NULL, 'Alitalia', 'LIRN', 'EGLC', 100),
+
+                          ('RYR8X117', current_timestamp::DATE, '17:50:00', 120, 0, false, NULL, 'Ryanair', 'LIRN', 'EHAM', 70),
+                          ('RYR6TCI7', current_timestamp::DATE, '18:05:00', 120, 0, false, NULL, 'Ryanair', 'LIRN', 'EDDB', 70),
+                          ('RYR03208', current_timestamp::DATE, '19:18:00', 120, 0, false, NULL, 'Ryanair', 'LIRN', 'EGLC', 70),
+
+                          ('WIN8MJNX', current_timestamp::DATE, '20:18:00', 120, 0, false, NULL, 'WindowsFly', 'LIML','LIRN',150),
+                          ('WIN9P95M', current_timestamp::DATE, '21:18:00', 120, 0, false, NULL, 'WindowsFly', 'EDDB','LIRN',150);
 
 
 CREATE TABLE CodaImbarco(
@@ -120,9 +141,23 @@ CREATE TABLE CodaImbarco(
     Classe EnumCoda  NOT NULL,
     CodiceGate VARCHAR(4),
     NumeroVolo VARCHAR(8) NOT NULL,
+    CONSTRAINT codaUnica UNIQUE(CodiceCoda, Classe),
     CONSTRAINT fk_CodiceGate FOREIGN KEY(CodiceGate) REFERENCES Gate(CodiceGate),
     CONSTRAINT fk_NumeroVolo FOREIGN KEY(NumeroVolo) REFERENCES Tratta(NumeroVolo)
 );
+insert into CodaImbarco (Classe, NumeroVolo) values ('DIVERSAMENTE_ABILI', 'JDKKROAN'), ('BUSINESS', 'JDKKROAN'), ('ECONOMY', 'JDKKROAN'),
+                                                    ('DIVERSAMENTE_ABILI', 'JDKBYVWT'), ('ECONOMY', 'JDKBYVWT'),
+                                                    ('DIVERSAMENTE_ABILI', 'JDKAECMN'), ('ECONOMY', 'JDKAECMN'),
+
+                                                    ('DIVERSAMENTE_ABILI', 'AZAS35V2'), ('ECONOMY', 'AZAS35V2'),
+                                                    ('DIVERSAMENTE_ABILI', 'AZAINPEF'), ('ECONOMY', 'AZAINPEF'),
+                                                    ('DIVERSAMENTE_ABILI', 'AZAB7TIX'), ('ECONOMY', 'AZAB7TIX'),
+
+                                                    ('DIVERSAMENTE_ABILI', 'RYR8X117'), ('ECONOMY', 'RYR8X117'),
+                                                    ('DIVERSAMENTE_ABILI', 'RYR6TCI7'), ('ECONOMY', 'RYR6TCI7'),
+                                                    ('DIVERSAMENTE_ABILI', 'RYR03208'), ('ECONOMY', 'RYR03208'),
+
+                                                    ('DIVERSAMENTE_ABILI', 'VLG87937'), ('ECONOMY', 'VLG87937');
 
 CREATE TABLE Biglietto(
     CodiceBiglietto SERIAL PRIMARY KEY, /*incrementa automaticamente*/
@@ -241,12 +276,11 @@ $$ language 'plpgsql';
 CREATE TRIGGER newBiglietto BEFORE INSERT ON Biglietto FOR EACH ROW EXECUTE PROCEDURE assegnaPosto();
 
 
-
 CREATE TABLE Dipendente(
            CodiceImpiegato SERIAL PRIMARY KEY,
            Nome VARCHAR(30) NOT NULL,
            Cognome VARCHAR(30) NOT NULL,
-           Email VARCHAR(30) NOT NULL CHECK (Email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
+           Email VARCHAR(40) NOT NULL CHECK (Email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
            Password VARCHAR(30) NOT NULL,
            Ruolo EnumImpiegati NOT NULL,
            Compagnia VARCHAR(30) CHECK (Compagnia IS NOT NULL or Ruolo = 'Amministratore'),
@@ -254,15 +288,29 @@ CREATE TABLE Dipendente(
 );
 
 insert into Dipendente (nome, cognome, email, password, ruolo, compagnia) values
-            ('Francesco', 'De Stasio', 'destasiofrancesco_@libero.it','password', 'Amministratore', 'Alitalia'),
-            ('Matteo', 'Gaudino', 'matteogaudino_@libero.it','password', 'Amministratore', 'Alitalia'),
-            ('Luca', 'Abete', 'lucabete@libero.it','password', 'AddettoImbarco', 'Ryanair'),
-            ('Mario', 'Paolo', 'mariopaolo@gmail.com','password', 'AddettoCheckIn', 'Alitalia'),
-            ('Giovanni', 'Giovanna', 'giovannigiovanna@libero.it','password', 'TicketAgent', 'Alitalia'),
-            ('Matteo', 'Esposito', 'mattiaesposito@gmail.com','password', 'AddettoImbarco', 'Alitalia'),
-            ('Nicola', 'Nicolas', 'nicola@libero.it','password', 'ResponsabileVoli', 'Ryanair'),
-            ('Maria', 'Grazia', 'mariagrazia@libero.it','password', 'TicketAgent', 'Alitalia'),
-            ('Francesco', 'De Luca', 'francesacodeluca@outlook.it','password', 'AddettoCheckIn', 'Alitalia');
+            ('Matteo Richard', 'Gaudino', 'matteogaudino@goAirlines.com','password', 'Amministratore', null),
+            ('Francesco', 'De Stasio', 'destasiofrancesco@goAirlines.com','password', 'Amministratore', null),
+
+            ('Luca', 'Abete', 'lucabete@ryanair.com','password', 'Amministratore', 'Ryanair'),
+            ('Johan', 'Bach', 'bach@ryanair.com','password', 'TicketAgent', 'Ryanair'),
+            ('Frederich', 'Handel', 'handel@ryanair.com','password', 'AddettoCheckIn', 'Ryanair'),
+            ('Isac', 'Asimov', 'asimov@ryanair.com','password', 'AddettoImbarco', 'Ryanair'),
+            ('George', 'Orwell', 'orwell@ryanair.com','password', 'ResponsabileVoli', 'Ryanair'),
+
+            ('Alan', 'Turing', 'alanturing@javaAirlines.com','password', 'Amministratore', 'JavaAirlines'),
+            ('Kurt', 'Godel', 'kurt@javaAirlines.com','password', 'TicketAgent', 'JavaAirlines'),
+            ('Gottlob', 'Frege', 'frege@javaAirlines.com','password', 'AddettoCheckIn', 'JavaAirlines'),
+            ('Ludwig', 'Wittgenstein', 'ludwitt@javaAirlines.com','password', 'AddettoImbarco', 'JavaAirlines'),
+            ('Friedrich', 'Gauss', 'gauss@javaAirlines.com','password', 'ResponsabileVoli', 'JavaAirlines'),
+
+            ('David', 'Gilmour', 'pinkFloyd@vueling.com','password', 'Amministratore', 'Vueling'),
+            ('Paolo', 'Rossi', 'paoloRossi@alitalia.it','password', 'Amministratore', 'Alitalia'),
+            ('Jimmy', 'Page', 'ledZeppelin@easyjet.com','password', 'Amministratore', 'Easyjet'),
+            ('Steve', 'Jobs', 'steve@apple.com','password', 'Amministratore', 'AppleFly'),
+            ('Linus', 'Torvald', 'linus@linux.com','password', 'Amministratore', 'LinuxFly'),
+            ('Bill', 'Gates', 'billGates@windows.com','password', 'Amministratore', 'WindowsFly'),
+            ('Eren', 'Jaeger', 'eren@lufthansa.com','password', 'Amministratore', 'Lufthansa');
+
 
 CREATE TABLE AeroportoGestito( /* l'aeroporto gestito è uno ed uno solo*/
     CodiceAeroporto VARCHAR(4) NOT NULL REFERENCES Aeroporto(Codice),
@@ -275,18 +323,3 @@ CREATE OR REPLACE VIEW PasseggeriTotali(NumeroVolo, Passeggeri) AS
     FROM Biglietto b
     NATURAL JOIN Tratta t
     GROUP BY t.NumeroVolo;
-/*
-CREATE OR REPLACE VIEW PasseggeriCheckIn(NumeroVolo, PasseggeriCheckin) AS
-    SELECT t.NumeroVolo, COUNT(*)
-    FROM Biglietto b
-    NATURAL JOIN Tratta t
-    WHERE b.CheckIn
-    GROUP BY t.NumeroVolo;
-
-CREATE OR REPLACE VIEW PasseggeriImbarcati(NumeroVolo, PasseggeriImbarcati) AS
-    SELECT t.NumeroVolo, COUNT(*)
-    FROM Biglietto b
-    NATURAL JOIN Tratta t
-    WHERE b.imbarcato
-    GROUP BY t.NumeroVolo;
-*/

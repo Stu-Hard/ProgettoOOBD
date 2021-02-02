@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Objects;
+
 public class Aeroporto {
     private String codiceICAO;
     private String nome;
@@ -16,8 +18,17 @@ public class Aeroporto {
         return citta + "-" + nome;
     }
 
-    public boolean equals(Aeroporto o) {
-        return codiceICAO.equals(o.getCodiceICAO());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aeroporto aeroporto = (Aeroporto) o;
+        return Objects.equals(codiceICAO, aeroporto.codiceICAO);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codiceICAO, nome, citta);
     }
 
     public String getCodiceICAO() {

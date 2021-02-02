@@ -23,8 +23,8 @@ public class CompagniaDao {
                         resultSet.getString("nome"),
                         resultSet.getString("sigla"),
                         resultSet.getString("nazione"),
-                        resultSet.getFloat("pesomassimo"),
-                        resultSet.getFloat("prezzobagagli")
+                        resultSet.getFloat("prezzobagagli"),
+                        resultSet.getFloat("pesomassimo")
                 ));
             }
         } catch (SQLException | NullPointerException e){
@@ -51,8 +51,8 @@ public class CompagniaDao {
                         resultSet.getString("nome"),
                         resultSet.getString("sigla"),
                         resultSet.getString("nazione"),
-                        resultSet.getFloat("pesomassimo"),
-                        resultSet.getFloat("prezzobagagli")
+                        resultSet.getFloat("prezzobagagli"),
+                        resultSet.getFloat("pesomassimo")
                 );
         } catch (SQLException e){
             e.printStackTrace();
@@ -65,8 +65,7 @@ public class CompagniaDao {
     }
 
     public void insert(Compagnia compagnia) throws SQLException{
-        PreparedStatement statement = null;
-        statement = PGConnection.getConnection().prepareStatement("insert into compagnia values(?, ?, ?, ?, ?)");
+        PreparedStatement statement = PGConnection.getConnection().prepareStatement("insert into compagnia values(?, ?, ?, ?, ?)");
         statement.setString(1, compagnia.getNome());
         statement.setString(2, compagnia.getSigla());
         statement.setString(3, compagnia.getNazione());
