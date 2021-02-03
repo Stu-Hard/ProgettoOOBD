@@ -25,7 +25,7 @@ public class CompagniaCard extends Pane {
             loadComponents();
             setLabels();
             try {
-                File imgFile = new File("src/main/resources/img/icons/" + compagnia.getNome() + ".png");
+                File imgFile = new File("icons/" + compagnia.getNome() + ".png");
                 if (imgFile.exists()) {
                     Image img = new Image(new FileInputStream(imgFile));
                     iconCircle.setFill(new ImagePattern(img));
