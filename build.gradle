@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'application'
 }
 
 group 'org.stuhard'
@@ -24,6 +25,10 @@ javafx {
 
 test {
     useJUnitPlatform()
+}
+
+application{
+    mainClassName = "Master"
 }
 
 jar{
