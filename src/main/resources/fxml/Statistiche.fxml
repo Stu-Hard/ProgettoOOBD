@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXSpinner?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -16,16 +17,16 @@
 <AnchorPane prefHeight="700.0" prefWidth="870.0" style=" -fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerStatistiche">
    <children>
       <JFXSpinner fx:id="spinner" layoutX="421.0" layoutY="308.0" visible="false" />
-      <ScrollPane focusTraversable="false" hbarPolicy="NEVER" layoutY="59.0" prefHeight="642.0" prefWidth="870.0" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" vbarPolicy="ALWAYS" vvalue="1.0">
+      <ScrollPane focusTraversable="false" hbarPolicy="NEVER" layoutY="59.0" prefHeight="642.0" prefWidth="870.0" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" vbarPolicy="ALWAYS">
         <content>
           <AnchorPane cacheShape="false" centerShape="false" minHeight="0.0" minWidth="0.0" prefHeight="805.0" prefWidth="873.0" scaleShape="false">
                <children>
-                  <BarChart fx:id="barChart" layoutX="14.0" layoutY="14.0" prefHeight="311.0" prefWidth="398.0" styleClass="bar" title="Gate: Mesi">
+                  <BarChart fx:id="barChart" layoutX="14.0" layoutY="25.0" prefHeight="300.0" prefWidth="398.0" title="Gate: Mesi">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" fx:id="x" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis fx:id="y" label="Ore Utilizzo" side="LEFT" />
+                      <NumberAxis fx:id="y" label="Minuti Utilizzo" prefHeight="320.0" prefWidth="49.0" side="LEFT" />
                     </yAxis>
                   </BarChart>
                   <BarChart fx:id="barChart2" layoutX="435.0" layoutY="14.0" prefHeight="311.0" prefWidth="410.0" title="Gate: Settimana">
@@ -33,24 +34,27 @@
                         <CategoryAxis side="BOTTOM" fx:id="x1" />
                      </xAxis>
                      <yAxis>
-                        <NumberAxis fx:id="y1" label="Ore Utilizzo" side="LEFT" />
+                        <NumberAxis fx:id="y1" label="Minuti Utilizzo" side="LEFT" />
                      </yAxis>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </BarChart>
                   <BarChart fx:id="barChart3" layoutX="42.0" layoutY="409.0" prefHeight="257.0" prefWidth="381.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis label="Ore Utilizzo" side="LEFT" />
+                      <NumberAxis label="Minuti Utilizzo" side="LEFT" />
                     </yAxis>
                   </BarChart>
-                  <JFXDatePicker fx:id="dpkGiorno" editable="false" layoutX="294.0" layoutY="666.0" onAction="#datePickGiorno" prefHeight="28.0" prefWidth="112.0" />
+                  <JFXDatePicker fx:id="dpkGiorno" defaultColor="#002bff" editable="false" layoutX="294.0" layoutY="666.0" onAction="#datePickGiorno" prefHeight="28.0" prefWidth="112.0" />
                   <Label layoutX="218.0" layoutY="666.0" prefHeight="32.0" prefWidth="76.0" text="Giorno:">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="dpkSettimana" editable="false" layoutX="726.0" layoutY="325.0" onAction="#datePickSettimana" prefHeight="28.0" prefWidth="112.0" />
+                  <JFXDatePicker fx:id="dpkSettimana" defaultColor="#002bff" editable="false" layoutX="726.0" layoutY="325.0" onAction="#datePickSettimana" prefHeight="28.0" prefWidth="112.0" />
                   <Label layoutX="491.0" layoutY="325.0" prefHeight="32.0" prefWidth="235.0" text="Giorno inizio settimana:">
                      <font>
                         <Font size="22.0" />
