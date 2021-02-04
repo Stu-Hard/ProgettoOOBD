@@ -65,7 +65,7 @@ public class CompagniaDao {
     }
 
     public void insert(Compagnia compagnia) throws SQLException{
-        PreparedStatement statement = PGConnection.getConnection().prepareStatement("insert into compagnia values(?, ?, ?, ?, ?)");
+        PreparedStatement statement = PGConnection.getConnection().prepareStatement("insert into compagnia(nome, sigla, nazione, prezzobagagli, pesomassimo) values(?, ?, ?, ?, ?)");
         statement.setString(1, compagnia.getNome());
         statement.setString(2, compagnia.getSigla());
         statement.setString(3, compagnia.getNazione());
