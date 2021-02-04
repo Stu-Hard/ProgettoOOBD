@@ -11,7 +11,6 @@ import database.dao.CodaImbarcoDao;
 import database.dao.GateDao;
 import database.dao.TrattaDao;
 import enumeration.DipendentiEnum;
-import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

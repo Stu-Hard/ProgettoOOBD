@@ -1,9 +1,7 @@
 package database.dao;
 
-import data.Aeroporto;
 import data.Bagaglio;
 import data.Biglietto;
-import data.Compagnia;
 import database.PGConnection;
 
 import java.sql.PreparedStatement;

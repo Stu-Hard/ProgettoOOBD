@@ -1,22 +1,12 @@
 package customComponents;
 
-import com.jfoenix.controls.JFXButton;
-import controllers.ControllerTratte;
-import controllers.ControllerTratteInfo;
 import data.Tratta;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import utility.WindowDragger;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 
 public class TrattaHbox extends HBox {
     private Tratta tratta;

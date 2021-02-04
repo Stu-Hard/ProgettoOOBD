@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class ControllerStatistiche implements Initializable, Refreshable<Void> {
+public class ControllerStatistiche implements Initializable{
 
     @FXML
     CategoryAxis x;
@@ -57,36 +57,7 @@ public class ControllerStatistiche implements Initializable, Refreshable<Void> {
     int minutiMeseEffettivo;
     int minutiMeseStimato;
 
-    // ?????
-    public Task<List<Void>> refresh() {
-        if (!spinner.isVisible()){
-            spinner.setVisible(true);
-            Task<List<Void>> task = new Task<>() {
-                @Override
-                protected List<Void> call() {
-                  /*  try {
 
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }*/
-                    return null;
-                }
-            };
-            task.setOnSucceeded(e -> {
-
-                spinner.setVisible(false);
-            });
-            Thread th = new Thread(task);
-            th.setDaemon(true);
-            th.start();
-            return task;
-        } else return null;
-    }
-    // ???????
-    @Override
-    public boolean isRefreshing() {
-        return false;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

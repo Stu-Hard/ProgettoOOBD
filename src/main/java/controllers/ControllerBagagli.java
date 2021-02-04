@@ -1,22 +1,16 @@
 package controllers;
 
-import com.jfoenix.controls.JFXTextField;
 import customComponents.BagaglioInfo;
-import data.Bagaglio;
 import data.Biglietto;
 import database.dao.BagaglioDao;
 import database.dao.BigliettoDao;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
