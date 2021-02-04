@@ -69,6 +69,10 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
 
     @FXML
     public void buy(ActionEvent e) {
+        cf.validate();
+        riconoscimento.validate();
+        nome.validate();
+        cognome.validate();
         if (cf.validate() && riconoscimento.validate()  && nome.validate() && cognome.validate() && classe.getValue() != null) {
             Cliente cliente = new Cliente(getCf(), getNome() + "-" + getCognome(), getRiconoscimento());
 
@@ -169,7 +173,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         cf.getValidators().add(new Validators().createRequiredValidator("Non puo' essere vuota"));
         nome.getValidators().add(new Validators().createRequiredValidator("Inserire nome"));
         cognome.getValidators().add(new Validators().createRequiredValidator("Inserire cognome"));
-        riconoscimento.getValidators().add(new Validators().createRequiredValidator("Inserire n. documento"));
+        cf.getValidators().add(new Validators().createCfValidator("Non e' valido"));
 
         documento.getItems().add("Patente");
         documento.getItems().add("Carta d'Identita'");
@@ -177,7 +181,7 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
         documento.getSelectionModel().selectFirst();
 
         computePrezzo(null);
-
+        setDocumentValidator(null);
     }
 
     public void computePrezzo(ActionEvent event) {
@@ -191,5 +195,22 @@ public class ControllerAcquisto extends WindowDragger implements Initializable {
                 case DIVERSAMENTE_ABILI -> prezzo /= 2;
             }
         pagaBtn.setText(String.format("%.2f$", prezzo));
+    }
+
+    public void setDocumentValidator(ActionEvent event) {
+        riconoscimento.getValidators().clear();
+
+        switch (documento.getValue()){
+            case "Patente" ->  {
+                riconoscimento.getValidators().add(new Validators().createPatentValidator("Patente errata"));
+            }
+            case "Carta d'Identita'" ->{
+                riconoscimento.getValidators().add(new Validators().createIdValidator("Id errato"));
+            }
+            case "Passaporto" ->{
+                riconoscimento.getValidators().add(new Validators().createPassportValidator("Passaporto errato"));
+            }
+        }
+
     }
 }

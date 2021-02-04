@@ -129,7 +129,6 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
                 controllerDipendenti.refresh();
             } else if (statisticheBtn.equals(b)) {
                 statistichePane.toFront();
-                controllerStatistiche.refresh();
             } else if (tabelloneBtn.equals(b)) {
                 tabellonePane.toFront();
                 controllerTabellone.refresh();

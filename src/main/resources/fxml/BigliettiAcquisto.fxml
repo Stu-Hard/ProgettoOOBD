@@ -25,7 +25,7 @@
             <Font size="15.0" />
          </font>
       </JFXTextField>
-      <JFXComboBox fx:id="documento" focusColor="#4bb24b" layoutX="209.0" layoutY="150.0" prefHeight="32.0" prefWidth="176.0" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
+      <JFXComboBox fx:id="documento" focusColor="#4bb24b" layoutX="209.0" layoutY="150.0" onAction="#setDocumentValidator" prefHeight="32.0" prefWidth="176.0" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878" />
       <JFXTextField fx:id="cf" focusColor="#4bb24b" labelFloat="true" layoutX="65.0" layoutY="224.0" prefHeight="31.0" prefWidth="186.0" promptText="Codice Fiscale*" style="-fx-prompt-text-fill: gray; -fx-text-fill: white;" unFocusColor="#787878">
          <font>
             <Font size="15.0" />
