@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="225.0" prefWidth="260.0" style="-fx-background-radius: 25px; -fx-border-radius: 25px; -fx-background-color: e0e0e0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
+      <Circle fx:id="iconCircle" fill="#e0e0e0" layoutX="180.0" layoutY="87.0" radius="50.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <VBox alignment="CENTER" layoutX="11.0" layoutY="14.0">
          <children>
               <Label fx:id="nome" text="Vueling " wrapText="true">
@@ -23,8 +23,6 @@
             </Label>
          </children>
       </VBox>
-        <AnchorPane fx:id="trattaPane" layoutX="74.0" layoutY="24.0" />
-      <Circle fx:id="iconCircle" fill="#e0e0e0" layoutX="180.0" layoutY="87.0" radius="50.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <VBox layoutX="11.0" layoutY="130.0">
          <children>
             <Label fx:id="nazione" text="Spagna">

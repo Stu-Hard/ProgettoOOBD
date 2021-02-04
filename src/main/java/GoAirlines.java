@@ -11,7 +11,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 public class GoAirlines extends Application {
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));

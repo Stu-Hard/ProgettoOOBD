@@ -5,10 +5,8 @@ import com.jfoenix.controls.*;
 import customComponents.GateCard;
 import customComponents.GateCardPopup;
 import customComponents.TrattaHbox;
-import data.CodaImbarco;
-import data.Dipendente;
-import data.Gate;
-import data.Tratta;
+import data.*;
+import database.dao.AeroportoDao;
 import database.dao.CodaImbarcoDao;
 import database.dao.GateDao;
 import database.dao.TrattaDao;
@@ -88,8 +86,9 @@ public class ControllerGate implements Initializable, Refreshable<Gate>, UserRes
         JFXListView<TrattaHbox> l = new JFXListView<>();
         l.setPrefSize(820, 300);
         try {
+            Aeroporto aeroportoGestito = new AeroportoDao().getAeroportoGestito();
             new TrattaDao().getTratteAperte(loggedUser.getCompagnia()).stream()
-                    .filter(t -> t.dateDistance() >= 0)
+                    .filter(t -> t.dateDistance() >= 0 && t.getAereoportoPartenza().equals(aeroportoGestito))
                     .forEach(t -> {
                 l.getItems().add(new TrattaHbox(t));
             });

@@ -21,7 +21,7 @@ public class TrattaDao {
         ResultSet resultSet = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta ORDER BY datapartenza, orapartenza, compagnia");
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();
@@ -70,7 +70,7 @@ public class TrattaDao {
         }
 
         try {
-            statement = PGConnection.getConnection().prepareStatement(query);
+            statement = PGConnection.getConnection().prepareStatement(query + " ORDER BY datapartenza, orapartenza, compagnia");
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
             CompagniaDao cDao = new CompagniaDao();
@@ -121,7 +121,7 @@ public class TrattaDao {
         ResultSet resultSet = null;
 
         try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE numerovolo = ?");
+            statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE numerovolo = ? ORDER BY datapartenza, orapartenza, compagnia");
             statement.setString(1, numeroVolo);
             resultSet = statement.executeQuery();
             AeroportoDao aDao = new AeroportoDao();
@@ -181,9 +181,9 @@ public class TrattaDao {
 
         try {
             if (compagnia == null)
-                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL");
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL ORDER BY datapartenza, orapartenza, compagnia");
             else {
-                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL AND compagnia = ?");
+                statement = PGConnection.getConnection().prepareStatement("SELECT * FROM tratta WHERE NOT conclusa AND codicegate IS NULL AND compagnia = ? ORDER BY datapartenza, orapartenza, compagnia");
                 statement.setString(1, compagnia.getNome());
             }
             resultSet = statement.executeQuery();

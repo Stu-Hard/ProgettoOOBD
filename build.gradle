@@ -25,3 +25,12 @@ javafx {
 test {
     useJUnitPlatform()
 }
+
+jar{
+    manifest {
+        attributes "Main-Class" : "Master"
+    }
+    from{
+        configurations.runtimeClasspath.collect{it.isDirectory()? it: zipTree(it)}
+    }
+}

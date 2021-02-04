@@ -72,7 +72,7 @@ public class ControllerCompagnieAdd extends WindowDragger implements Initializab
 
         if (imageFile != null){
             try {
-                URI dest = new File(  "src/main/resources/img/icons/" + nome.getText() + ".png").toURI();
+                URI dest = new File(  "icons/" + nome.getText() + ".png").toURI();
                 Files.copy(
                         Paths.get(imageFile.getAbsolutePath()),
                         Paths.get(dest),

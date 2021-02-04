@@ -1,25 +1,30 @@
 package database;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class PGConnection {
-    static Connection connection = null;
+    private static Connection connection = null;
+    public static String host = null;
+    public static Integer port = null;
+    public static String dbName = null;
+    public static String user = null;
+    public static String password = null;
 
     private PGConnection(){}
 
     public static Connection getConnection(){
         try {
             if (connection == null || connection.isClosed()){
-                String url = "jdbc:postgresql://localhost:5432/" + System.getenv("DB");
-                String user = System.getenv("user");
-                String pass = System.getenv("pw");
+                String url = String.format("jdbc:postgresql://%s:%d/%s", host, port, dbName);
                 try {
                     Class.forName("org.postgresql.Driver");
-                    connection = DriverManager.getConnection(url, user, pass);
+                    connection = DriverManager.getConnection(url, user, password);
                 }
                 catch (ClassNotFoundException | SQLException e) {
+                    JOptionPane.showMessageDialog(null, "Errore di connessione al database. Controlla il file config.ini", "Errore", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
                 }
             }

@@ -38,7 +38,10 @@ public class ControllerDipendentiCard  {
         cDipendentiDati.setNomeCognome(mDipendente.getCognome()+ " " + mDipendente.getNome());
         cDipendentiDati.setPassword(mDipendente.getPassword());
         cDipendentiDati.setRuolo(mDipendente.getRuolo().toString());
-        cDipendentiDati.setCompagnia(mDipendente.getCompagnia());
+        if(mDipendente.getCompagnia() != null)
+            cDipendentiDati.setCompagnia(mDipendente.getCompagnia());
+        else
+            cDipendentiDati.compagnia.setText("Aeroporto");
 
         Scene scene = new Scene(root);
         Stage stage = new Stage();
