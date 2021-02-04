@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.JFXTextField;
+import customComponents.BagaglioInfo;
 import data.Bagaglio;
 import data.Biglietto;
 import database.dao.BagaglioDao;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,25 +27,22 @@ public class ControllerBagagli implements Initializable {
     /**
      * @param bagagliList e' il componente grafico dove verrano visulizzati i bagagli
      * @param hboxDati e' il componente grafico dove verrano visulizzati i Dati del biglietto e Cliente
-     * @param vboxBagagli contiene bagagliList e il Text("Bagagli")
      * @param serarchBar e' la barra di ricerca
      * @param nessunBiglietto messaggi di "errore"
      * @param nBiglietto,nVolo,nome,documento,codiceFiscale dati del cliente e del suo biglietto
      * */
     @FXML
-    private ListView<Bagaglio> bagagliList;
-    ObservableList list = FXCollections.observableArrayList();
+    private ListView<BagaglioInfo> bagagliList;
     @FXML
     private HBox hboxDati;
-    @FXML
-    private VBox vboxBagagli;
     @FXML
     private TextField searchBar;
     @FXML
     private Label nessunBiglietto;
     @FXML
     private Label nBiglietto, nVolo, nome, documento, codiceFiscale;
-
+    @FXML
+    private Text bagagliText;
     /**
      * Inizializza il file .fxml
      */
@@ -60,7 +59,8 @@ public class ControllerBagagli implements Initializable {
     public void canc(ActionEvent event) {
         searchBar.setText("");
         hboxDati.setVisible(false);
-        vboxBagagli.setVisible(false);
+        bagagliText.setVisible(false);
+        bagagliList.setVisible(false);
         nessunBiglietto.setVisible(false);
     }
     /**
@@ -82,7 +82,8 @@ public class ControllerBagagli implements Initializable {
                if(bDao.getBigliettoByCodice(codiceBiglietto) == null){
                    nessunBiglietto.setVisible(true);
                    nessunBiglietto.setText("Nessun biglietto corrispondente");
-                   vboxBagagli.setVisible(false);
+                   bagagliText.setVisible(false);
+                   bagagliList.setVisible(false);
                    hboxDati.setVisible(false);
                }else{
                    Biglietto biglietto = bDao.getBigliettoByCodice(codiceBiglietto);
@@ -94,8 +95,12 @@ public class ControllerBagagli implements Initializable {
                    hboxDati.setVisible(true);
 
                    bagagliList.getItems().clear();
-                   bagagliList.getItems().addAll(bgDao.getBagagliByCodBiglietto(codiceBiglietto));
-                   vboxBagagli.setVisible(true);
+                   bgDao.getBagagliByCodBiglietto(codiceBiglietto).forEach(b ->{
+                       bagagliList.getItems().add(new BagaglioInfo(b));
+                   });
+
+                   bagagliList.setVisible(true);
+                   bagagliText.setVisible(true);
                    nessunBiglietto.setVisible(false);
                }
            } catch (SQLException sqlException) {
@@ -104,7 +109,8 @@ public class ControllerBagagli implements Initializable {
        }else{
            nessunBiglietto.setText("Non hai cercato nulla");
            nessunBiglietto.setVisible(true);
-           vboxBagagli.setVisible(false);
+           bagagliList.setVisible(false);
+           bagagliText.setVisible(false);
            hboxDati.setVisible(false);
        }
     }

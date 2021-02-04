@@ -91,7 +91,9 @@ public class ControllerStatistiche implements Initializable, Refreshable<Void> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
+        barChart.setAnimated(false);
+        barChart2.setAnimated(false);
+        barChart3.setAnimated(false);
         //Mesi
         meseComboBox.getItems().add("Gennaio");
         meseComboBox.getItems().add("Febbraio");
