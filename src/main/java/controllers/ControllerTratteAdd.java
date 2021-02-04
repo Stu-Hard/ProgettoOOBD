@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import utility.IdFactory;
+import utility.UserRestricted;
 import utility.WindowDragger;
 
 import java.net.URL;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class ControllerTratteAdd extends WindowDragger implements Initializable {
+public class ControllerTratteAdd extends WindowDragger implements Initializable, UserRestricted {
     @FXML
     private JFXCheckBox
             diversamenteAbili,
@@ -200,7 +201,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
 
         try {
             aeroportoGestito = new AeroportoDao().getAeroportoGestito();
-            compagnia.getItems().addAll(new CompagniaDao().getCompagnie());
             aeroporti = new AeroportoDao().getAeroporti();
             partenza.getItems().addAll(aeroporti);
             arrivo.getItems().addAll(aeroporti);
@@ -208,5 +208,18 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable 
             throwables.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void setLoggedUser(Dipendente loggedUser) {
+        if (loggedUser.getCompagnia() == null) {
+            try {
+                compagnia.getItems().addAll(new CompagniaDao().getCompagnie());
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        else
+            compagnia.getItems().addAll(loggedUser.getCompagnia());
     }
 }

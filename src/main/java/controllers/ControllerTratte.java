@@ -136,6 +136,7 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta>, Use
             Parent parent = fxmlLoader.load();
             ControllerTratteAdd controller = fxmlLoader.getController();
             controller.setMainPane(mainPane);
+            controller.setLoggedUser(loggedUser);
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.initStyle(StageStyle.TRANSPARENT);
