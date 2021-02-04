@@ -166,6 +166,13 @@ public class DipendentiDao {
                     c = DipendentiEnum.ResponsabileVoli;
                 }
 
+                String compStr = resultSet.getString("compagnia");
+                Compagnia comp;
+                if (compStr == null){
+                    comp = null;
+                } else {
+                    comp = new CompagniaDao().getByNome(compStr);
+                }
                 list.add(new Dipendente(
                         resultSet.getString("codiceImpiegato"),
                         resultSet.getString("nome"),
@@ -173,7 +180,7 @@ public class DipendentiDao {
                         resultSet.getString("email"),
                         resultSet.getString("password"),
                         c,
-                        compagia
+                        comp
                 ));
 
             }

@@ -32,7 +32,11 @@ public class ControllerDipendentiDati extends WindowDragger implements Initializ
     }
 
     public void setCompagnia(Compagnia compagnia) {
-        this.compagnia.setText(compagnia.getNome());
+        if(compagnia != null) {
+            this.compagnia.setText(compagnia.getNome());
+        } else {
+            this.compagnia.setText("Aeroporto");
+        }
     }
 
     private Dipendente myDipendente;
