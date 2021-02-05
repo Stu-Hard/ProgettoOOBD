@@ -166,7 +166,7 @@ CREATE TABLE Biglietto(
     CheckIn BOOLEAN DEFAULT FALSE NOT NULL,
     Imbarcato BOOLEAN DEFAULT FALSE NOT NULL CHECK (NOT Imbarcato or CheckIn), /*imbarcato -> checkin*/
     Numerovolo VARCHAR(8) NOT NULL,
-    NomeCliente VARCHAR(30) NOT NULL,
+    NomeCliente VARCHAR(60) NOT NULL,
     Documento VARCHAR(9) NOT NULL,
     CodiceCoda INT NOT NULL,
     CF VARCHAR(16) CHECK (CF ~* '^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$'),

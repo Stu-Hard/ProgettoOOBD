@@ -8,7 +8,6 @@ public class Compagnia {
     private String nazione;
     private float prezzoBagagli;
     private float pesoMassimo;
-    private int numeroTratte = 0;
 
     public Compagnia(String nome, String sigla, String nazione, float prezzoBagagli, float pesoMassimo) {
         this.nome = nome;
@@ -24,11 +23,6 @@ public class Compagnia {
         if (o == null || getClass() != o.getClass()) return false;
         Compagnia compagnia = (Compagnia) o;
         return Objects.equals(nome, compagnia.nome);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome, sigla, nazione, prezzoBagagli, pesoMassimo, numeroTratte);
     }
 
     @Override
@@ -50,10 +44,6 @@ public class Compagnia {
 
     public Float getPrezzoBagagli() {
         return prezzoBagagli;
-    }
-
-    public int computeNumeroTratte() { // calcola quante tratte ha fatto una determinata compagnia (da fare con il db)
-        return numeroTratte;
     }
 
     public void setNome(String nome) {

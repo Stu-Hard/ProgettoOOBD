@@ -100,7 +100,4 @@ public class Gate {
         return codeImbarco;
     }
 
-    public CodeEnum[] getCodeArray() {
-        return codeImbarco.stream().map(CodaImbarco::getClasse).toArray(CodeEnum[]::new);
-    }
 }
