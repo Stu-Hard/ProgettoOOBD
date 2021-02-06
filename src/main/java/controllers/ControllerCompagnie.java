@@ -27,7 +27,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import utility.CardRippler;
 import utility.Refreshable;
 import utility.UserRestricted;
 
@@ -40,7 +39,18 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ControllerCompagnie implements Initializable, Refreshable<Compagnia>, UserRestricted {
-
+    /**
+     * @param scroll rappresenta un pannello di scroll.
+     * @param searchMode permette la tipologia di ricerca.
+     * @param aeroportoGestito mostra che aeroporto è gestito.
+     * @param flowPane pannello interno contenente componenti grafiche.
+     * @param spinner spinner di caricamento.
+     * @param localCompagnie lista di Compagnie gestite dall'aeroporto.
+     * @param mainPane pannello principale.
+     * @param searchBar barra di ricerca.
+     * @param loggedUser utente che utilizza il programma.
+     * @param addBtn bottone di aggiunta compagnia.
+     * */
     @FXML
     private ScrollPane scroll;
     @FXML
@@ -60,7 +70,9 @@ public class ControllerCompagnie implements Initializable, Refreshable<Compagnia
     @FXML
     private JFXButton addBtn;
 
-
+    /**
+     * apre una nuova finestra "CompagniaAdd", alla sua chiusura refresha la GUI principale.
+     * */
     @FXML
     private void add(ActionEvent e){
         try {
@@ -79,17 +91,26 @@ public class ControllerCompagnie implements Initializable, Refreshable<Compagnia
             ex.printStackTrace();
         }
     }
-
+    /**
+     * setta alle impostazioni iniziali la ricerca.
+     * */
     public void canc(ActionEvent e){
         searchBar.setText("");
         searchMode.getSelectionModel().selectFirst();
         refresh();
     }
-
+    /**
+     * funzione necessaria dall'implementazione dell'interfaccia "Refreshable"
+     * informa se la GUI principale sta refreshando.
+     * */
     public boolean isRefreshing(){
         return spinner.isVisible();
     }
 
+    /**
+     * funzione necessaria dall'implementazione della classe "Refreshable":
+     * ricarica la pagina caricando le ultime informazioni e le setta.
+     */
     public Task<List<Compagnia>> refresh() {
         if (!isRefreshing()){
             flowPane.getChildren().clear();
@@ -117,7 +138,10 @@ public class ControllerCompagnie implements Initializable, Refreshable<Compagnia
             return task;
         } else return null;
     }
-
+    /**
+     * ricerca locale, si attiva ogni volta che l'utente inserisce un carattere
+     * all'interno della searchBar e in base alla tipologia di ricerca restituisce il risultato.
+     */
     public void search(KeyEvent k) {
         String searchMode = this.searchMode.getValue();
         String text = searchBar.getText();
@@ -129,7 +153,12 @@ public class ControllerCompagnie implements Initializable, Refreshable<Compagnia
             case "Nazione" -> flowPane.getChildren().removeIf(node -> !((CompagniaCard) node).getCompagnia().getNazione().toUpperCase().contains(text.toUpperCase()));
         }
     }
-
+/**
+ * funzione necessaria dall'implementazione dell'interfaccia 'Initializable':
+ * setta la comboBox "searchMode" , il flowPane e effettua una ricerca al Database
+ * per settare l'aeroporto gestito.
+ * Setta infine lo scrollPane, inizializza quindi la lista contentente le "CompagnieCard".
+ */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         searchMode.getItems().addAll("Nome", "ICAO", "Nazione");
@@ -151,7 +180,10 @@ public class ControllerCompagnie implements Initializable, Refreshable<Compagnia
         scroll.setContent(flowPane);
         localCompagnie = new LinkedList<>();
     }
-
+    /**
+     * funzione necessaria dall'implementazione dell'interfaccia UserRestricted:
+     * non permette l'aggiunta di compagnie agli utenti non autorizzati
+     */
     @Override
     public void setLoggedUser(Dipendente loggedUser) {
         this.loggedUser = loggedUser;

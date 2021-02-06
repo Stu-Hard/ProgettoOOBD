@@ -16,7 +16,6 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="870.0" style=" -fx-background-color: f4f4f4;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerStatistiche">
    <children>
-      <JFXSpinner fx:id="spinner" layoutX="421.0" layoutY="308.0" visible="false" />
       <ScrollPane focusTraversable="false" hbarPolicy="NEVER" layoutY="59.0" prefHeight="642.0" prefWidth="870.0" styleClass="noFocus" stylesheets="@../css/scrollBarStyle.css" vbarPolicy="ALWAYS">
         <content>
           <AnchorPane cacheShape="false" centerShape="false" minHeight="0.0" minWidth="0.0" prefHeight="805.0" prefWidth="873.0" scaleShape="false">

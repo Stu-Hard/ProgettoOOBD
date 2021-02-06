@@ -47,15 +47,15 @@ public class ControllerLogin extends WindowDragger implements Initializable { //
     @FXML
     public void loginAction(ActionEvent e) {
         try {
-            Dipendente dipendete = new DipendentiDao().login(email.getText(), password.getText());
+            Dipendente dipendente = new DipendentiDao().login(email.getText(), password.getText());
 
-            if (dipendete != null){
+            if (dipendente != null){
                 try {
                     Stage mainStage = new Stage();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ToolBar.fxml"));
                     Parent root = loader.load();
                     ControllerMainPane mainController = ((ControllerToolBar)loader.getController()).getMainPaneController();
-                    mainController.initialize(dipendete);
+                    mainController.initialize(dipendente);
                     Scene scene = new Scene(root);
                     mainStage.setScene(scene);
                     mainStage.setResizable(false);

@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.JFXButton;
+import customComponents.Toast;
 import data.Compagnia;
 import data.Dipendente;
 import database.dao.DipendentiDao;
@@ -20,46 +21,46 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ControllerDipendentiDati extends WindowDragger implements Initializable {
-
+public class ControllerDipendentiDati extends WindowDragger {
+    /**
+     * @param mail,nomeCognome,codiceImpiegato,password,ruolo,compagnia label contenenti i dati relativi al Dipendente.
+     * @param licenziaBtn bottone di licenziamento.
+     * @param myDipendente dipendente.
+     * */
     @FXML
     Label mail, nomeCognome, codiceImpiegato, password,ruolo, compagnia;
     @FXML
     JFXButton licenziaBtn;
-
-    public String getCompagnia() {
-        return compagnia.toString();
-    }
-
-    public void setCompagnia(Compagnia compagnia) {
-        this.compagnia.setText(compagnia.getNome());
-    }
-
     private Dipendente myDipendente;
 
-    public void setMyDipendente(Dipendente myDipendente) {
-        this.myDipendente = myDipendente;
-    }
 
+    /**
+     * Override della superClasse estesa: "WindowDragger".
+     * setta l'offset
+     * */
     @Override
     public void setOffset(MouseEvent e) {
         super.setOffset(e);
     }
+    /**
+     * Override della superClasse estesa: "WindowDragger".
+     * permette di muovere la finestra
+     * */
     @Override
     public void moveWindow(MouseEvent e) {
         super.moveWindow(e);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
+    /**
+     * chiude la finestra.
+     * */
     public void close(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
-
+    /**
+     * cancella dal database il dipendente selezionato.
+     * */
     public void licenzia(ActionEvent event) throws IOException {
         //elimina dipendente
         try {
@@ -69,7 +70,20 @@ public class ControllerDipendentiDati extends WindowDragger implements Initializ
             sqlException.printStackTrace();
         }
     }
+    /**
+     * getter e setter della suddetta classe.
+     * */
+    public String getCompagnia() {
+        return compagnia.toString();
+    }
 
+    public void setCompagnia(Compagnia compagnia) {
+        this.compagnia.setText(compagnia.getNome());
+    }
+
+    public void setMyDipendente(Dipendente myDipendente) {
+        this.myDipendente = myDipendente;
+    }
     public Label getMail() {
         return mail;
     }
@@ -109,7 +123,4 @@ public class ControllerDipendentiDati extends WindowDragger implements Initializ
     public void setRuolo(String ruolo) {
         this.ruolo.setText(ruolo);
     }
-
-
-
 }

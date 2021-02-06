@@ -11,6 +11,7 @@ public class Toast {
         this.pane = pane;
     }
 
+
     public void show(String message){
         JFXSnackbar toast = new JFXSnackbar(pane);
         toast.fireEvent(new JFXSnackbar.SnackbarEvent(

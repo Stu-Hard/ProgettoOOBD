@@ -72,7 +72,7 @@
                 </VBox>
                 <VBox prefHeight="287.0" prefWidth="222.0" spacing="24.0">
                <children>
-                  <JFXComboBox fx:id="compagnia" onAction="#compagniaAction" prefWidth="190.0" style="-fx-font-size: 15;" stylesheets="@../css/white.css" />
+                  <JFXComboBox fx:id="compagnia"  prefWidth="190.0" style="-fx-font-size: 15;" stylesheets="@../css/white.css" />
                   <JFXComboBox fx:id="partenza" onAction="#controlloAeroporto" prefHeight="31.0" prefWidth="190.0" style="-fx-font-size: 15;" styleClass="jfx-combo-box" stylesheets="@../css/white.css" />
                   <JFXComboBox fx:id="arrivo" onAction="#controlloAeroporto" prefHeight="31.0" prefWidth="190.0" style="-fx-font-size: 15;" stylesheets="@../css/white.css" />
                   <HBox>

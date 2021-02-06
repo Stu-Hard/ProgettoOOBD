@@ -14,11 +14,18 @@ import java.io.IOException;
 
 
 public class CompagniaCard extends Pane {
+    /**
+     * @param compagnia Compagnia
+     * @param nome,sigla,nazione,pesoMassimo,prezzoBagagli rappresentano i dati della Compagnia
+     * @param iconCircle elemento grafico a cerchio
+     * */
     private Compagnia compagnia;
     private Label nome, sigla, nazione,
             pesoMassimo, prezzoBagagli;
     private Circle iconCircle;
-
+    /**
+     * costruttore della suddetta classe
+     * */
     public CompagniaCard(Compagnia compagnia) {
         this.compagnia = compagnia;
         try {
@@ -37,11 +44,15 @@ public class CompagniaCard extends Pane {
             e.printStackTrace();
         }
     }
-
+    /**
+     * restituisce la compagnia.
+     * */
     public Compagnia getCompagnia() {
         return compagnia;
     }
-
+    /**
+     * imposta le labels con i dati della Compagnia.
+     * */
     public void setLabels(){
         nome.setText(compagnia.getNome());
         sigla.setText("(" + compagnia.getSigla() + ")");
@@ -49,7 +60,9 @@ public class CompagniaCard extends Pane {
         pesoMassimo.setText("Peso max: " + String.format("%.2f", compagnia.getPesoMassimo()) + "kg");
         prezzoBagagli.setText("Prezzo bagagli: " + String.format("%.2f", compagnia.getPrezzoBagagli()) + "$");
     }
-
+    /**
+     * carica i componenti all'interno del .fxml
+     * */
     private void loadComponents() throws IOException {
         getChildren().add(FXMLLoader.load(getClass().getResource("/fxml/CompagniaCard.fxml")));
         this.nome = ((Label) lookup("#nome"));

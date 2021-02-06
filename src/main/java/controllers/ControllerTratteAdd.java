@@ -57,10 +57,6 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable,
         this.mainPane = mainPane;
     }
 
-    @FXML
-    public void compagniaAction(ActionEvent e){
-
-    }
 
     @FXML
     public void disableCode(ActionEvent e){

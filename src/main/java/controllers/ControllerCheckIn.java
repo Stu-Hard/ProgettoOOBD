@@ -34,7 +34,17 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ControllerCheckIn implements Initializable{
-
+    /**
+     * @param spinnerBagagli componente grafico che rappresenta uno spinner
+     * @param verificaButton,inviaButton,numeroBagagliButton,cancelBtn rappresentano dei bottoni per svolgere
+     * @param bagagliHbox,cartaImbarcoHbox rappresentano graficamente dati utili all'utente
+     * @param erroreLabel,nome,cognome,bagagliLabel,codiceBiglietto,tratta,classe,posto,gate,cf,documentoNumero,numeroVolo
+     *        sono tutte Label contententi dati utili.
+     * @param bigliettoTextField componente dove si inserisce il numero del biglietto
+     * @param nBagagli,nPeso,datiCheckIn vbox di raggruppamento in base al tipo di dato
+     * @param spinnerClass,initialValue,minValue,maxValue,svf variabili utili allo "spinnerBagagli"
+     * @param biglietto rappresenta il biglietto
+     * @param tfList lista che contiene le textField dei bagagli e del loro peso*/
     @FXML
     Spinner<Integer> spinnerBagagli;
     @FXML
@@ -42,8 +52,8 @@ public class ControllerCheckIn implements Initializable{
     @FXML
     HBox bagagliHbox, cartaImbarcoHbox;
     @FXML
-    Label erroreLabel, nome, cognome, bagagliLabel, codiceBiglietto,
-            tratta, classe, posto, gate, cf, documentoNumero, numeroVolo;
+    Label erroreLabel,nome,cognome,bagagliLabel,codiceBiglietto,
+            tratta,classe,posto,gate,cf,documentoNumero,numeroVolo;
     @FXML
     JFXTextField bigliettoTextField;
     @FXML
@@ -56,10 +66,19 @@ public class ControllerCheckIn implements Initializable{
     SpinnerValueFactory<Integer> svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(minValue,maxValue,initialValue);
     Biglietto biglietto = null;
 
+    List<TextField> tfList = new LinkedList();
+    /**
+     * funzione associata al bottone di verifica, ricerca il biglietto attraverso il suo codice
+     * univoco, dopodichè se esiste setta tutte le label con i dati ricavati dalla ricerca nel Database
+     * e li mostra attraverso i vari componenti grafici, altrimenti se non trova il biglietto, o
+     * la tratta e' già conclusa o il checkIn e' stato già effettuato
+     * mostra un messaggio di errore.
+     * */
+    @FXML
     public void verify(ActionEvent event) throws SQLException {
 
             BigliettoDao bDao = new BigliettoDao();
-                //todo forse bisogna cambiare int in String e quindi generare codici biglietti.
+
                 biglietto = bDao.getBigliettoByCodice(Integer.parseInt(bigliettoTextField.getText()));
                 if(biglietto != null) {
 
@@ -110,54 +129,12 @@ public class ControllerCheckIn implements Initializable{
                     bagagliLabel.setVisible(false);
                     numeroBagagliButton.setVisible(false);
                 }
-
     }
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        spinnerBagagli.setValueFactory(svf);
-        spinnerBagagli.getStyleClass().add(spinnerClass);
-
-        erroreLabel.setVisible(false);
-        inviaButton.setVisible(false);
-        bagagliHbox.setVisible(false);
-        cartaImbarcoHbox.setVisible(false);
-        spinnerBagagli.setVisible(false);
-        bagagliLabel.setVisible(false);
-        numeroBagagliButton.setVisible(false);
-
-
-
-        inviaButton.disableProperty().bind(new BooleanBinding() {
-            {
-                super.bind(
-                        //todo abilita solo se ha inserito tutti i textField dei kg dei bagagli
-                );
-            }
-
-            @Override
-            protected boolean computeValue() {
-                return false;
-            }
-        });
-        verificaButton.disableProperty().bind(new BooleanBinding() {
-            {
-                super.bind(
-                        bigliettoTextField.textProperty()
-                );
-            }
-
-            @Override
-            protected boolean computeValue() {
-                return bigliettoTextField.getText().isEmpty();
-            }
-        });
-
-    }
-
-
-
+    /**
+     * Crea un messaggio di conferma per la conferma del checkIn e setta l'attributo
+     * del checkIn = true, dopodiche' fa l'update dello stesso all'interno del
+     * database e inserisce poi anche i vari bagagli all'interno del database.
+     * Reimposta in fine la GUI allo stato iniziale*/
     public void invia(ActionEvent event) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CheckIn_ImbarcoConfirm.fxml"));
@@ -170,7 +147,6 @@ public class ControllerCheckIn implements Initializable{
         controller.setIconCheckImbarco("BUG");
         controller.setBagagli(bagagli);
         controller.setPasseggero(nome.getText() +" "+ cognome.getText());
-
 
         try {
             biglietto.setCheckIn(true);
@@ -194,7 +170,6 @@ public class ControllerCheckIn implements Initializable{
                 sqlException.printStackTrace();
             }
         }
-
         bigliettoTextField.setText("");
         erroreLabel.setVisible(false);
         inviaButton.setVisible(false);
@@ -204,9 +179,41 @@ public class ControllerCheckIn implements Initializable{
         bagagliLabel.setVisible(false);
         numeroBagagliButton.setVisible(false);
     }
+    /**
+     * funzione necessaria dall'implementazione dell'interfaccia 'Initializable':
+     * setta lo spinner, e le varie componenti grafice, disabilitando il bottone di verifica
+     * se non si è inserito nulla all'interno della TextField
+     * */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        spinnerBagagli.setValueFactory(svf);
+        spinnerBagagli.getStyleClass().add(spinnerClass);
 
-    List<TextField> tfList = new LinkedList();
+        erroreLabel.setVisible(false);
+        inviaButton.setVisible(false);
+        bagagliHbox.setVisible(false);
+        cartaImbarcoHbox.setVisible(false);
+        spinnerBagagli.setVisible(false);
+        bagagliLabel.setVisible(false);
+        numeroBagagliButton.setVisible(false);
 
+        verificaButton.disableProperty().bind(new BooleanBinding() {
+                {
+                    super.bind(
+                            bigliettoTextField.textProperty()
+                    );
+                }
+                @Override
+                protected boolean computeValue() {
+                    return bigliettoTextField.getText().isEmpty();
+                }
+        });
+    }
+   /**
+    * crea delle TextField in base a quanti bagagli si debbono imbarcare
+    * e inserendoli quindi nella "tfList", disabilitando il bottone di invio
+    * fino all'avvenuta compilazione di tutti i campi.
+    * */
     public void imbarcaBagagli(ActionEvent event) {
         Integer bagagli = spinnerBagagli.getValue();
         if(!(nBagagli.getChildren().isEmpty() && nPeso.getChildren().isEmpty())){
@@ -225,12 +232,10 @@ public class ControllerCheckIn implements Initializable{
             tfList.add(tf);
             nPeso.getChildren().add(tf);
         }
-
         inviaButton.disableProperty().bind(new BooleanBinding() {
             {
                 tfList.forEach(i -> super.bind(i.textProperty()));
             }
-
             @Override
             protected boolean computeValue() {
                 Boolean temp = false;
@@ -242,13 +247,14 @@ public class ControllerCheckIn implements Initializable{
                 return temp;
             }
         });
-
-        //todo imbarcarli con il codice..
         bagagliHbox.setVisible(true);
         inviaButton.setVisible(true);
     }
 
-
+    /**
+     * funzione collegata al fxml che setta la GUI allo stato iniziale
+     * */
+    @FXML
     public void restart(ActionEvent event) {
         bigliettoTextField.setText("");
         erroreLabel.setVisible(false);

@@ -13,18 +13,43 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 public class DipendentiCard extends AnchorPane {
+    /**
+     * @param utente icona
+     * @param bottoneUtente bottone
+     * @param gerarchia label rappresentante il ruolo del Dipendente
+     * @param pannello pane principale della DipendentiCard
+     * @param m_dipendente dipendente della DipendentiCard
+     * */
     private FontAwesomeIcon utente;
     private JFXButton bottoneUtente;
     private Label gerarchia;
     public AnchorPane pannello;
-    //private WeakReference<Dipendente> dipendente;
     private Dipendente m_dipendente;
 
+    /**
+     * costruttore della suddetta classe
+     * */
+    public DipendentiCard(Dipendente dipendente) {
+        this.m_dipendente = dipendente;
+        try{
+            caricaComponenti();
+            setGerarchia(dipendente.getRuolo());
+            bottoneUtente.setText(dipendente.getNome()+ " " + dipendente.getCognome());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * restituisce la stringa contentente il nome del dipendente
+     * */
     public String getBottoneUtente() {
         //per sapere il nome del dipendente
         return bottoneUtente.getText().toUpperCase();
     }
-
+    /**
+     * restituisce il ruolo del Dipendente
+     * */
     public DipendentiEnum getGerarchia(){
         if(gerarchia.getText().contains("Imbarco")) return DipendentiEnum.AddettoImbarco;
         else if(gerarchia.getText().contains("Amministratore")) return DipendentiEnum.Amministratore;
@@ -32,11 +57,9 @@ public class DipendentiCard extends AnchorPane {
         else if(gerarchia.getText().contains("Ticket")) return DipendentiEnum.TicketAgent;
         else return DipendentiEnum.ResponsabileVoli;
     }
-
-
-
-
-
+    /**
+     * setta la gerarchia del Dipendente
+     * */
     public void setGerarchia(DipendentiEnum gerarchia) throws IOException {
         switch (gerarchia) {
             case Amministratore:
@@ -62,22 +85,10 @@ public class DipendentiCard extends AnchorPane {
         }
 
     }
-    //Costruttore della DipendentiCard
 
-    public DipendentiCard(Dipendente dipendente) {
-        this.m_dipendente = dipendente;
-        try{
-            caricaComponenti();
-            setGerarchia(dipendente.getRuolo());
-            bottoneUtente.setText(dipendente.getNome()+ " " + dipendente.getCognome());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
+    /**
+     * carica i componenti all'interno del .fxml
+     * */
     private void caricaComponenti() throws IOException {
           FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DipendentiCard.fxml"));
           getChildren().add(loader.load());
@@ -88,8 +99,5 @@ public class DipendentiCard extends AnchorPane {
           this.gerarchia = ((Label) lookup("#gerarchia"));
           this.bottoneUtente = ((JFXButton) lookup("#bottoneUtente"));
           this.utente = ((FontAwesomeIcon) lookup("#utente"));
-
       }
-
-
 }

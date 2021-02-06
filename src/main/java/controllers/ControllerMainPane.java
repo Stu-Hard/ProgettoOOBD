@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,16 +18,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 import utility.Refreshable;
 import utility.UserRestricted;
 import utility.WindowDragger;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class ControllerMainPane extends WindowDragger implements UserRestricted {
     @FXML
@@ -55,7 +51,6 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
     private ControllerTabellone controllerTabellone;
 
     private List<Refreshable> refreshableList = new ArrayList<>();
-    private Window loginWindow;
 
     public Dipendente getLoggedUser() {
         return loggedUser;

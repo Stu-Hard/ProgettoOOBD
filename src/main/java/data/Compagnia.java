@@ -27,11 +27,6 @@ public class Compagnia {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(nome, sigla, nazione, prezzoBagagli, pesoMassimo, numeroTratte);
-    }
-
-    @Override
     public String toString() {
         return nome + "(" + sigla + ")";
     }

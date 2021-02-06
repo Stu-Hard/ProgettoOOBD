@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class AeroportoDao {
+    /**
+     * esegue una query al database, e restituisce la lista di tutti gli Aeroporti
+     * */
     public List<Aeroporto> getAeroporti() throws SQLException {
         List<Aeroporto> list = new ArrayList();
         PreparedStatement statement = null;
@@ -35,7 +38,9 @@ public class AeroportoDao {
         }
         return list;
     }
-
+    /**
+     * esegue una query al database,restituisce un Aeroporto prendendo come parametro una stringa del codice univoco ICAO
+     * */
     public Aeroporto getByCodice(String icao) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -55,7 +60,9 @@ public class AeroportoDao {
         }
         return aeroporto;
     }
-
+    /**
+     * esegue una query al database,restituisce l'aeroporto gestito dal programma
+     * */
     public Aeroporto getAeroportoGestito() throws SQLException{
         PreparedStatement statement = null;
         ResultSet resultSet = null;

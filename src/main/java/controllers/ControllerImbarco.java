@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -47,7 +46,7 @@ public class ControllerImbarco implements Initializable {
     @FXML
     JFXTextField codiceTextField;
     @FXML
-    Label nome, cognome, imbarcoCheckLabel, codiceBiglietto, tratta,
+    Label nome, cognome, codiceBiglietto, tratta,
             classe, posto, gate, cf, documentoNumero, numeroVolo;
 
 
@@ -87,30 +86,10 @@ public class ControllerImbarco implements Initializable {
     }
 
 
-    /*START: funzione che restituisce una stringa random e attributi che lo permettono */
-    String asciiUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    String asciiLowerCase = asciiUpperCase.toLowerCase();
-    String digits = "1234567890";
-    String asciiChars = asciiUpperCase + asciiLowerCase + digits;
-
-    private  String generateRandomString(int length, String seedChars) {
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        Random rand = new Random();
-        while (i < length) {
-            sb.append(seedChars.charAt(rand.nextInt(seedChars.length())));
-            i++;
-        }
-        return sb.toString();
-    }
-    /*END: funzione che restituisce una stringa random e attributi che lo permettono */
-
 
     Biglietto biglietto = null;
     //dopo la verifica dei bagagli
     public void verificaBagagli(ActionEvent actionEvent) throws SQLException {
-
-        //todo if codice è corretto allora..
 
 
         BigliettoDao bDao = new BigliettoDao();
@@ -230,8 +209,6 @@ public class ControllerImbarco implements Initializable {
         alert.setContent(root);
         alert.initModality(Modality.NONE);
         alert.showAndWait();
-        //stage.setScene(scene);
-        //stage.show();
         BagaglioDao bgDao = new BagaglioDao();
         for(int i = 0;  i < codiciBagagli.size(); i++) {
             try {

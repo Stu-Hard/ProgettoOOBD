@@ -26,15 +26,21 @@ import java.util.ResourceBundle;
 
 
 public class ControllerStatistiche implements Initializable{
-
+    /**
+     * @param x,y parametri del grafico.
+     * @param barChart,barChart2,barChart3 grafici
+     * @param dpkGiorno,dpkSettimana date Picker rispettivamente del giorno e della settimana(giorno iniziale della settimana)
+     * @param gateComboBox comboBox contenente i Gate dell'aeroporto
+     * @param meseComboBox,annoComboBox contengono i mesi e l'anno corrente
+     * @param minutiGiornoStimato,minutiGiornoEffettivo,minutiSettimanaEffettivo,minutiSettimanaStimato,minutiMeseEffettivo,minutiMeseStimato
+     *        interi che rappresentano i minuti d'utilizzo.
+     * */
     @FXML
     CategoryAxis x;
     @FXML
     NumberAxis y;
     @FXML
     private BarChart<String,Number> barChart;
-    @FXML
-    JFXSpinner spinner;
     @FXML
     private BarChart<String,Number> barChart2;
     @FXML
@@ -56,12 +62,14 @@ public class ControllerStatistiche implements Initializable{
     int minutiSettimanaStimato;
     int minutiMeseEffettivo;
     int minutiMeseStimato;
-
-
-
+    /**
+     * funzione necessaria dall'implementazione dell'interfaccia 'Initializable':
+     * inizializza i mesi della comboBox "meseComboBox", setta le animazioni dei grafici,
+     * inizializza l'anno nella comboBox "annoComboBox",
+     * inizializza i Gate in "gateComboBox"
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         barChart.setAnimated(false);
         barChart2.setAnimated(false);
         barChart3.setAnimated(false);
@@ -97,16 +105,18 @@ public class ControllerStatistiche implements Initializable{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-
-
     }
-
+    /**
+     * in base al gate richiama tutte le funzioni per i grafici.
+     * */
     public void setGate(ActionEvent event) {
         datePickGiorno(null);
         datePickSettimana(null);
         datePickMese(null);
     }
-
+    /**
+     * modifica il grafico del giorno in base all'utilizzo effettivo e quello stimato
+     * */
     public void datePickGiorno(ActionEvent event) {
         CodaImbarcoDao cDao = new CodaImbarcoDao();
 
@@ -126,7 +136,9 @@ public class ControllerStatistiche implements Initializable{
             sqlException.printStackTrace();
         }
     }
-
+    /**
+     * modifica il grafico del settimana in base all'utilizzo effettivo e quello stimato
+     * */
     public void datePickSettimana(ActionEvent event) {
         CodaImbarcoDao cDao = new CodaImbarcoDao();
             try {
@@ -145,7 +157,9 @@ public class ControllerStatistiche implements Initializable{
                 sqlException.printStackTrace();
             }
         }
-
+    /**
+     * modifica il grafico del mese in base all'utilizzo effettivo e quello stimato
+     * */
     public void datePickMese(ActionEvent event){
         CodaImbarcoDao cDao = new CodaImbarcoDao();
         try {

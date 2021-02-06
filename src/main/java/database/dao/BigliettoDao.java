@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BigliettoDao {
-
+    /**
+     * esegue una query al database, restituisce la lista di tutti i biglietti presenti nel Database.
+     * */
     public List<Biglietto> getBiglietto() throws SQLException {
         List<Biglietto> list = new ArrayList();
         PreparedStatement statement = null;
@@ -48,7 +50,9 @@ public class BigliettoDao {
 
         return list;
     }
-
+    /**
+     * esegue una query al database, restituisce un biglietto in base al codice univoco del biglietto
+     * */
     public Biglietto getBigliettoByCodice(int codice) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -85,7 +89,9 @@ public class BigliettoDao {
         return biglietto;
     }
 
-
+    /**
+     * fa un update del biglietto, dove setta il checkin e l'imbarco
+     * */
     public void update(Biglietto biglietto) throws SQLException{
         PreparedStatement statement = null;
 
@@ -102,7 +108,9 @@ public class BigliettoDao {
             if (statement != null) statement.close();
         }
     }
-
+    /**
+     * inserisce all'interno del database il biglietto passato come parametro
+     * */
     public void insert(Biglietto biglietto) throws SQLException{
         PreparedStatement statement = null;
         int codiceCoda = new CodaImbarcoDao().getByBiglietto(biglietto).getCodiceCoda();
@@ -120,7 +128,9 @@ public class BigliettoDao {
         if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
         if (statement != null) statement.close();
     }
-
+    /**
+     * elimina i biglietti in base alla tratta, utile per quando si eliminano delle tratte
+     * */
     public void deleteByTratta(Tratta tratta) throws SQLException{
         PreparedStatement statement = null;
         try {
@@ -135,7 +145,9 @@ public class BigliettoDao {
         }
     }
 
-
+    /**
+     * restituisce la compagnia in base al biglietto passato come parametro
+     * */
     public Compagnia getCompagnia(Biglietto biglietto) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -155,44 +167,6 @@ public class BigliettoDao {
         }
         return compagnia;
     }
-
-    /*public Integer getCodiceByBiglietto(Biglietto biglietto) throws SQLException {
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = PGConnection.getConnection().prepareStatement("SELECT biglietto.codicebiglietto FROM biglietto WHERE " +
-                    "prezzo = ?" +
-                    "AND fila = ?" +
-                    "AND posto = ?" +
-                    "AND classe = '"+ biglietto.getClasse()+ "'" +
-                    "AND biglietto.checkin = ?" +
-                    "AND imbarcato = ?" +
-                    "AND numerovolo = ?" +
-                    "AND cf = ?");
-
-            statement.setDouble(1,biglietto.getPrezzo());
-            statement.setInt(2,biglietto.getFila());
-            statement.setInt(3, biglietto.getPosto());
-            statement.setBoolean(4, biglietto.isCheckIn());
-            statement.setBoolean(5, biglietto.isImbarcato());
-            statement.setString(6, biglietto.getNumeroVolo());
-            statement.setString(7, biglietto.getcF());
-
-            resultSet = statement.executeQuery();
-            if  (resultSet.next()) {
-                return resultSet.getInt("codicebiglietto");
-            }
-        } catch (SQLException | NullPointerException e){
-            e.printStackTrace();
-        } finally {
-            if (PGConnection.getConnection() != null) PGConnection.getConnection().close();
-            if (statement != null) statement.close();
-            if (resultSet != null) resultSet.close();
-        }
-
-        return null;
-    }*/
 }
 
 

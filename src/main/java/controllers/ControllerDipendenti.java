@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -34,24 +35,37 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerDipendenti implements Initializable, Refreshable<Dipendente>, UserRestricted {
+    /**
+     * @param mainPane pannello principale
+     * @param searchBar barra di ricerca
+     * @param scrollPane sottoPanello di scroll
+     * @param cancelBtn,addBtn botton
+     * @param dipendentiType comboBox contenente la gerarchia del dipendente
+     * @param spinner spinner di caricamento
+     * @param dipendentiList lista di dipendenti
+     * @param flowPane pannello utile per l'aggiunta delle DipendentiCard
+     * @param loggedUser dipendente loggato*/
 
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private TextField searchBar;
     @FXML
     private ScrollPane scrollPane;
     @FXML
-    private JFXButton cancelBtn;
+    private JFXButton cancelBtn,addBtn;
     @FXML
     private JFXComboBox<String> dipendentiType;
     @FXML
     JFXSpinner spinner;
-    private List<DipendentiCard> DipendentiList;
+    private List<DipendentiCard> dipendentiList;
     private FlowPane flowPane;
-    @FXML
-    private JFXButton addBtn;
     private Dipendente loggedUser;
-
-
+    /**
+     * funzione necessaria dall'implementazione dell'interfaccia "Initializable":
+     * setta i componenti della comboBox "dipendentiType", l'Action del bottone "cancelBtn"
+     * setta il  flowPane e le sue caratteristiche e lo aggiunge allo scrollPane
+     * */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dipendentiType.getItems().addAll("Dipendenti","Amministratori","Ticket Agent","Addetti all'Imbarco","Responsabili Voli", "Addetti al CheckIn");
@@ -70,26 +84,29 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
         flowPane.setPadding(new Insets(5, 10, 5, 20));
         flowPane.setStyle("-fx-background-color: transparent");
 
-        DipendentiList = new ArrayList<>();
+        dipendentiList = new ArrayList<>();
 
         scrollPane.setContent(flowPane);
     }
-
-
-
+    /**
+     * ricerca che e' attivata ogni qualvolta l'utente inserisce un carattere
+     * all'interno della searchBar.
+     * */
     public void search(KeyEvent keyEvent) {
 
         String testo = searchBar.getText().toUpperCase();//perchè così in qualunque modo inserisci il nome lo trova *guarda commento di sotto
 
         flowPane.getChildren().removeIf(node -> !((DipendentiCard) node).getBottoneUtente().contains(testo)); //getBottoneUtente() restituisce una stringa in UpperCase
-        DipendentiList.forEach(node -> {
+        dipendentiList.forEach(node -> {
             if(node.getBottoneUtente().contains(testo) && !flowPane.getChildren().contains(node)){
                     flowPane.getChildren().add(node);
             }
         });
         filtroLavoro(dipendentiType.getValue());
     }
-
+    /**
+     * gestisce la ricerca in base al valore della comboBox "dipendentiType".
+     * */
     public void filtroLavoro(String scelta){
         switch (scelta){
             case("Amministratori"):
@@ -115,28 +132,38 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
 
         }
     }
-
+    /**
+     * funzione ausiliaria che collega la ricerca con la scelta della gerarchia del Dipendente
+     * */
     public void sceltaDipendenti(ActionEvent actionEvent) {
         String scelta = this.dipendentiType.getValue();
         filtroLavoro(scelta);
         search(null);
     }
-
+    /**
+     * crea una nuova finestra e alla chiusura della stessa
+     * attiva un refresh della GUI principale.
+     * */
     public void addDipendente(ActionEvent event) throws IOException {
         //crea scheda per inserire utente
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DipendentiAdd.fxml"));
         Parent root = loader.load();
         ControllerDipendentiAdd c = loader.getController();
+        c.setMainPane(mainPane);
         c.setLoggedUser(loggedUser);
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
+        refresh();
     }
 
-
+    /**
+     * funzione necessaria dall'implementazione della classe "Refreshable":
+     * ricarica la pagina caricando le ultime informazioni e le setta.
+     */
     public Task<List<Dipendente>> refresh() {
         if (!isRefreshing()){
             flowPane.getChildren().clear();
@@ -153,8 +180,8 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
                 }
             };
             task.setOnSucceeded(e -> {
-                DipendentiList.clear();
-                task.getValue().stream().distinct().forEach(d -> DipendentiList.add(new DipendentiCard(d)));
+                dipendentiList.clear();
+                task.getValue().stream().distinct().forEach(d -> dipendentiList.add(new DipendentiCard(d)));
                 search(null);
                 spinner.setVisible(false);
             });
@@ -165,12 +192,17 @@ public class ControllerDipendenti implements Initializable, Refreshable<Dipenden
             return task;
         } else return null;
     }
-
+    /**
+     * funzione necessaria dall'implementazione della classe "Refreshable":
+     * */
     @Override
     public boolean isRefreshing() {
         return spinner.isVisible();
     }
-
+    /**
+     * funzione necessaria dall'implementazione dell'interfaccia UserRestricted:
+     * non permette l'aggiunta di dipendenti agli utenti non autorizzati
+     */
     @Override
     public void setLoggedUser(Dipendente loggedUser) {
         this.loggedUser = loggedUser;
