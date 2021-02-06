@@ -284,6 +284,7 @@ CREATE TABLE Dipendente(
            Password VARCHAR(30) NOT NULL,
            Ruolo EnumImpiegati NOT NULL,
            Compagnia VARCHAR(30) CHECK (Compagnia IS NOT NULL or Ruolo = 'Amministratore'),
+           CONSTRAINT email_unica UNIQUE(Email),
            CONSTRAINT fk_Company FOREIGN KEY(Compagnia) REFERENCES Compagnia(Nome)
 );
 
