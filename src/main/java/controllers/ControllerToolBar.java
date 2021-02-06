@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+// toolbar custom
 public class ControllerToolBar extends WindowDragger implements Initializable {
 
     @FXML
@@ -41,16 +42,18 @@ public class ControllerToolBar extends WindowDragger implements Initializable {
         container.getChildren().add(mainPane);
     }
 
+    // pulsante per ridurre ad icona
     public void min(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         stage.setIconified(true);
     }
-
+    // pulsante per chiudere la finestra
     public void close(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         stage.close();
     }
 
+    // restituisce il controller della finestra
     public ControllerMainPane getMainPaneController() {
         return mainPaneController;
     }

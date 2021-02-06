@@ -1,19 +1,18 @@
 package data;
 
-import enumeration.CodeEnum;
 import enumeration.GateStatus;
 import javafx.util.Pair;
-
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 
+// un gate è come se fosse uno stack di lunghezza 1
+// setTratta è l'equivalente di un push
+// end è l'equivalente di un pop
 public class Gate {
     private String gateCode;
     private GateStatus status = GateStatus.LIBERO; // stato del gate.
     private Tratta tratta = null; // Tratta che sta gestendo al momento.
-    private List<CodaImbarco> codeImbarco = new LinkedList();
+    private List<CodaImbarco> codeImbarco = new LinkedList(); // code della tratta che sta gestendo al momento
 
     public Gate(String gateCode, Tratta tratta, List<CodaImbarco> codeImbarco, Boolean isClosed) {
         this.gateCode = gateCode;
@@ -57,6 +56,7 @@ public class Gate {
     public void open(){
         if (status != GateStatus.OCCUPATO) status = GateStatus.LIBERO;
     }
+    // termina l'imbarco estraendo la tratta e le code. Equivalente di un pop
     public Pair<Tratta, List<CodaImbarco>> end(){ // conclude l'imbarco
         Tratta t = null;
         List<CodaImbarco> code = new LinkedList<>();
@@ -72,10 +72,12 @@ public class Gate {
         return new Pair(t, code);
     }
 
+    // fa una somma dei tempi stimati delle varie code
     public int getTempoStimatoTotale(){
         return codeImbarco.stream().map(CodaImbarco::getTempoStimato).reduce(0, Integer::sum);
     }
 
+    // imposta una tratta da imbarcare solo se è libero. Equivalente di un push
     public void setTratta(Tratta tratta, List<CodaImbarco> codeImbarco) {
         if (status == GateStatus.LIBERO && tratta != null) {
             tratta.setGate(gateCode);

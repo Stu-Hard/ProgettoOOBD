@@ -12,9 +12,9 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-// Non definitivo, bisognerebbe mettere un costruttore tramite la classe Gate. Per esperimenti va più che bene.
+// Componente custom per mostrare le informazioni del gate
 public class GateCard extends Pane{
-    private Gate gate;
+    private Gate gate; // il gate da mostrare
 
     private Label gateCode, partenza, arrivo, stato, tempo; // le label principali
     private Pane trattaPane; // pannello con partenza arrivo e tempo

@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXSnackbarLayout;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+// mostra una notifica popup
 public class Toast {
     private Pane pane;
     public Toast(Pane pane){

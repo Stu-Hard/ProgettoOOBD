@@ -31,7 +31,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-
+// controller per la schermata di login
 public class ControllerLogin extends WindowDragger implements Initializable { // per dubbi su windowDragger vai a utility.windowDragger
     @FXML
     private Pane pannello;
@@ -44,6 +44,7 @@ public class ControllerLogin extends WindowDragger implements Initializable { //
         Platform.exit();
     }
 
+    // prova ad effettuare il login
     @FXML
     public void loginAction(ActionEvent e) {
         try {
@@ -92,6 +93,7 @@ public class ControllerLogin extends WindowDragger implements Initializable { //
         password.setValidators(v);
     }
 
+    // controlla se il tasto premuto da tastiera è enter
     @FXML
     public void enterPressed(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.ENTER){

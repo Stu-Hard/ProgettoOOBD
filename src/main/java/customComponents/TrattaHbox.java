@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
+// componente custom per rappresentare tratte in una lista. Vedi il modello base in TrattaHbox.fxml
 public class TrattaHbox extends HBox {
     private Tratta tratta;
     private Label partenza;

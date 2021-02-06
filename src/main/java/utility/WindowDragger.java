@@ -10,6 +10,7 @@ public class WindowDragger {
     private double xOffset = 0.0;
     private double yOffset = 0.0;
 
+    // imposta l'offset del mouse
     public void setOffset(MouseEvent e){
         Window win = ((Node) e.getSource()).getScene().getWindow();
         win.requestFocus();

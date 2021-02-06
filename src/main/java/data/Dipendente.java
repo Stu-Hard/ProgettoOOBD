@@ -2,6 +2,7 @@ package data;
 
 import enumeration.DipendentiEnum;
 
+// entità del database
 public class Dipendente {
     private String codiceImpiegato;
     private String nome;

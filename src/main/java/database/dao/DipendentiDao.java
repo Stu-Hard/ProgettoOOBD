@@ -13,6 +13,7 @@ import java.util.List;
 
 public class DipendentiDao {
 
+    // da tutti i dipendenti
     public List<Dipendente> getDipendenti() throws SQLException {
         List<Dipendente> list = new ArrayList();
         PreparedStatement statement = null;
@@ -58,7 +59,7 @@ public class DipendentiDao {
         return list;
     }
 
-
+    // inserisce un nuovo dipendente
     public void insert(Dipendente dipendente) throws SQLException{
         PreparedStatement statement = null;
         try {
@@ -77,6 +78,7 @@ public class DipendentiDao {
         }
     }
 
+    // elimina un dipendente
     public void licenzia(Dipendente dipendente) throws SQLException{
         PreparedStatement statement = null;
         try {
@@ -91,6 +93,7 @@ public class DipendentiDao {
         }
     }
 
+    // Cerca un dipendente sul database con email uguale all'input e verifica se le password corrispondono
     public Dipendente login(String email, String password) throws SQLException{
         Dipendente dipendente = null;
         PreparedStatement statement = null;
@@ -137,6 +140,7 @@ public class DipendentiDao {
         return dipendente;
     }
 
+    // da tutti i dipendenti di una compagnia
     public List<Dipendente> getDipendentyByCompagnia(Compagnia compagia) throws SQLException {
         List<Dipendente> list = new ArrayList();
         PreparedStatement statement = null;

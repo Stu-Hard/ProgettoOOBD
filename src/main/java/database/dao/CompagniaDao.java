@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompagniaDao {
+    // da tutte le compagnie
     public List<Compagnia> getCompagnie() throws SQLException {
         List<Compagnia> list = new ArrayList();
         PreparedStatement statement = null;
@@ -64,6 +65,7 @@ public class CompagniaDao {
         return comp;
     }
 
+    // inserisce una nuova compagnia
     public void insert(Compagnia compagnia) throws SQLException{
         PreparedStatement statement = PGConnection.getConnection().prepareStatement("insert into compagnia(nome, sigla, nazione, prezzobagagli, pesomassimo) values(?, ?, ?, ?, ?)");
         statement.setString(1, compagnia.getNome());

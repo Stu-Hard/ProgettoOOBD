@@ -34,24 +34,24 @@ import java.util.stream.Collectors;
 public class ControllerTratte implements Initializable, Refreshable<Tratta>, UserRestricted {
 
     @FXML
-    private JFXComboBox<String> searchMode;
+    private JFXComboBox<String> searchMode; // imposta la modalità di ricerca
     @FXML
-    private JFXDatePicker dpk1, dpk2;
+    private JFXDatePicker dpk1, dpk2; // Selezionano la data di inizio e di fine per la ricerca
     @FXML
-    private TextField searchBar;
+    private TextField searchBar; // barra di ricerca
     @FXML
-    private JFXSpinner spinner;
+    private JFXSpinner spinner; // spinner del caricamento. Se è visibile allora sta effettuando una richiesta al database
     @FXML
-    private JFXButton cancelBtn;
+    private JFXButton cancelBtn; // elimina i vincoli di ricerca
     @FXML
     private AnchorPane mainPane;
     @FXML
-    private JFXButton addBtn;
+    private JFXButton addBtn; // bottone per aggiungere tratte
 
     @FXML
-    private JFXListView<TrattaHbox> listView;
-    private List<TrattaHbox> localTratte;
-    private Dipendente loggedUser;
+    private JFXListView<TrattaHbox> listView; // mostra le varie tratte
+    private List<TrattaHbox> localTratte; // lista locale delle tratte scaricate dal database
+    private Dipendente loggedUser; // riferimento a utente loggato
 
     public boolean isRefreshing(){
         return spinner.isVisible();
@@ -68,11 +68,11 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta>, Use
             case "Compagnia" -> listView.getItems().removeIf(node -> !node.getTratta().getCompagnia().getNome().toUpperCase().contains(text.toUpperCase()));
             case "NumeroVolo" -> listView.getItems().removeIf(node -> !node.getTratta().getNumeroVolo().toUpperCase().contains(text.toUpperCase()));
         }
-    }
+    } // applica i vincoli di ricerca
 
     public void datePick(ActionEvent e){
         refresh();
-    }
+    } //seleziona la data
 
     public void canc(ActionEvent e){
         searchBar.setText("");
@@ -80,7 +80,7 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta>, Use
         dpk2.setValue(null);
         searchMode.getSelectionModel().selectFirst();
         refresh();
-    }
+    } // elimina i vincoli di ricerca
 
     @FXML
     public void mouseClick(MouseEvent e){
@@ -121,7 +121,7 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta>, Use
                 }
             }
         }
-    }
+    } // seleziona una tratta e mostra le informazioni
 
     @FXML
     private void add(ActionEvent e){
@@ -141,7 +141,7 @@ public class ControllerTratte implements Initializable, Refreshable<Tratta>, Use
         }catch (IOException ex){
             ex.printStackTrace();
         }
-    }
+    } // apre la scheda per creare una tratta
 
     public Task<List<Tratta>> refresh() {
         if (!isRefreshing()){

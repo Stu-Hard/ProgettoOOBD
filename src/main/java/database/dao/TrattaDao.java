@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrattaDao {
+    // restituisce tutte le tratte
     public List<Tratta> getAllTratte() throws SQLException {
         List<Tratta> list = new ArrayList();
         PreparedStatement statement = null;
@@ -56,6 +57,7 @@ public class TrattaDao {
         return list;
     }
 
+    // tratte con data da from a to
     public List<Tratta> getTratteWithDate(LocalDate from, LocalDate to) throws SQLException {
         List<Tratta> list = new ArrayList();
         PreparedStatement statement = null;
@@ -105,6 +107,7 @@ public class TrattaDao {
         return list;
     }
 
+    // inserisce una nuova tratta
     public void insert(Tratta tratta) throws SQLException {
         PreparedStatement statement = null;
 
@@ -115,6 +118,7 @@ public class TrattaDao {
         if (statement != null) statement.close();
     }
 
+    // restituisce una tratta con numeroVolo uguale all'input
     public Tratta getByNumeroVolo(String numeroVolo) throws SQLException {
         Tratta t = null;
         PreparedStatement statement = null;
@@ -156,6 +160,7 @@ public class TrattaDao {
         return t;
     }
 
+    // aggiorna la tratta impostando il gate e il ritardo
     public void update(Tratta tratta) throws SQLException {
         PreparedStatement statement = null;
 
@@ -174,6 +179,7 @@ public class TrattaDao {
         }
     }
 
+    // restituisce le tratte ancora non concluse di una specifica compagnia
     public List<Tratta> getTratteAperte(Compagnia compagnia) throws SQLException {
         List<Tratta> list = new ArrayList();
         PreparedStatement statement = null;
@@ -221,6 +227,7 @@ public class TrattaDao {
         return list;
     }
 
+    // i passeggeri prenotati per la tratta
     public int getPasseggeri(Tratta tratta)throws SQLException{
         int passeggeri = 0;
         PreparedStatement statement = null;
@@ -247,6 +254,7 @@ public class TrattaDao {
         return passeggeri;
     }
 
+    // cancella la tratta con le code e i biglietti
     public void deleteTratta(Tratta tratta) throws SQLException{
         PreparedStatement statement = null;
         BigliettoDao bDao = new BigliettoDao();

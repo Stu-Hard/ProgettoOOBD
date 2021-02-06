@@ -5,6 +5,7 @@ import com.jfoenix.validation.base.ValidatorBase;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.scene.control.TextInputControl;
 
+// Classe per evitare codice boilerplate per la generazione dei Validators (per textField)
 public class Validators{
 
     public RequiredFieldValidator createRequiredValidator(String message){

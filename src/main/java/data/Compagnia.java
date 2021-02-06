@@ -2,6 +2,7 @@ package data;
 
 import java.util.Objects;
 
+// entità del database
 public class Compagnia {
     private String nome;
     private String sigla;

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class GateDao {
+    // da tutti i gate
     public List<Gate> getGateCodes() throws SQLException {
         List<Gate> list = new ArrayList();
         PreparedStatement statement = null;
@@ -40,6 +41,7 @@ public class GateDao {
         return list;
     }
 
+    // aggiorna lo stato di un gate e la tratta che sta imbarcando
     public void update(Gate gate) throws SQLException{
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -60,6 +62,7 @@ public class GateDao {
         }
     }
 
+    // da i gate tramite lo stato
     public List<Gate> getGateWithStatus(boolean isOccupato, boolean isLibero, boolean isChiuso) throws SQLException{
         List<Gate> list = new ArrayList();
         PreparedStatement statement = null;
