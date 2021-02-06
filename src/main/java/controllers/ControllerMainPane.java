@@ -26,23 +26,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// controller principale
 public class ControllerMainPane extends WindowDragger implements UserRestricted {
     @FXML
-    private VBox lpBox;
+    private VBox lpBox; // vbox per i pulsanti laterali
     @FXML
-    private Label dipendenteLbl;
+    private Label dipendenteLbl; // label per informazioni sul dipendente loggato
 
     @FXML
     private JFXButton tratteBtn, gateBtn, checkInBtn,
             imbarcoBtn, compagnieBtn, aereiBtn,
-            dipendentiBtn, statisticheBtn, tabelloneBtn;
+            dipendentiBtn, statisticheBtn, tabelloneBtn;  // pulsanti laterali
     @FXML
     private Pane trattePane, gatePane, checkInPane,
             imbarcoPane, compagniePane, bagagliPane,
             dipendentiPane, statistichePane, tabellonePane;
 
-    private Dipendente loggedUser;
+    private Dipendente loggedUser; // utente loggato
 
+    // riferimento ai varri controller secondari
     private ControllerTratte controllerTratte;
     private ControllerGate controllerGate;
     private ControllerDipendenti controllerDipendenti;
@@ -50,6 +52,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
     private ControllerStatistiche controllerStatistiche;
     private ControllerTabellone controllerTabellone;
 
+    // lista di controller secondari che implementano refreshable
     private List<Refreshable> refreshableList = new ArrayList<>();
 
     public Dipendente getLoggedUser() {
@@ -66,13 +69,14 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
     }
 
 
+    // per evitare problemi di concorrenza con la connessione al database, solo uno alla volta dei controller secondari può effettuare il refresh
     public boolean canRefresh(){
         return !refreshableList.stream()
                 .map(Refreshable::isRefreshing)
-                .reduce(false, (a, b) -> a || b);
+                .reduce(false, (a, b) -> a || b); // la clausa è vera se almeno uno dei controller sta effettuando il refresh
     }
 
-
+    // riporta alla pagina di login
     public void logout(ActionEvent e){
         try {
             Stage login = new Stage();
@@ -94,6 +98,7 @@ public class ControllerMainPane extends WindowDragger implements UserRestricted 
     }
     public void closeButton(ActionEvent e){ Platform.exit(); }
 
+    // imposta il pannello da mostrare solo se nessuno sta effettuando il refresh
     public void setFrame(MouseEvent e){
         if (canRefresh()) {
             for(Node i : lpBox.getChildren()){

@@ -2,13 +2,13 @@ package data;
 
 import java.util.Objects;
 
+// entità del database
 public class Compagnia {
     private String nome;
     private String sigla;
     private String nazione;
     private float prezzoBagagli;
     private float pesoMassimo;
-    private int numeroTratte = 0;
 
     public Compagnia(String nome, String sigla, String nazione, float prezzoBagagli, float pesoMassimo) {
         this.nome = nome;
@@ -45,10 +45,6 @@ public class Compagnia {
 
     public Float getPrezzoBagagli() {
         return prezzoBagagli;
-    }
-
-    public int computeNumeroTratte() { // calcola quante tratte ha fatto una determinata compagnia (da fare con il db)
-        return numeroTratte;
     }
 
     public void setNome(String nome) {

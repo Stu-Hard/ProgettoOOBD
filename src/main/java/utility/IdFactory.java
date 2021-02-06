@@ -32,6 +32,4 @@ public class IdFactory {
         }
         return c.getSigla() + numeroVolo;
     }
-    public void newCodiceBagaglio(){
-    } // todo
 }

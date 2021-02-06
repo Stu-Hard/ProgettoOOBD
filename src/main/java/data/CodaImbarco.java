@@ -71,6 +71,7 @@ public class CodaImbarco {
     public void setTempoEffettivo(int tempoEffettivo) {
         this.tempoEffettivo = tempoEffettivo;
     }
+    // imposta il tempo effettivo come la distanza in minuti dall'ora di apertura all'ora corrente
     public void setTempoEffettivo() {
         if(oraApertura != null)
             this.tempoEffettivo = (int) ChronoUnit.MINUTES.between(oraApertura, Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());

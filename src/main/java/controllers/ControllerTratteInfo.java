@@ -30,38 +30,42 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
+// mostra le informazioni di una tratta, e se possibile porta alla pagina di acquisto biglietti
 public class ControllerTratteInfo extends WindowDragger implements UserRestricted {
-    private Tratta tratta;
+
+    private Tratta tratta; // la tratta da mostrare
 
     @FXML
     private Label partenza, arrivo, compagnia, dataPartenza, durata,
-    ritardo, gate, numeroVolo, passeggeri, posti;
+    ritardo, gate, numeroVolo, passeggeri, posti; // label per mostrare gli attributi della tratta
     @FXML
-    private JFXCheckBox completata;
+    private JFXCheckBox completata; // se è completa allora è spuntata altrimenti no
     @FXML
-    private JFXButton closeBtn;
-    private Window mainWindow;
+    private JFXButton closeBtn; // chiude la finestra
+    private Window mainWindow; // riferimento alla finestra principale per l'animazione di conferma
     @FXML
-    private JFXButton acquistaBtn;
+    private JFXButton acquistaBtn; // porta alla pagina di acquisto
     @FXML
-    private AnchorPane codePane;
+    private AnchorPane codePane; // mostra le code di imbarco
     @FXML
-    private Label nonGestitaLbl;
+    private Label nonGestitaLbl; // compare se la tratta non è gestita
     private Aeroporto aeroportoGestito;
     private int passeggeriCount = 0;
     private Dipendente loggedUser;
 
+    // chiude la finestra
     @FXML
     private void close(ActionEvent e){
         closeBtn.getScene().getWindow().hide();
     }
 
+    // imposta la tratta da mostrare
     public void setTratta(Tratta tratta) {
         this.tratta = tratta;
     }
 
 
+    // mostra la finestra di acquisto
     @FXML
     public void buyTicket(ActionEvent e){
         try {
@@ -85,6 +89,7 @@ public class ControllerTratteInfo extends WindowDragger implements UserRestricte
 
     }
 
+    // aggiorna le labels
     private void setLabels(){
         partenza.setText(tratta.getAereoportoPartenza().getCitta());
         arrivo.setText(tratta.getAereoportoArrivo().getCitta());
@@ -136,6 +141,7 @@ public class ControllerTratteInfo extends WindowDragger implements UserRestricte
         this.mainWindow = window;
     }
 
+    // inizializza la scheda
     public void initialize(Tratta t, Dipendente loggedUser) {
         setTratta(t);
         setLoggedUser(loggedUser);

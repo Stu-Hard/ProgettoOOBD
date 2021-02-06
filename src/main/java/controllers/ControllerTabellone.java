@@ -25,31 +25,33 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+// controlla per la scheda tabellone
 public class ControllerTabellone implements Initializable , Refreshable<Tratta> {
 
     @FXML
-    private VBox voloBox;
+    private VBox voloBox; // vbox per numero volo
     @FXML
-    private VBox destinazioneBox;
+    private VBox destinazioneBox; // vbox per destinazione/provenienza
     @FXML
-    private VBox partenzaBox;
+    private VBox partenzaBox; // vbox per ora della partenza
     @FXML
-    private VBox statoBox;
+    private VBox statoBox; // stato della tratta: In attesa, conclusa, imbarco in gate __
 
     @FXML
-    private Button partenzeBtn, arriviBtn;
+    private Button partenzeBtn, arriviBtn; // pulsanti per cambiare tabellone
     @FXML
     private Label destinazioneLbl;
-    private List<Tratta> localTratte;
+    private List<Tratta> localTratte; // lista di tratte locali salvate dal database
     private Aeroporto aeroportoGestito;
     private boolean refreshing = false;
-    private Runnable selectedFunction;
+    private Runnable selectedFunction; // o partenze() o arrivo(), a seconda del bottone che viene premuto
 
     @FXML
     public void partenze(ActionEvent e){
         selectedFunction = this::partenze;
         refresh();
     }
+    // setta le tratte della giornata in partenza
     public void partenze(){
         destinazioneLbl.setText("Destinazione");
         setLabels(localTratte.stream().filter(t -> t.getAereoportoPartenza().equals(aeroportoGestito)), true);
@@ -72,6 +74,7 @@ public class ControllerTabellone implements Initializable , Refreshable<Tratta> 
         selectedFunction = this::arrivi;
         refresh();
     }
+    // setta le tratte della giornata in arrivo
     public void arrivi(){
         destinazioneLbl.setText("Provenienza");
         setLabels(localTratte.stream().filter(t -> !t.getAereoportoPartenza().equals(aeroportoGestito)), false);

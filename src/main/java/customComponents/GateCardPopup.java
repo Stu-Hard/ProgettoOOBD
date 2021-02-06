@@ -14,13 +14,14 @@ import javafx.stage.Modality;
 
 import java.sql.SQLException;
 
+// menu popup per le GateCard
 public class GateCardPopup extends JFXPopup {
 
-    private JFXButton chiudi;
-    private JFXButton apri;
-    private JFXButton impostaTratta;
-    private JFXButton terminaImbarco;
-    private VBox v;
+    private JFXButton chiudi; // bottone per settare il gate chiuso
+    private JFXButton apri; // bottone per settare il gate libero
+    private JFXButton impostaTratta; // bottone per iniziare un imbarco
+    private JFXButton terminaImbarco; // bottone per terminare un imbarco
+    private VBox v; // vbox contenente i bottoni
 
     public GateCardPopup(GateCard gCard){
         v = new VBox();
@@ -70,6 +71,7 @@ public class GateCardPopup extends JFXPopup {
 
     public VBox getVBox() { return v; }
 
+    // imposta le azioni dei vari bottoni. Vedi ControllerGate
     public void setImpostaTratta(EventHandler<ActionEvent> e) {
         impostaTratta.setOnAction(e);
     }

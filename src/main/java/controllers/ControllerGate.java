@@ -33,32 +33,33 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+// controller per il pannello dei gate
 public class ControllerGate implements Initializable, Refreshable<Gate>, UserRestricted {
 
     @FXML
-    private ScrollPane scroll;
-    private FlowPane flowPane;
+    private ScrollPane scroll; // scroll pane che contiene il flowPane
+    private FlowPane flowPane; // flowPane che contiene le gateCard
     @FXML
-    private JFXComboBox<String> searchMode;
+    private JFXComboBox<String> searchMode; // vincoli di ricerca
     @FXML
-    private JFXCheckBox occupatiCheck, liberiCheck, chiusiCheck;
+    private JFXCheckBox occupatiCheck, liberiCheck, chiusiCheck; // vincoli di ricerca in base allo stato
     @FXML
-    private TextField searchBar;
+    private TextField searchBar; // barra di ricerca
     @FXML
-    private JFXButton cancelBtn;
+    private JFXButton cancelBtn; // elimina i vincoli di ricerca
     @FXML
-    private Label nessunGate;
+    private Label nessunGate; // label che viene visualizzata quando una ricerca è nulla
     @FXML
-    private JFXSpinner spinner;
-    private List<GateCard> localGate;
-    private Dipendente loggedUser;
+    private JFXSpinner spinner; // spinner che viene visualizzato durante il refresh
+    private List<GateCard> localGate; // lista locale di gate salvati dal database
+    private Dipendente loggedUser; // utente loggato
 
 
     // Filtri sullo stato: occupato ecc...
     public void statusFilter(ActionEvent e){
         refresh();
     }
-
+   // Ricerca in base alla searchBar
     public void search(KeyEvent k){
         String text = searchBar.getText();
 
@@ -81,6 +82,7 @@ public class ControllerGate implements Initializable, Refreshable<Gate>, UserRes
         nessunGate.setVisible(flowPane.getChildren().isEmpty());
     }
 
+    // mostra la lista di tratte disponibili per l'imbarco
     private void showImpostaTratta(GateCard gCard, GateCardPopup popup){
         JFXListView<TrattaHbox> l = new JFXListView<>();
         l.setPrefSize(820, 300);
@@ -110,6 +112,7 @@ public class ControllerGate implements Initializable, Refreshable<Gate>, UserRes
         alert.showAndWait();
     }
 
+    // imposta le code per l'imbarco dopo aver scelto la tratta
     private void impostaCode(GateCard gCard, JFXAlert<Void> alert, GateCardPopup popup, Tratta tratta){
         try {
             CodaImbarcoDao codaImbarcoDao = new CodaImbarcoDao();
@@ -127,6 +130,7 @@ public class ControllerGate implements Initializable, Refreshable<Gate>, UserRes
         alert.hide();
     }
 
+    // conclude l'imbarco e aggiorna il database
     public void terminaImbarco(GateCard gCard, GateCardPopup popup){
         Gate g = gCard.getGate();
         try {
@@ -144,6 +148,7 @@ public class ControllerGate implements Initializable, Refreshable<Gate>, UserRes
         popup.setAperto();
     }
 
+    // chiude il gate
     public void chiudiGate(GateCard gCard, GateCardPopup popup){
         gCard.getGate().close();
         try {
@@ -155,6 +160,7 @@ public class ControllerGate implements Initializable, Refreshable<Gate>, UserRes
         gCard.updateLabels();
     }
 
+    // Rende il gate libero
     private void apriGate(GateCard gCard, GateCardPopup popup) {
         gCard.getGate().open();
         try {

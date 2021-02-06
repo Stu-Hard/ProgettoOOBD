@@ -12,28 +12,16 @@ public class Tratta {
     private LocalTime oraPartenza;
     private int durataVolo;
     private int ritardo = 0;
-    private boolean conclusa = false; // todo
-    private Compagnia compagnia; // qui dovrebbe essere Compagnie compagnia;
-    private String gate = null; // come sopra da cambiare con Gate gate;
+    private boolean conclusa = false;
+    private Compagnia compagnia;
+    private String gate = null;
     private Aeroporto aereoportoPartenza;
     private Aeroporto aereoportoArrivo;
     private int posti;
 
-    public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-    public DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+    public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/uuuu"); // formato per visualizzare la data
+    public DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm"); // formato per visualizzare l'ora
 
-
-    // quando una tratta viene creata non si sa a prescindere il ritardo, il gate ecc...
-    public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo,
-                  Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto getAereoportoArrivo) {
-        this.numeroVolo = numeroVolo;
-        this.dataPartenza = dataPartenza;
-        this.oraPartenza = oraPartenza;
-        this.compagnia = compagnia;
-        this.durataVolo = durataVolo;
-        this.aereoportoPartenza = aereoportoPartenza;
-        this.aereoportoArrivo = getAereoportoArrivo;
-    }
 
     public Tratta(String numeroVolo, LocalDate dataPartenza, LocalTime oraPartenza, int durataVolo, int ritardo, boolean conclusa, String gate, Compagnia compagnia, Aeroporto aereoportoPartenza, Aeroporto aereoportoArrivo, int posti) {
         this.numeroVolo = numeroVolo;
@@ -62,6 +50,7 @@ public class Tratta {
         this.aereoportoArrivo = tratta.getAereoportoArrivo();
     }
 
+    // genera i valori da inserire nel database
     @Override
     public String toString() {
         return "(" +
@@ -79,6 +68,7 @@ public class Tratta {
                 ')';
     }
 
+    // danno la data e l'ora formattate
     public String getDataPartenzaFormatted(){
         return dateFormat.format(dataPartenza);
     }
@@ -162,6 +152,7 @@ public class Tratta {
         this.durataVolo = durataVolo;
     }
 
+    // da la distanza di tempo in minuti tra data e ora di partenza e data e ora attuali
     public int dateDistance(){
         return (int) ChronoUnit.MINUTES.between(LocalDateTime.of(dataPartenza, oraPartenza), Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
     }
@@ -174,6 +165,7 @@ public class Tratta {
         this.posti = posti;
     }
 
+    // quando viene terminato l'imbarco viene impostato il ritardo
     public void concludi() {
         ritardo = dateDistance();
         conclusa = true;

@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
+// scheda per aggiungere tratte
 public class ControllerTratteAdd extends WindowDragger implements Initializable, UserRestricted {
     @FXML
     private JFXCheckBox
@@ -29,23 +29,23 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable,
             famiglie,
             business,
             priorty,
-            economy;
+            economy; // se selezionate aggiunge la coda di imbarco
 
     @FXML
-    private JFXComboBox<Compagnia> compagnia;
+    private JFXComboBox<Compagnia> compagnia; //sceglie la compagnia che organizza la tratta
     @FXML
-    private JFXComboBox<Aeroporto> partenza, arrivo;
+    private JFXComboBox<Aeroporto> partenza, arrivo; // sceglie aeroporto di arrivo e partenza
     @FXML
-    private JFXDatePicker data;
+    private JFXDatePicker data; // data di partenza
     @FXML
-    private JFXTimePicker ora;
+    private JFXTimePicker ora; // ora di partenza
     @FXML
     private JFXTextField durata, posti;
     @FXML
     private JFXCheckBox conclusa;
 
     @FXML
-    private JFXButton conferma;
+    private JFXButton conferma; // aggiunge la tratta
 
 
     private Aeroporto aeroportoGestito;
@@ -112,6 +112,7 @@ public class ControllerTratteAdd extends WindowDragger implements Initializable,
         ((Node) e.getSource()).getScene().getWindow().hide();
     }
 
+    // almeno uno tra aeroporto di partenza e di arrivo deve essere aeroportogestito
     public void controlloAeroporto(ActionEvent e){
         if (partenza.getValue() != null && arrivo.getValue() != null){
             if (!partenza.getValue().equals(aeroportoGestito) && !arrivo.getValue().equals(aeroportoGestito)){
